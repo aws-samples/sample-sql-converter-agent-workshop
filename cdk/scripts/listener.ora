@@ -1,0 +1,20 @@
+LISTENER =
+  (DESCRIPTION_LIST =
+    (DESCRIPTION =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 0.0.0.0)(PORT = 1521))
+    )
+  )
+
+SID_LIST_LISTENER =
+  (SID_LIST =
+    (SID_DESC =
+      (SID_NAME = XE)
+      (ORACLE_HOME = /opt/oracle/product/21c/dbhomeXE)
+      (GLOBAL_DBNAME = XE)
+    )
+    (SID_DESC =
+      (SID_NAME = XEPDB1)
+      (ORACLE_HOME = /opt/oracle/product/21c/dbhomeXE)
+      (GLOBAL_DBNAME = XEPDB1)
+    )
+  )

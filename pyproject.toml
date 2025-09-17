@@ -1,0 +1,11 @@
+[project]
+name = "ora2pg-conv-w-strands"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.38.27",
+    "colorama>=0.4.6",
+    "oracledb>=3.1.1",
+]
