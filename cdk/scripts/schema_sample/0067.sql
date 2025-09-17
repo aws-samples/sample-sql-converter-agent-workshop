@@ -1,0 +1,55 @@
+CREATE TABLE t_0067_1 (
+    sale_id NUMBER(10) NOT NULL,
+    customer_id NUMBER(10) NOT NULL,
+    product_id NUMBER(10) NOT NULL,
+    sale_date DATE NOT NULL,
+    quantity NUMBER(5) NOT NULL,
+    amount NUMBER(10,2) NOT NULL
+)
+PARTITION BY RANGE (sale_date)
+INTERVAL (NUMTOYMINTERVAL(1, 'MONTH'))
+(
+    PARTITION sales_p1 VALUES LESS THAN (TO_DATE('2023-01-01', 'YYYY-MM-DD')),
+    PARTITION sales_p2 VALUES LESS THAN (TO_DATE('2023-02-01', 'YYYY-MM-DD')),
+    PARTITION sales_p3 VALUES LESS THAN (TO_DATE('2023-03-01', 'YYYY-MM-DD'))
+);
+
+-- 数値によるINTERVALパーティショニングの例
+CREATE TABLE t_0067_2 (
+    transaction_id NUMBER(12) NOT NULL,
+    customer_id NUMBER(10) NOT NULL,
+    transaction_amount NUMBER(12,2) NOT NULL,
+    transaction_date DATE NOT NULL
+)
+PARTITION BY RANGE (transaction_amount)
+INTERVAL (1000)
+(
+    PARTITION trans_p1 VALUES LESS THAN (1000),
+    PARTITION trans_p2 VALUES LESS THAN (2000),
+    PARTITION trans_p3 VALUES LESS THAN (3000)
+);
+
+-- サブパーティショニングを含むINTERVALパーティショニングの例
+CREATE TABLE t_0067_3 (
+    order_id NUMBER(12) NOT NULL,
+    item_id NUMBER(10) NOT NULL,
+    product_id NUMBER(10) NOT NULL,
+    order_date DATE NOT NULL,
+    region VARCHAR2(20) NOT NULL,
+    quantity NUMBER(5) NOT NULL,
+    price NUMBER(10,2) NOT NULL
+)
+PARTITION BY RANGE (order_date)
+INTERVAL (NUMTODSINTERVAL(7, 'DAY'))
+SUBPARTITION BY LIST (region)
+SUBPARTITION TEMPLATE (
+    SUBPARTITION sp_east VALUES ('EAST'),
+    SUBPARTITION sp_west VALUES ('WEST'),
+    SUBPARTITION sp_north VALUES ('NORTH'),
+    SUBPARTITION sp_south VALUES ('SOUTH')
+)
+(
+    PARTITION order_p1 VALUES LESS THAN (TO_DATE('2023-01-01', 'YYYY-MM-DD')),
+    PARTITION order_p2 VALUES LESS THAN (TO_DATE('2023-01-08', 'YYYY-MM-DD')),
+    PARTITION order_p3 VALUES LESS THAN (TO_DATE('2023-01-15', 'YYYY-MM-DD'))
+);

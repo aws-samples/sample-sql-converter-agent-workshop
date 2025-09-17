@@ -1,0 +1,31 @@
+-- テーブル作成スクリプト
+CREATE TABLE T_0055_1 (
+    ID NUMBER PRIMARY KEY,
+    C1 NUMBER,
+    C2 NUMBER,
+    UPDATE_DATE DATE
+);
+
+CREATE TABLE T_0055_2 (
+    ID NUMBER PRIMARY KEY,
+    C1 NUMBER,
+    UPDATE_DATE DATE
+);
+
+CREATE OR REPLACE PROCEDURE SCT_0055_UPDATE_FROM_SUBQUERY(
+    p_id IN NUMBER
+)
+IS
+BEGIN
+    -- 指定されたIDのレコードを更新
+    -- T_0055_2テーブルから最大値と最小値を取得して更新
+    UPDATE T_0055_1
+    SET (C1, C2) = (SELECT MAX(C1), MIN(C1) FROM T_0055_2)
+    WHERE ID = p_id;
+
+    -- 更新された行数を出力
+    DBMS_OUTPUT.PUT_LINE('更新された行数: ' || SQL%ROWCOUNT);
+
+    COMMIT;
+END SCT_0055_UPDATE_FROM_SUBQUERY;
+/

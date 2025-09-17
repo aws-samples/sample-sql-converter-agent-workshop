@@ -1,0 +1,2 @@
+CREATE TABLE T_0050 (r ROWID)
+/

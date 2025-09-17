@@ -1,0 +1,14 @@
+CREATE TABLE SCT_0053_remote_table (id NUMBER, data_value VARCHAR2(1000))
+/
+
+CREATE DATABASE LINK SCT_0053_remote_db_link
+  CONNECT TO &1 IDENTIFIED BY &2
+  USING '(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=&3)(PORT=&4))
+  (CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=&5)))'
+/
+
+CREATE SYNONYM SCT_0053_synonym_remote_table FOR SCT_0053_remote_table@SCT_0053_remote_db_link
+/
+
+CREATE SYNONYM SCT_0053_synonym_local_table FOR SCT_0053_remote_table
+/
