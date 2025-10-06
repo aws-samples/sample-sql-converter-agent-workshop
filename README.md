@@ -43,9 +43,8 @@ pip install uv
 ### 1. CDK 依存関係のインストール
 
 ```bash
-wget https://dnh3ofuyfknm.cloudfront.net/public/workshop-ora2pg/ora2pg-conv-w-strands.zip
-unzip ora2pg-conv-w-strands.zip
-cd ora2pg-conv-w-strands
+git clone https://github.com/aws-samples/ora2pg-conversion-workshop.git
+cd ora2pg-conversion-workshop
 
 # CDK依存関係のインストール
 cd cdk

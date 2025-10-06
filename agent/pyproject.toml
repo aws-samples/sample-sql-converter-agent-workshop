@@ -1,5 +1,5 @@
 [project]
-name = "ora2pg-conv-w-strands"
+name = "ora2pg-conversion-workshop"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"

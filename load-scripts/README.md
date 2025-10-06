@@ -12,7 +12,7 @@
 
 ```bash
 cd load
-q chat "../ora2pg-conv-w-strands/cdk で作成された Oracle on EC2のPublic IPアドレスとPrivate IPアドレスを教えてください。"
+q chat "../ora2pg-conversion-workshop/cdk で作成された Oracle on EC2のPublic IPアドレスとPrivate IPアドレスを教えてください。"
 
 /quit
 ```

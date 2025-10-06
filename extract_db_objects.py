@@ -44,7 +44,7 @@ def extract_db_objects(sql_content, filename):
 
 def main():
     schema_dir = Path(
-        "/Users/gokazu/Desktop/code/ora2pg-conv-w-strands/cdk/scripts/schema_sample"
+        "/Users/gokazu/Desktop/code/ora2pg-conversion-workshop/cdk/scripts/schema_sample"
     )
     all_objects = []
 
@@ -59,7 +59,9 @@ def main():
             print(f"Error processing {sql_file}: {e}")
 
     # Write to CSV
-    csv_file = "/Users/gokazu/Desktop/code/ora2pg-conv-w-strands/db_objects_summary.csv"
+    csv_file = (
+        "/Users/gokazu/Desktop/code/ora2pg-conversion-workshop/db_objects_summary.csv"
+    )
     with open(csv_file, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(
             f, fieldnames=["filename", "object_type", "object_name"]
