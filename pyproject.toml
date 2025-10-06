@@ -9,3 +9,8 @@ dependencies = [
     "colorama>=0.4.6",
     "oracledb>=3.1.1",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.13.1",
+]

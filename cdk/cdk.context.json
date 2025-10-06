@@ -7,5 +7,25 @@
     "us-east-1e",
     "us-east-1f"
   ],
-  "ami:account=290000338583:filters.image-type.0=machine:filters.name.0=al2023-ami-2023.*-kernel-6.1-x86_64:filters.state.0=available:owners.0=amazon:region=us-east-1": "ami-0953476d60561c955"
+  "ami:account=290000338583:filters.image-type.0=machine:filters.name.0=al2023-ami-2023.*-kernel-6.1-x86_64:filters.state.0=available:owners.0=amazon:region=us-east-1": "ami-0953476d60561c955",
+  "availability-zones:account=737558761973:region=ap-northeast-1": [
+    "ap-northeast-1a",
+    "ap-northeast-1c",
+    "ap-northeast-1d"
+  ],
+  "ami:account=737558761973:filters.image-type.0=machine:filters.name.0=al2023-ami-2023.*-kernel-6.1-x86_64:filters.state.0=available:owners.0=amazon:region=ap-northeast-1": "ami-0228232d282f16465",
+  "availability-zones:account=737558761973:region=us-west-2": [
+    "us-west-2a",
+    "us-west-2b",
+    "us-west-2c",
+    "us-west-2d"
+  ],
+  "ami:account=737558761973:filters.image-type.0=machine:filters.name.0=al2023-ami-2023.*-kernel-6.1-x86_64:filters.state.0=available:owners.0=amazon:region=us-west-2": "ami-06a974f9b8a97ecf2",
+  "availability-zones:account=167053541983:region=us-west-2": [
+    "us-west-2a",
+    "us-west-2b",
+    "us-west-2c",
+    "us-west-2d"
+  ],
+  "ami:account=167053541983:filters.image-type.0=machine:filters.name.0=al2023-ami-2023.*-kernel-6.1-x86_64:filters.state.0=available:owners.0=amazon:region=us-west-2": "ami-0caa91d6b7bee0ed0"
 }

@@ -1,46 +1,50 @@
-from strands import tool
-import subprocess
 import os
+import subprocess
+
+from strands import tool
+
 try:
     from utils.logger import setup_logger
 except ImportError:
-    import sys
     import os
+    import sys
+
     sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from utils.logger import setup_logger
 
-logger = setup_logger('shell')
+logger = setup_logger("shell")
+
 
 @tool
 def shell(command):
     """
     Execute shell command.
-    
+
     Args:
         command (str): Shell command to execute
-        
+
     Returns:
         str: Command output
     """
     logger.info(f"Executing: {command}")
     try:
         result = subprocess.run(
-            command, 
-            shell=True, 
-            capture_output=True, 
-            text=True, 
+            command,
+            shell=True,
+            capture_output=True,
+            text=True,
             timeout=30,
-            cwd=os.getcwd()
+            cwd=os.getcwd(),
         )
-        
+
         output = ""
         if result.stdout:
             output += result.stdout
         if result.stderr:
             output += result.stderr
-            
+
         return output
-        
+
     except subprocess.TimeoutExpired:
         logger.error(f"Command timed out: {command}")
         return f"Command timed out after 30 seconds: {command}"
