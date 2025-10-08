@@ -1,4 +1,6 @@
-#!/bin/zsh
+#!/bin/bash
+
+stack_name="Ora2pgStack"
 
 cd cdk
 cdk deploy --outputs-file output.json --require-approval never
@@ -11,7 +13,7 @@ fi
 
 # output.json からコマンドを抽出して実行
 echo "AWS SSMからキーペアを取得しています..."
-export COMMAND=$(jq -r '.AuroraOracleStack.OracleKeyPairRetrievalCommand' output.json)
+export COMMAND=$(jq -r --arg stack_name "${stack_name}" '.[$stack_name].OracleKeyPairRetrievalCommand' output.json)
 
 echo "実行するコマンド: $COMMAND"
 eval "$COMMAND"
@@ -26,17 +28,17 @@ if [ -f oracle-xe-key.pem ]; then
     fi
     echo "キーペアの取得に成功しました。権限は $PERMS に設定されています。"
     echo "以下のコマンドでEC2インスタンスに接続できます:"
-    echo "$(jq -r '.AuroraOracleStack.SSHCommand' output.json)"
+    echo "$(jq -r --arg stack_name "${stack_name}" '.[$stack_name].SSHCommand' output.json)"
 else
     echo "キーペアの取得に失敗しました。"
 fi
 
 echo "AWS SSMからキーペアを取得しています..."
-export SCRIPT_BUCKET_NAME=$(jq -r '.AuroraOracleStack.ScriptBucketName' output.json)
+export SCRIPT_BUCKET_NAME=$(jq -r --arg stack_name "${stack_name}" '.[$stack_name].ScriptBucketName' output.json)
 aws s3 cp ./dmp/ s3://$SCRIPT_BUCKET_NAME/dmp --recursive
 
 
-export ORACLE_INSTANCE_ID=$(jq -r '.AuroraOracleStack.OracleInstanceId' ./output.json)
+export ORACLE_INSTANCE_ID=$(jq -r --arg stack_name "${stack_name}" '.[$stack_name].OracleInstanceId' ./output.json)
 
 echo "Oracle インスタンス ID: $ORACLE_INSTANCE_ID でコマンド実行を開始します..."
 
@@ -90,9 +92,3 @@ aws ssm get-command-invocation \
   --output text
 
 echo "Oracle XEのインストールが完了しました"
-
-echo --------------------------------------------------
-echo "DB 接続テスト"
-cd ..
-uv run ora_connect_test.py
-uv run pg_connect_test.py

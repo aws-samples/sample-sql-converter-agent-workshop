@@ -1,0 +1,6 @@
+Host oracle
+  HostName <instance id>
+  User ec2-user
+  IdentityFile ./cdk/oracle-xe-key.pem
+  ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600
+  LocalForward 11521 localhost:1521

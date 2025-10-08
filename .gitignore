@@ -1,0 +1,66 @@
+# Python関連
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# テストディレクトリ
+test/
+
+# uvicorn関連（agent/ディレクトリ）
+agent/repl_state/
+
+# 仮想環境
+venv/
+env/
+ENV/
+.env
+.venv
+
+# IDE関連
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS関連
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# CDK関連
+cdk.out/
+.cdk.staging/
+cdk-outputs.json
+!cdk/lib
+
+# その他
+*.log
+.coverage
+coverage.xml
+.pytest_cache/
+
+# キー
+cdk/oracle-xe-key.pem
+cdk/output.json
+oracle-xe-key.pem
+agent/exec_sql/*.sql
+agent/result/*
