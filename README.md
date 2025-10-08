@@ -43,8 +43,8 @@ pip install uv
 ### 1. CDK 依存関係のインストール
 
 ```bash
-git clone https://github.com/aws-samples/ora2pg-conversion-workshop.git
-cd ora2pg-conversion-workshop
+git clone https://github.com/aws-samples/sample-ora2pg-conversion-workshop.git
+cd sample-ora2pg-conversion-workshop
 
 # CDK依存関係のインストール
 cd cdk
@@ -66,19 +66,13 @@ cdk bootstrap
 e.g.
 
 ```shell
-mkdir dmp
-cd dmp
+mkdir -p cdk/dmp
+cd cdk/dmp
 wget https://download.oracle.com/otn-pub/otn_software/db-express/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
 wget https://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/getPackage/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
+cd ../../
 ```
 
-ダウンロード完了後、`cdk/dmp/` ディレクトリに配置してください：
-
-```
-cdk/dmp/
-├── oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
-└── oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
-```
 
 ### 3. インフラストラクチャのデプロイ
 

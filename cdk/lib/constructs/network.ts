@@ -1,5 +1,7 @@
 import {
   CfnInstanceConnectEndpoint,
+  FlowLogDestination,
+  FlowLogTrafficType,
   Port,
   SecurityGroup,
   SubnetType,
@@ -32,6 +34,12 @@ export class Network extends Construct {
           subnetType: SubnetType.PRIVATE_ISOLATED,
         },
       ],
+      flowLogs: {
+        cloudwatch: {
+          destination: FlowLogDestination.toCloudWatchLogs(),
+          trafficType: FlowLogTrafficType.REJECT,
+        },
+      },
     });
 
     // Security Group

@@ -1,4 +1,4 @@
-import { Fn, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { Duration, Fn, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import {
   BlockDeviceVolume,
   CfnKeyPair,
@@ -56,6 +56,7 @@ export class OracleDbInstance extends Construct {
         generateStringKey: 'password',
         passwordLength: 12,
       },
+      removalPolicy: RemovalPolicy.DESTROY,
     });
 
     // Create a security group for the Oracle EC2 instance
@@ -79,6 +80,7 @@ export class OracleDbInstance extends Construct {
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
       enforceSSL: true,
+      serverAccessLogsPrefix: 'AccessLogs/',
     });
 
     // Deploy the Oracle installation script to the S3 bucket
@@ -132,6 +134,7 @@ export class OracleDbInstance extends Construct {
       vpcSubnets: {
         subnetType: SubnetType.PUBLIC,
       },
+      detailedMonitoring: true,
       // Increase root volume size to accommodate Oracle XE
       blockDevices: [
         {
@@ -140,6 +143,7 @@ export class OracleDbInstance extends Construct {
             // 50GB root volume
             volumeType: EbsDeviceVolumeType.GP3,
             deleteOnTermination: true,
+            encrypted: true,
           }),
         },
       ],

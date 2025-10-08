@@ -54,6 +54,7 @@ export class DmsSchemaConversion extends Construct {
         autoDeleteObjects: true,
         enforceSSL: true,
         versioned: true, // Enable versioning for DMS Schema Conversion
+        serverAccessLogsPrefix: 'AccessLogs/',
       }
     );
 

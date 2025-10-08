@@ -1,4 +1,4 @@
-import { Duration } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import {
   AuroraPostgresEngineVersion,
@@ -30,6 +30,7 @@ export class AuroraServerlessPg extends Construct {
         includeSpace: false,
         generateStringKey: 'password',
       },
+      removalPolicy: RemovalPolicy.DESTROY,
     });
 
     // Create the Aurora PostgreSQL Serverless v2 cluster
@@ -46,7 +47,8 @@ export class AuroraServerlessPg extends Construct {
       serverlessV2MaxCapacity: 1, // Maximum ACU - keeping it low for cost efficiency
       writer: ClusterInstance.serverlessV2('writer'),
       storageEncrypted: true,
-      deletionProtection: false, // Set to true in production
+      deletionProtection: false,
+      iamAuthentication: true,
       backup: {
         retention: Duration.days(7), // Minimum backup retention
       },
