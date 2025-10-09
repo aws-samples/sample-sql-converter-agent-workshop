@@ -3,6 +3,10 @@
 このプロジェクトは、Oracle Database から Amazon Aurora PostgreSQL へのデータベース移行を支援するサンプル AI エージェントシステムです。  
 AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できない Database Object を対象に Strands Agents を活用してデータベース分析と移行作業を軽減します。
 
+> [!NOTE]
+> このコンテンツは OracleDB と PostgreSQL を立て、この環境に閉じて AI エージェントが SQL を読み書きし、実行し、修正し、結果を残していくものです。
+>  AI エージェントがシェルコマンドを実行したり、Database を操作する都合上、本番環境での利用はおやめください。あくまで、ここでコードを作成・テストするだけにとどめてください。
+
 ## 🏗️ アーキテクチャ概要
 
 - **Oracle Database**: EC2 インスタンス上の Oracle XE 21c
