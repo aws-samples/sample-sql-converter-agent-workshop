@@ -68,29 +68,46 @@ def execute_query(sql):
         )
         cursor = connection.cursor()
         cursor.execute(sql)
-        response = cursor.fetchall()
 
-        # LOBオブジェクトの処理
-        processed_response = []
-        for row in response:
-            processed_row = []
-            for item in row:
-                if hasattr(item, "read"):
-                    try:
-                        lob_data = item.read()
-                        if isinstance(lob_data, bytes):
-                            lob_data = lob_data.decode("utf-8", errors="ignore")
-                        processed_row.append(lob_data)
-                    except Exception as e:
-                        logger.error(f"Error reading LOB: {e}")
-                        processed_row.append(str(item))
-                else:
-                    processed_row.append(item)
-            processed_response.append(tuple(processed_row))
+        # 結果セット取得を安全に試行
+        query_result = []
+        try:
+            response = cursor.fetchall()
 
-        return processed_response
+            # LOBオブジェクトの処理
+            processed_response = []
+            for row in response:
+                processed_row = []
+                for item in row:
+                    if hasattr(item, 'read'):
+                        try:
+                            lob_data = item.read()
+                            if isinstance(lob_data, bytes):
+                                lob_data = lob_data.decode('utf-8', errors='ignore')
+                            processed_row.append(lob_data)
+                        except Exception as e:
+                            logger.error(f"Error reading LOB: {e}")
+                            processed_row.append(str(item))
+                    else:
+                        processed_row.append(item)
+                processed_response.append(tuple(processed_row))
+
+            query_result = processed_response
+
+        except Exception:
+            # INSERT/UPDATE/DELETE/CREATE/DROP文など結果セットがない場合
+            logger.info("Statement executed (no result set to fetch)")
+            query_result = []
+
+        connection.commit()
+        logger.info("Transaction committed")
+
+        return query_result
+
     except Exception as e:
         logger.error(f"Error executing query: {e}")
+        if connection:
+            connection.rollback()
         raise
     finally:
         if cursor:
