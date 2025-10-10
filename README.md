@@ -54,6 +54,7 @@ cd sample-ora2pg-conversion-workshop
 cd cdk
 npm install
 cdk bootstrap
+cd ..
 ```
 
 ### 2. 必要ファイルの準備
