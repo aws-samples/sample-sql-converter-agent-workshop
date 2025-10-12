@@ -124,20 +124,20 @@ Oracle Instance に接続します。
 `ssh-config`
 ```
 Host oracle
-  HostName <instance id>
+  HostName i-0f6bfc55df38f2d1c
   User ec2-user
   IdentityFile ./cdk/oracle-xe-key.pem
   ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600
   LocalForward 11521 localhost:1521
 ```
 
-ローカルやEC2等、ワークショップ以外の環境で設定する場合は、`./cdk/oracle-xe-key.pem` を `~/.ssh/` にコピーした上で、`~/.ssh/config` に以下の設定を追加してください。
+ローカルやEC2等、ワークショップ以外の環境で設定する場合は、`./cdk/oracle-xe-key.pem` を `~/.ssh/` にコピーした上で(e.g.`chmod 400 ./cdk/oracle-xe-key.pem && sudo cp ./cdk/oracle-xe-key.pem ~/.ssh/`)、`~/.ssh/config` に以下の設定を追加してください。
 
 `~/.ssh/config`
 
 ```
 Host oracle
-  HostName <InstanceId>
+  HostName i-0f6bfc55df38f2d1c
   User ec2-user
   IdentityFile ~/.ssh/oracle-xe-key.pem
   ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600
