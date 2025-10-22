@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <settings>
+        <!-- Oracle specific settings -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="callSettersOnNulls" value="true"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+        <setting name="defaultExecutorType" value="REUSE"/>
+        <setting name="defaultStatementTimeout" value="30"/>
+        <setting name="defaultFetchSize" value="100"/>
+        <setting name="safeRowBoundsEnabled" value="true"/>
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias alias="Employee" type="com.example.entity.Employee"/>
+        <typeAlias alias="EmployeeSearchCriteria" type="com.example.dto.EmployeeSearchCriteria"/>
+    </typeAliases>
+
+    <typeHandlers>
+        <!-- Oracle TIMESTAMP handling -->
+        <typeHandler handler="org.apache.ibatis.type.LocalDateTimeTypeHandler" 
+                    javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+    </typeHandlers>
+
+    <environments default="oracle">
+        <environment id="oracle">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="oracle.jdbc.OracleDriver"/>
+                <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+                <property name="username" value="hr"/>
+                <property name="password" value="password"/>
+                <!-- Oracle specific connection properties -->
+                <property name="poolMaximumActiveConnections" value="20"/>
+                <property name="poolMaximumIdleConnections" value="5"/>
+                <property name="poolMaximumCheckoutTime" value="20000"/>
+                <property name="poolTimeToWait" value="20000"/>
+                <property name="poolPingQuery" value="SELECT 1 FROM DUAL"/>
+                <property name="poolPingEnabled" value="true"/>
+                <property name="poolPingConnectionsNotUsedFor" value="19000"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="com/example/mapper/EmployeeMapper.xml"/>
+        <mapper class="com.example.dao.EmployeeDao"/>
+    </mappers>
+</configuration>

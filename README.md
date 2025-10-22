@@ -163,9 +163,9 @@ uv run pg_connect_test.py
 ## (Option) データベースオブジェクトのロード
 
 以下の手順に従って、データベースオブジェクトをアップロードしてください。
-1. `./load-scripts/dumpfile` に `{name}_METADATAONLY.DMP` をアップロードしてください。
-2. `load-scripts` フォルダ配下の各シェルスクリプトについて、コメントの指示に従い、スキーマ名でループしている箇所に、アップロードしたファイルのスキーマ名を列挙してください。
-3. `load-scripts` フォルダ配下のシェルスクリプトを番号順に実行してください。権限不足でエラーが出る場合には `chmod +x load-scripts/1pre.sh` のように権限付与してください。
+1. `./import-schema/dumpfile` に `{name}_METADATAONLY.DMP` をアップロードしてください。
+2. `import-schema` フォルダ配下の各シェルスクリプトについて、コメントの指示に従い、スキーマ名でループしている箇所に、アップロードしたファイルのスキーマ名を列挙してください。
+3. `import-schema` フォルダ配下のシェルスクリプトを番号順に実行してください。権限不足でエラーが出る場合には `chmod +x import-schema/1pre.sh` のように権限付与してください。
 
 `2load.sh` で以下のエラーが出る場合は、Oracle on EC2 インスタンスに oracle ユーザーでログインし、パスが一致するようにディレクトリを作成し、ダンプファイルを移動してください。
 
@@ -177,7 +177,7 @@ ssh -F ssh-config oracle
 sudo su - oracle
 ```
 
-## 🤖 AI エージェントの使用
+## 🤖 AI エージェントを使用したデータベースコードオブジェクトの変換
 
 ### 4. エージェントの起動
 
@@ -189,27 +189,65 @@ uv run main.py
 
 # 使い方 2 ) DB Object を指定する場合
 # DB_ONJECT_TYPE[space]SCHEMA_NAME.OBJECT_NAME で指定してください
-# 特にオプション指定がない場合は、system_prompt.txt を参照します
-uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE" --system-prompt custom_prompt.txt
+uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE"
 
 # 使い方 3 ) まとめて実行する場合
-# 特にオプション指定がない場合は、system_prompt.txt およびobject_list.ini を参照します
-./run.sh --system-prompt custom_prompt.txt --file custom_list.ini
+./run.sh
 
 ```
 
-### 5. カスタム利用例 (変換順序の調整、および分割戦略を取る場合)
+### 5. カスタム利用例
+コードの行数が長い場合や複雑なプロシージャの場合に、変換順序の調整やコードを分割してから変換することが有効であるため、その実行方法をみていきます。
+ポート11521が既に使用されているといったエラーが発生する場合、別ウィンドウでの実施中のSSHポート転送を終了してください
 
 ```bash
 cd agent
 
-# OracleのDDLをまとめて取得
-./batch_getDDL.sh --file object_list.ini
+# OracleのDDLをまとめて取得 
+./getDDL.sh --file object_list.ini
 
 #並び替え
-q chat "custom_prompt_1sortObject.txtに従って処理を実行してください。"
+uv run main.py
+  (起動後に以下を貼り付けてください。)
+
+  prompts/sortObject.txtに従って処理を実行してください。
 
 # 変換実行
-./run.sh --system-prompt custom_prompt_2convert.txt --file object_list_sorted.ini
+./run.sh --system-prompt custom_prompt.txt --file object_list_sorted.ini
 
 ```
+
+
+## 🤖 AI エージェントを使用したアプリケーションSQLの変換
+サンプルとしてOracleデータベースを使用した従業員情報の管理（登録、更新、削除、検索）を行うSpring + MyBatisアプリケーションの基盤となるスクリプト群を変換します。
+
+### 6. サンプルアプリケーションの確認
+以下に配置されたサンプルアプリケーションの内容をチェックしてください。
+
+```bash
+cd ../application/
+```
+
+### 7. エージェントの起動
+
+```bash
+cd ../agent
+
+# アプリケーションの変換
+# 例) uv run main.py --prompt "<ソースの配置場所> <アプリ名> <テスト名>" --system-prompt "system_prompt_app.txt"
+uv run main.py --prompt "../application/employee-mgmt/application employee-mgmt test01" --system-prompt "system_prompt_app.txt"
+
+```
+
+
+## その他
+
+### Amazon Q Developer のセットアップ方法
+
+インストール方法
+https://docs.aws.amazon.com/ja_jp/amazonq/latest/qdeveloper-ug/command-line-installing-ssh-setup-autocomplete.html#command-line-install-q
+
+セットアップ方法（認証設定から「CLI」タブを選択）
+https://catalog.workshops.aws/qwords/ja-JP/10-start-workshop/16-builder-id
+
+

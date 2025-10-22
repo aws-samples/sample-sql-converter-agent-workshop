@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.dao.EmployeeDao">
+
+    <!-- 動的検索クエリ -->
+    <select id="findBySearchCriteria" parameterType="com.example.dto.EmployeeSearchCriteria" 
+            resultType="com.example.entity.Employee">
+        SELECT e.employee_id,
+               e.first_name,
+               e.last_name,
+               e.email,
+               e.phone_number,
+               e.hire_date,
+               e.job_id,
+               e.salary,
+               e.commission_pct,
+               e.manager_id,
+               e.department_id,
+               e.created_at,
+               e.updated_at,
+               d.department_name,
+               m.first_name || ' ' || m.last_name as manager_name
+        FROM employees e
+        LEFT JOIN departments d ON e.department_id = d.department_id
+        LEFT JOIN employees m ON e.manager_id = m.employee_id
+        <where>
+            <if test="firstName != null and firstName != ''">
+                AND UPPER(e.first_name) LIKE UPPER('%' || #{firstName} || '%')
+            </if>
+            <if test="lastName != null and lastName != ''">
+                AND UPPER(e.last_name) LIKE UPPER('%' || #{lastName} || '%')
+            </if>
+            <if test="email != null and email != ''">
+                AND UPPER(e.email) LIKE UPPER('%' || #{email} || '%')
+            </if>
+            <if test="jobIds != null and jobIds.size() > 0">
+                AND e.job_id IN
+                <foreach collection="jobIds" item="jobId" open="(" separator="," close=")">
+                    #{jobId}
+                </foreach>
+            </if>
+            <if test="minSalary != null">
+                AND e.salary >= #{minSalary}
+            </if>
+            <if test="maxSalary != null">
+                AND e.salary &lt;= #{maxSalary}
+            </if>
+            <if test="departmentId != null">
+                AND e.department_id = #{departmentId}
+            </if>
+            <if test="hireDateFrom != null">
+                AND e.hire_date >= #{hireDateFrom}
+            </if>
+            <if test="hireDateTo != null">
+                AND e.hire_date &lt;= #{hireDateTo}
+            </if>
+        </where>
+        <if test="sortBy != null and sortBy != ''">
+            ORDER BY 
+            <choose>
+                <when test="sortBy == 'firstName'">e.first_name</when>
+                <when test="sortBy == 'lastName'">e.last_name</when>
+                <when test="sortBy == 'salary'">e.salary</when>
+                <when test="sortBy == 'hireDate'">e.hire_date</when>
+                <otherwise>e.employee_id</otherwise>
+            </choose>
+            <if test="sortOrder != null and sortOrder.toUpperCase() == 'DESC'">DESC</if>
+        </if>
+        <if test="offset != null and limit != null">
+            OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+        </if>
+    </select>
+
+    <!-- 検索結果件数取得 -->
+    <select id="countBySearchCriteria" parameterType="com.example.dto.EmployeeSearchCriteria" 
+            resultType="int">
+        SELECT COUNT(*)
+        FROM employees e
+        <where>
+            <if test="firstName != null and firstName != ''">
+                AND UPPER(e.first_name) LIKE UPPER('%' || ${firstName} || '%')
+            </if>
+            <if test="lastName != null and lastName != ''">
+                AND UPPER(e.last_name) LIKE UPPER('%' || ${lastName} || '%')
+            </if>
+            <if test="email != null and email != ''">
+                AND UPPER(e.email) LIKE UPPER('%' || ${email} || '%')
+            </if>
+            <if test="jobIds != null and jobIds.size() > 0">
+                AND e.job_id IN
+                <foreach collection="jobIds" item="jobId" open="(" separator="," close=")">
+                    ${jobId}
+                </foreach>
+            </if>
+            <if test="minSalary != null">
+                AND e.salary >= ${minSalary}
+            </if>
+            <if test="maxSalary != null">
+                AND e.salary &lt;= ${maxSalary}
+            </if>
+            <if test="departmentId != null">
+                AND e.department_id = ${departmentId}
+            </if>
+            <if test="hireDateFrom != null">
+                AND e.hire_date >= ${hireDateFrom}
+            </if>
+            <if test="hireDateTo != null">
+                AND e.hire_date &lt;= ${hireDateTo}
+            </if>
+        </where>
+    </select>
+
+    <!-- 複雑な集計クエリ（ウィンドウ関数使用） -->
+    <select id="getEmployeeSalaryRanking" resultType="map">
+        SELECT employee_id,
+               first_name || ' ' || last_name as full_name,
+               department_id,
+               salary,
+               RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) as dept_rank,
+               RANK() OVER (ORDER BY salary DESC) as overall_rank,
+               LAG(salary, 1) OVER (PARTITION BY department_id ORDER BY salary DESC) as prev_salary,
+               LEAD(salary, 1) OVER (PARTITION BY department_id ORDER BY salary DESC) as next_salary,
+               ROUND(salary / SUM(salary) OVER (PARTITION BY department_id) * 100, 2) as salary_percentage
+        FROM employees
+        WHERE salary IS NOT NULL
+        ORDER BY department_id, salary DESC
+    </select>
+
+    <!-- Oracle固有のPIVOT操作 -->
+    <select id="getDepartmentSalaryPivot" resultType="map">
+        SELECT *
+        FROM (
+            SELECT d.department_name,
+                   e.job_id,
+                   e.salary
+            FROM employees e
+            JOIN departments d ON e.department_id = d.department_id
+        )
+        PIVOT (
+            AVG(salary)
+            FOR job_id IN ('IT_PROG' as it_programmer,
+                          'SA_MAN' as sales_manager,
+                          'AC_ACCOUNT' as accountant,
+                          'HR_REP' as hr_representative)
+        )
+        ORDER BY department_name
+    </select>
+
+</mapper>

@@ -64,3 +64,5 @@ cdk/output.json
 oracle-xe-key.pem
 agent/exec_sql/*.sql
 agent/result/*
+cdk/bin/cdk.ts
+cdk/cdk.context.json
