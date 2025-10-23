@@ -6,12 +6,12 @@ import { DmsSchemaConversion } from './constructs/dms-schema-conversion';
 import { Network } from './constructs/network';
 import { OracleDbInstance } from './constructs/oracle-db-instance';
 
-export interface SqlConverterStackProps extends StackProps {
+export interface SqlConverterAgentStackProps extends StackProps {
   initializeDmsSc: boolean; // true の場合、DMS SC のセットアップに必要なリソース作成を実施
 }
 
-export class SqlConverterStack extends Stack {
-  constructor(scope: Construct, id: string, props: SqlConverterStackProps) {
+export class SqlConverterAgentStack extends Stack {
+  constructor(scope: Construct, id: string, props: SqlConverterAgentStackProps) {
     super(scope, id, props);
 
     // Network

@@ -107,7 +107,7 @@ count, please try a different suffix.
 `cdk/bin/cdk.ts`
 
 ```typescript
-new SqlConverterStack(app, 'SqlConverterStack', {
+new SqlConverterAgentStack(app, 'SqlConverterAgentStack', {
   initializeDmsSc: false,  // ここを false に変更
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
@@ -137,7 +137,7 @@ Host oracle
 
 ```
 Host oracle
-  HostName i-0f6bfc55df38f2d1c
+  HostName i-xxxxxxxxxxxxxxxxx
   User ec2-user
   IdentityFile ~/.ssh/oracle-xe-key.pem
   ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-stack_name="SqlConverterStack"
+stack_name="SqlConverterAgentStack"
 
 cd cdk
 cdk deploy --outputs-file output.json --require-approval never

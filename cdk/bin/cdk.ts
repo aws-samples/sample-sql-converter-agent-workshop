@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { SqlConverterStack } from '../lib/sql-converter-stack';
+import { SqlConverterAgentStack } from '../lib/sql-converter-agent-stack';
 // import { AwsSolutionsChecks } from "cdk-nag";
 
 const app = new cdk.App();
 // cdk.Aspects.of(app).add(new AwsSolutionsChecks());
-new SqlConverterStack(app, 'SqlConverterStack', {
+new SqlConverterAgentStack(app, 'SqlConverterAgentStack', {
   initializeDmsSc: true,
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
