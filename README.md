@@ -47,8 +47,8 @@ pip install uv
 ### 1. CDK 依存関係のインストール
 
 ```bash
-git clone https://github.com/aws-samples/sample-ora2pg-conversion-workshop.git
-cd sample-ora2pg-conversion-workshop
+git clone https://github.com/aws-samples/sample-sql-converter-agent-workshop.git
+cd sample-sql-converter-agent-workshop
 
 # CDK依存関係のインストール
 cd cdk
@@ -107,7 +107,7 @@ count, please try a different suffix.
 `cdk/bin/cdk.ts`
 
 ```typescript
-new Ora2pgStack(app, 'Ora2pgStack', {
+new SqlConverterStack(app, 'SqlConverterStack', {
   initializeDmsSc: false,  // ここを false に変更
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,

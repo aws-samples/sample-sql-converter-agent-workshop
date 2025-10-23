@@ -1,5 +1,5 @@
 [project]
-name = "ora2pg-conversion-workshop"
+name = "sample-sql-converter-agent-workshop"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"

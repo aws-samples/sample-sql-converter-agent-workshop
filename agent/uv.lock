@@ -399,7 +399,7 @@ wheels = [
 ]
 
 [[package]]
-name = "ora2pg-conv-w-strands"
+name = "sample-sql-converter-agent-workshop"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

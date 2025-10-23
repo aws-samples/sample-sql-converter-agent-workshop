@@ -15,7 +15,7 @@ from colorama import Fore, Style, init
 # カラー出力の初期化
 init(autoreset=True)
 
-stack_name = "Ora2pgStack"
+stack_name = "SqlConverterAgentStack"
 
 
 def print_header(title):

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-stack_name="Ora2pgStack"
+stack_name="SqlConverterStack"
 
 cd cdk
 cdk deploy --outputs-file output.json --require-approval never
