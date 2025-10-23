@@ -97,7 +97,7 @@ cd ../../
 #### 参考: デプロイスクリプトがエラーとなる場合
 過去にDMSを使用したことがある場合、DMSの利用を開始するために必要なリソース作成の操作が重複することで、以下のようなエラーが出る場合があります。
 
-```bash
+```text
 Resource handler returned message: "Service role name AWSServiceRoleForDMSServerless has been taken in this ac
 count, please try a different suffix.
 ```
@@ -124,7 +124,7 @@ Oracle Instance に接続します。
 `ssh-config`
 ```
 Host oracle
-  HostName i-0f6bfc55df38f2d1c
+  HostName i-xxxxxxxxxxxxxxxxx
   User ec2-user
   IdentityFile ./cdk/oracle-xe-key.pem
   ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600
