@@ -204,11 +204,12 @@ uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERE
 cd agent
 
 # OracleのDDLをまとめて取得 
-./getDDL.sh --file object_list.ini
+./getDDL.sh object_list.ini
 
 #並び替え
-uv run main.py
+uv run main.py --system-prompt sortObject.txt
   (起動後に以下を貼り付けてください。)
+  ./result
 
   prompts/sortObject.txtに従って処理を実行してください。
 
