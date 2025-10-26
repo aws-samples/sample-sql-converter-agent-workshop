@@ -1,62 +1,61 @@
 #!/bin/bash
 
-# 実行方法:
-# cd agent
-# ./getDDL.sh <OBJECT_TYPE> <SCHEMA_NAME.OBJECT_NAME> [ORACLE_USER] [ORACLE_PASSWORD]
-# 例: ./getDDL.sh PROCEDURE MYSCHEMA.MY_PROCEDURE
-# 例: ./getDDL.sh PROCEDURE MYSCHEMA.MY_PROCEDURE username password
+# Oracle DDL一括取得スクリプト
+# 使用方法: ./batch_getDDL.sh [object_list_file]
+# デフォルトファイル: object_list.ini
 
-# 引数チェック
-if [ $# -lt 2 ] || [ $# -gt 4 ]; then
-    echo "Usage: $0 <OBJECT_TYPE> <SCHEMA_NAME.OBJECT_NAME> [ORACLE_USER] [ORACLE_PASSWORD]"
-    echo "Example: $0 PROCEDURE MYSCHEMA.MY_PROCEDURE"
-    echo "Example: $0 PROCEDURE MYSCHEMA.MY_PROCEDURE username password"
-    exit 1
-fi
+# 入力ファイルの設定（引数があれば使用、なければデフォルト）
+FILE=${1:-object_list.ini}
 
-OBJECT_TYPE=$1
-FULL_OBJECT_NAME=$2
-SCHEMA_NAME=$(echo $FULL_OBJECT_NAME | cut -d'.' -f1)
-OBJECT_NAME=$(echo $FULL_OBJECT_NAME | cut -d'.' -f2)
+# ファイル存在チェック
+[ ! -f "$FILE" ] && { echo "エラー: $FILE が見つかりません"; exit 1; }
 
-# 認証情報の取得
-if [ $# -eq 4 ]; then
-    # 引数で認証情報が提供された場合
-    ORACLE_USER=$3
-    ORACLE_PASSWORD=$4
-    echo "認証情報を引数から取得しました"
-else
-    # 引数で認証情報が提供されなかった場合、AWS Secrets Managerから取得
-    echo "AWS Secrets Manager から認証情報を取得中..."
-    SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id oracle-credentials --query SecretString --output text)
+echo "=== DDL一括取得開始 (ファイル: $FILE) ==="
 
-    if [ $? -ne 0 ]; then
-        echo "エラー: AWS Secrets Manager からの認証情報取得に失敗しました"
-        exit 1
-    fi
+# AWS Secrets Managerから認証情報を取得
+SECRET=$(aws secretsmanager get-secret-value --secret-id oracle-credentials --query SecretString --output text)
+[ $? -ne 0 ] && { echo "エラー: 認証情報取得に失敗"; exit 1; }
 
-    # JSONから認証情報を抽出
-    ORACLE_USER=$(echo $SECRET_JSON | jq -r '.username')
-    ORACLE_PASSWORD=$(echo $SECRET_JSON | jq -r '.password')
-fi
+# JSON解析でユーザー名とパスワードを抽出
+USER=$(echo $SECRET | jq -r '.username')
+PASS=$(echo $SECRET | jq -r '.password')
 
-# ローカルでresultディレクトリ作成
-mkdir -p "./result/${OBJECT_NAME}"
-
-# SSH経由でDDL取得し、直接ローカルファイルに出力
-ssh -n -F ./../ssh-config -i ./../cdk/oracle-xe-key.pem oracle "sudo su - oracle -c \"
-sqlplus -s ${ORACLE_USER}/${ORACLE_PASSWORD}@//localhost:1521/XEPDB1 <<SQL_EOF
+# オブジェクトリストを1行ずつ処理
+while read -r line; do
+    # コメント行と空行をスキップ
+    [[ "$line" =~ ^#.*$ ]] || [[ -z "$line" ]] && continue
+    
+    # オブジェクトタイプと名前を分割
+    TYPE=$(echo "$line" | awk '{print $1}')
+    NAME=$(echo "$line" | awk '{print $2}')
+    
+    # 必須項目チェック
+    [ -z "$TYPE" ] || [ -z "$NAME" ] && continue
+    
+    # スキーマ名とオブジェクト名を分離
+    SCHEMA=$(echo $NAME | cut -d'.' -f1)
+    OBJ=$(echo $NAME | cut -d'.' -f2)
+    
+    echo "処理中: $TYPE $NAME"
+    
+    # 出力ディレクトリ作成
+    mkdir -p "./result/$OBJ"
+    
+    # SSH経由でOracleに接続してDDL取得
+#    ssh -n -F ./../ssh-config -i ./../cdk/oracle-xe-key.pem oracle "sudo su - oracle -c \"
+    ssh -n -i ./../cdk/oracle-xe-key.pem oracle "sudo su - oracle -c \"
+sqlplus -s $USER/$PASS@//localhost:1521/XEPDB1 <<EOF
 SET PAGESIZE 0
 SET LINESIZE 1000
 SET LONG 10000
-SELECT DBMS_METADATA.GET_DDL('${OBJECT_TYPE}', '${OBJECT_NAME}', '${SCHEMA_NAME}') FROM DUAL;
+SELECT DBMS_METADATA.GET_DDL('$TYPE', '$OBJ', '$SCHEMA') FROM DUAL;
 EXIT;
-SQL_EOF
-\"" > "./result/${OBJECT_NAME}/oracle.sql"
+EOF
+\"" > "./result/$OBJ/oracle.sql"
+    
+    # 結果表示
+    [ $? -eq 0 ] && echo "✓ 完了: $OBJ" || echo "✗ 失敗: $OBJ"
+    
+done < "$FILE"
 
-if [ $? -eq 0 ]; then
-    echo "✓ DDL saved to ./result/${OBJECT_NAME}/oracle.sql"
-else
-    echo "✗ DDL取得に失敗しました"
-    exit 1
-fi
+echo "=== DDL一括取得完了 ==="

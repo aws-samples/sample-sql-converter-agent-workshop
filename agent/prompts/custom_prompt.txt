@@ -3,15 +3,21 @@
 また変換する際は、`instructions.txt` で与える内容に従ってください。
 
 <procedure>
-1. Oracle から該当するオブジェクトの DDL を確認する
-2. Oracle の DDL を `./result/{オブジェクト名}/oracle.sql` に保存する
-3. テストを考える
-4. 作成したテストを `./result/{オブジェクト名}/oracle_test.sql` に保存する
-5. Oracle でテストを実行して結果を確認し、`./result/{オブジェクト名}/oracle_test.txt` に保存する
-6. PostgreSQL の DDL を考えて実行する
-7. Oracle と全く同じのテストケースで PostgreSQL 用テストコードを `./result/{オブジェクト名}/postgres_test.sql` に保存する
-8. PostgreSQL でテストを実行して結果を確認し、Oracle と結果に差異がないことを確認してから `./result/{オブジェクト名}/postgres_test.txt` に保存する。失敗したら 6 と 8 を繰り返す。
-9. PostgreSQL の DDL を `./result/{オブジェクト名}/postgres.sql` に保存する
-10. 最後に変換に成功した場合は `./result/{オブジェクト名}/OK.txt` を 駄目だった場合は `./result/{オブジェクト名}/NG.txt` を保存してください。また保存するファイルの先頭に対象のオブジェクトがどういった処理を行うオブジェクトかの説明を加えてください
+
+1. 変換対象のOracle DDLを`./result/{オブジェクト名}/oracle.sql`から確認する
+2. 変換対象のOracel DDLの内部で参照されているオブジェクトがあれば、`./result/{オブジェクト名}`を確認して、`oracle.sql`や変換後の`postgres.sql`を利用する
+3. Oracle DDL をPostgreSQLに変換する際に、段階的に変換処理させるために、DDLの分割戦略を考える
+4. 分割戦略を `./result/{オブジェクト名}/conversion_plan.md` に保存する
+5. 抽出した Oracle DDL のテストを考える
+6. 作成したテストを `./result/{オブジェクト名}/oracle_test.sql` に保存する
+7. Oracle にてテストを実行し、実行した結果出力値と確認結果を併せて `./result/{オブジェクト名}/oracle_test.txt` に保存する
+8. 分割戦略に基づき、PostgreSQL の DDL を考える。
+9. Oracle と全く同じのテストケースで PostgreSQL 用テストコードを `./result/{オブジェクト名}/postgres_test.sql` に保存する
+10. PostgreSQL でテストを実行して結果を確認し、Oracle と結果に差異がないことを確認してから `./result/{オブジェクト名}/postgres_test.txt` に保存する。Oracleと結果に差異がある場合は 8 から 10 を繰り返す。
+11. PostgreSQL の DDL を `./result/{オブジェクト名}/postgres.sql` に保存する
+12. 最後に 7 と 11 にて出力された結果の値が同じだった場合は `./result/{オブジェクト名}/OK.txt` を保存する。結果が異なる場合は `./result/{オブジェクト名}/NG.txt` を保存してください。また保存するファイルの先頭に対象のオブジェクトがどういっ
+た処理を行うオブジェクトかの説明を加えてください
+
 </procedure>
+
 
