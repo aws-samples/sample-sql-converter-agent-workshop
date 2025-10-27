@@ -6,7 +6,7 @@ import { SqlConverterAgentStack } from '../lib/sql-converter-agent-stack';
 const app = new cdk.App();
 // cdk.Aspects.of(app).add(new AwsSolutionsChecks());
 new SqlConverterAgentStack(app, 'SqlConverterAgentStack', {
-  initializeDmsSc: true,
+  initializeDmsSc: false,
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_DEFAULT_REGION,
