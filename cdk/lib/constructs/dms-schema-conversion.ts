@@ -152,7 +152,7 @@ export class DmsSchemaConversion extends Construct {
       this,
       'DMSInstanceProfile',
       {
-        instanceProfileName: 'ora2pg-schema-conversion-profile-cdk',
+        instanceProfileName: 'sql-converter-schema-conversion-profile-cdk',
         description:
           'Instance profile for Oracle to PostgreSQL schema conversion (CDK managed)',
         networkType: 'IPV4',

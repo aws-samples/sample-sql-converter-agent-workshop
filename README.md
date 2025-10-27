@@ -47,8 +47,8 @@ pip install uv
 ### 1. CDK 依存関係のインストール
 
 ```bash
-git clone https://github.com/aws-samples/sample-ora2pg-conversion-workshop.git
-cd sample-ora2pg-conversion-workshop
+git clone https://github.com/aws-samples/sample-sql-converter-agent-workshop.git
+cd sample-sql-converter-agent-workshop
 
 # CDK依存関係のインストール
 cd cdk
@@ -97,7 +97,7 @@ cd ../../
 #### 参考: デプロイスクリプトがエラーとなる場合
 過去にDMSを使用したことがある場合、DMSの利用を開始するために必要なリソース作成の操作が重複することで、以下のようなエラーが出る場合があります。
 
-```bash
+```text
 Resource handler returned message: "Service role name AWSServiceRoleForDMSServerless has been taken in this ac
 count, please try a different suffix.
 ```
@@ -107,7 +107,7 @@ count, please try a different suffix.
 `cdk/bin/cdk.ts`
 
 ```typescript
-new Ora2pgStack(app, 'Ora2pgStack', {
+new SqlConverterAgentStack(app, 'SqlConverterAgentStack', {
   initializeDmsSc: false,  // ここを false に変更
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
@@ -124,7 +124,7 @@ Oracle Instance に接続します。
 `ssh-config`
 ```
 Host oracle
-  HostName i-0f6bfc55df38f2d1c
+  HostName i-xxxxxxxxxxxxxxxxx
   User ec2-user
   IdentityFile ./cdk/oracle-xe-key.pem
   ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600
@@ -137,7 +137,7 @@ Host oracle
 
 ```
 Host oracle
-  HostName i-0f6bfc55df38f2d1c
+  HostName i-xxxxxxxxxxxxxxxxx
   User ec2-user
   IdentityFile ~/.ssh/oracle-xe-key.pem
   ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600
@@ -150,7 +150,8 @@ Host oracle
 別タブで新しいターミナルを開き、`ssh -F ssh-config oracle` を実行して接続できることを確認してください。
 
 
-デプロイ完了後、以下のコマンドで接続テストを実行できます
+デプロイ完了後、以下のコマンドで接続テストを実行できます。
+データベースにクエリを投げられるようになるまで、少し時間がかかる場合があるので、エラーが発生した場合はリトライしてみてください。
 
 ```bash
 # Oracle Database接続テスト
