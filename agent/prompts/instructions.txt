@@ -14,16 +14,28 @@
   • すべての内部関数を別個の独立した関数として定義します
   • メインの手続きから呼び出す構造に変更します
 
-### テスト考慮事項
+## テスト考慮事項
 • Oracle環境、PostgreSQL環境に変換対象のオブジェクトが参照するテーブルや索引があるか確認します
 • 存在する場合は新たにDDLを作成するのではなく、それら表や索引といったオブジェクトを利用します。またそれらオブジェクトはDROPしないようにします
 
-### データ型・関数マッピング
+## データ型・関数マッピング
 • **データ型変換**：VARCHAR2 → VARCHAR
 • **関数変換**：
   • NVL → COALESCE
   • DECODE → CASE
-  • SYSDATE → CURRENT_TIMESTAMP
+  • Sysdateの扱い
+     Oracle側でSYSDATEを利用している場合は、PostgreSQL側で以下の関数を作成し、この関数を利用することを前提に変換してください。
+
+     ```sql
+        CREATE OR REPLACE FUNCTION PUBLIC.sysdate()
+        RETURNS TIMESTAMP WITHOUT TIME ZONE
+        AS
+        $BODY$
+            SELECT clock_timestamp() AT TIME ZONE 'Asia/Tokyo';
+        $BODY$
+        LANGUAGE sql;
+     ```
+       ref. https://aws.amazon.com/jp/blogs/news/converting-the-sysdate-function-from-oracle-to-postgresql/
 
 ## データ型変換
 - OracleのRECORD型またはTYPE宣言の場合：
