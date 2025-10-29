@@ -166,7 +166,14 @@ uv run pg_connect_test.py
 以下の手順に従って、データベースオブジェクトをアップロードしてください。
 1. `./import-schema/dumpfile` に `{name}_METADATAONLY.DMP` をアップロードしてください。
 2. `import-schema` フォルダ配下の各シェルスクリプトについて、コメントの指示に従い、スキーマ名でループしている箇所に、アップロードしたファイルのスキーマ名を列挙してください。
-3. `import-schema` フォルダ配下のシェルスクリプトを番号順に実行してください。権限不足でエラーが出る場合には `chmod +x import-schema/1pre.sh` のように権限付与してください。
+3. `import-schema` フォルダ配下のシェルスクリプトを番号順に実行してください。
+
+```bash
+chmod +x import-schema/1pre.sh
+./import-schema/1pre.sh
+chmod +x import-schema/2load.sh
+./import-schema/2load.sh
+```
 
 `2load.sh` で以下のエラーが出る場合は、Oracle on EC2 インスタンスに oracle ユーザーでログインし、パスが一致するようにディレクトリを作成し、ダンプファイルを移動してください。
 
@@ -251,5 +258,27 @@ https://docs.aws.amazon.com/ja_jp/amazonq/latest/qdeveloper-ug/command-line-inst
 
 セットアップ方法（認証設定から「CLI」タブを選択）
 https://catalog.workshops.aws/qwords/ja-JP/10-start-workshop/16-builder-id
+
+
+###　Oracle Database への接続方法
+
+```bash
+# Oracle XE on EC2 インスタンスへの接続 
+cd sample-sql-converter-agent-workshop/
+ssh -F ssh-config oracle
+
+# Oracle ユーザーに遷移
+sudo su - oracle
+
+# Oracle Database の SYSおよびSYSTEMスキーマのパスワードを取得
+SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id oracle-credentials --region us-east-1 --query SecretString --output text)
+DB_PASSWORD=$(echo "$SECRET_JSON" | jq -r '.password')
+
+# Oracle Database に接続
+sqlplus sys/${DB_PASSWORD}@localhost/XEPDB1 as sysdba
+
+sqlplus system/${DB_PASSWORD}@localhost/XEPDB1 
+
+```
 
 

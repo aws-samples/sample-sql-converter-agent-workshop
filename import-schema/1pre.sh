@@ -2,12 +2,6 @@
 
 set -e
 
-# Oracle IPアドレスを環境変数から取得
-# if [ -z "$ORACLE_IP" ]; then
-#   echo "Error: ORACLE_IP environment variable is not set"
-#   exit 1
-# fi
-
 # Oracle DatabaseのパスワードをSecret Manager から取得
 SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id oracle-credentials --region us-east-1 --query SecretString --output text)
 export DB_PASSWORD=$(echo "$SECRET_JSON" | jq -r '.password')
@@ -45,7 +39,7 @@ EOF
 done
 
 # ローカルのダンプファイルをOracle on EC2 インスタンスの/tmpにコピー
-scp -F ssh-config ./load/dumpfile/*.DMP oracle:/tmp/.
+scp -F ssh-config ./import-schema/dumpfile/*.DMP oracle:/tmp/.
 
 # Oracle on EC2 インスタンスにダンプファイル用ディレクトリを作成
 ssh -tt -F ssh-config oracle << EOF
