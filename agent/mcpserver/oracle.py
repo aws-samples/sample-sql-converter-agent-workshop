@@ -105,7 +105,7 @@ def execute_query(sql):
         if connection:
             connection.close()
 
-def run_ora_sql(sql):
+def oracle_execute(sql):
     """
     Execute SQL query on Oracle database.
 

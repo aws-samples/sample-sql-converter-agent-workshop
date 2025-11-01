@@ -81,7 +81,7 @@ def execute_query(credentials, sql):
         logger.error(f"Failed to execute query: {str(e)}", exc_info=True)
         raise Exception(str(e))
 
-def run_pg_sql(sql):
+def postgres_execute(sql):
     """
     Execute Query on the Aurora PostgreSQL database using Boto3 RDS Data API.
 

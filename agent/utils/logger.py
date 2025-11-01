@@ -10,6 +10,9 @@ import logging.config
 from datetime import datetime
 from pathlib import Path
 
+# グローバル変数でログファイルパスを管理
+_log_file_path = None
+
 
 def setup_logger(name, log_dir="logs", log_level=logging.INFO):
     """
@@ -23,13 +26,16 @@ def setup_logger(name, log_dir="logs", log_level=logging.INFO):
     Returns:
         logging.Logger: 設定済みのロガーインスタンス
     """
+    global _log_file_path
+    
     # ログディレクトリの作成（pathlibを使用）
     log_path = Path(log_dir)
     log_path.mkdir(parents=True, exist_ok=True)
 
-    # タイムスタンプベースのログファイル名を生成
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_file = log_path / f"{timestamp}.log"
+    # 初回のみタイムスタンプベースのログファイル名を生成
+    if _log_file_path is None:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        _log_file_path = log_path / f"{timestamp}.log"
 
     # logging.configを使用した設定
     config = {
@@ -44,7 +50,7 @@ def setup_logger(name, log_dir="logs", log_level=logging.INFO):
         "handlers": {
             "file": {
                 "class": "logging.FileHandler",
-                "filename": str(log_file),
+                "filename": str(_log_file_path),
                 "formatter": "detailed",
                 "level": "DEBUG",
                 "encoding": "utf-8",

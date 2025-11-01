@@ -1,7 +1,7 @@
 from mcp.server.fastmcp import FastMCP
-from oracle import run_ora_sql
-from postgres import run_pg_sql
-from shell import run_shell
+from oracle import oracle_execute
+from postgres import postgres_execute
+from shell import shell_execute
 try:
     from utils.logger import setup_logger
 except ImportError:
@@ -26,7 +26,7 @@ def run_ora_sql(sql):
     Returns:
         list: Query execution results from the Oracle database.
     """
-    return run_ora_sql(sql)
+    return oracle_execute(sql)
 
 @mcp.tool()
 def run_postgres_sql(sql):
@@ -39,7 +39,7 @@ def run_postgres_sql(sql):
     Returns:
         dict: Query execution results from the PostgreSQL database.
     """
-    return run_pg_sql(sql)
+    return postgres_execute(sql)
 
 @mcp.tool()
 def shell(command):
@@ -52,7 +52,7 @@ def shell(command):
     Returns:
         str: Command output
     """
-    return run_shell(command)
+    return shell_execute(command)
 
 if __name__ == "__main__":
     mcp.run(transport="stdio")

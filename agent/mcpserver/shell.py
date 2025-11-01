@@ -7,7 +7,7 @@ from utils.logger import setup_logger
 
 logger = setup_logger("shell")
 
-def run_shell(command):
+def shell_execute(command):
     """
     Execute shell command.
 
