@@ -83,13 +83,7 @@ async def get_mcp_tools_async():
 
 def get_mcp_tools():
     """MCP ツールを同期的に取得"""
-    try:
-        return asyncio.run(get_mcp_tools_async())
-    except Exception as e:
-        logger.warning(f"MCP ツール取得に失敗、フォールバック: {e}")
-        # フォールバック: 既存ツールを使用
-        from tools import run_ora_sql, run_pg_sql, shell
-        return [run_pg_sql, run_ora_sql, shell]
+    return asyncio.run(get_mcp_tools_async())
 
 
 def create_agent(system_prompt_file="./system_prompt.txt"):
