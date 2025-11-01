@@ -182,17 +182,19 @@ uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERE
 # 使い方 3 ) まとめて実行する場合
 ./run.sh
 
-# オプション: --system-prompt (カスタムシステムプロンプト)
-# ./prompts/ ディレクトリ内のカスタムプロンプトファイルを指定します
-uv run main.py --system-prompt "custom_prompt.txt"
+# run.sh のオプション一覧
+# --system-prompt <ファイル名>: カスタムシステムプロンプトファイルを指定
+# -f, --file <ファイル名>: 処理対象のオブジェクトリストファイルを指定（デフォルト: object_list.ini）
+# --avoid-throttling: Bedrockのトークン制限エラー時に自動リトライを有効化
 
-# オプション: --avoid-throttling (スロットリング対策)
-# Bedrockのトークン制限エラー時に自動リトライを有効にします
-uv run main.py --prompt "..." --avoid-throttling
-
-# run.shでもオプションを使用可能
+# 使用例:
+./run.sh --system-prompt custom_prompt.txt
+./run.sh -f custom_object_list.ini
 ./run.sh --avoid-throttling
-./run.sh --system-prompt custom_prompt.txt --avoid-throttling
+./run.sh --system-prompt custom_prompt.txt --file custom_list.ini --avoid-throttling
+
+# 全てのオブジェクトを一括処理する場合:
+./run.sh -f object_list_all.ini --avoid-throttling
 
 ```
 
