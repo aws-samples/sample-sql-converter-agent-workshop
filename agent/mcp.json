@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "sql-converter": {
+      "command": "uv",
+      "args": ["run", "mcpserver/server.py"],
+      "env": {}
+    }
+  }
+}

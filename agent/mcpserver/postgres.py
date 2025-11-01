@@ -1,23 +1,17 @@
 import json
 import os
 import sys
-
 import boto3
-from strands import tool
 
-# プロジェクトルートをパスに追加（直接実行時のため）
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from utils.logger import setup_logger
 
-# ロガーの設定
 logger = setup_logger("postgres")
 
 # AWS アカウント情報
 sts = boto3.client("sts")
 account_id = sts.get_caller_identity()["Account"]
 region = sts.meta.region_name
-
 
 def get_db_credentials():
     """
@@ -50,7 +44,6 @@ def get_db_credentials():
     except Exception as e:
         logger.error(f"Failed to get credentials: {str(e)}", exc_info=True)
         raise Exception(f"Failed to get credentials: {str(e)}")
-
 
 def execute_query(credentials, sql):
     """
@@ -88,8 +81,6 @@ def execute_query(credentials, sql):
         logger.error(f"Failed to execute query: {str(e)}", exc_info=True)
         raise Exception(str(e))
 
-
-@tool
 def run_pg_sql(sql):
     """
     Execute Query on the Aurora PostgreSQL database using Boto3 RDS Data API.
@@ -116,8 +107,3 @@ def run_pg_sql(sql):
     except Exception as e:
         logger.error(f"SQL execution failed: {str(e)}", exc_info=True)
         raise Exception(str(e))
-
-
-if __name__ == "__main__":
-    result = run_pg_sql("SELECT NOW()")
-    print(result)

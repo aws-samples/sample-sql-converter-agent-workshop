@@ -1,23 +1,14 @@
-from strands import tool
-
-try:
-    from utils.logger import setup_logger
-except ImportError:
-    import os
-    import sys
-
-    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from utils.logger import setup_logger
 import json
-import os
-
 import boto3
 import oracledb
+import os
+import sys
 
-# ロガーの設定
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils.logger import setup_logger
+
 logger = setup_logger("oracle")
 secret_manager = boto3.client("secretsmanager")
-
 
 def get_db_credentials():
     """
@@ -42,7 +33,6 @@ def get_db_credentials():
         "password": password,
         "dsn": dsn,
     }
-
 
 def execute_query(sql):
     """
@@ -115,8 +105,6 @@ def execute_query(sql):
         if connection:
             connection.close()
 
-
-@tool
 def run_ora_sql(sql):
     """
     Execute SQL query on Oracle database.
@@ -131,7 +119,3 @@ def run_ora_sql(sql):
     response = execute_query(sql)
     logger.info("Query completed")
     return response
-
-
-if __name__ == "__main__":
-    run_ora_sql("select sysdate from dual")

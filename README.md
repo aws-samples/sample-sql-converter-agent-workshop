@@ -94,27 +94,7 @@ cd ../../
 2. EC2 キーペアの取得と SSH 設定
 3. Oracle XE の自動インストール
 
-#### 参考: デプロイスクリプトがエラーとなる場合
-過去にDMSを使用したことがある場合、DMSの利用を開始するために必要なリソース作成の操作が重複することで、以下のようなエラーが出る場合があります。
-
-```text
-Resource handler returned message: "Service role name AWSServiceRoleForDMSServerless has been taken in this ac
-count, please try a different suffix.
-```
-
-このエラーが出た場合は、 `cdk/bin/cdk.ts` において、`initializeDmsSc = false` と設定して再度デプロイスクリプトを実行してください。
-
-`cdk/bin/cdk.ts`
-
-```typescript
-new SqlConverterAgentStack(app, 'SqlConverterAgentStack', {
-  initializeDmsSc: false,  // ここを false に変更
-  env: {
-    account: process.env.CDK_DEFAULT_ACCOUNT,
-    region: process.env.CDK_DEFAULT_REGION,
-  },
-});
-```
+> **Note**: このデプロイスクリプトは、DMS（Database Migration Service）の利用履歴に関係なく、任意のAWSアカウントで動作するように設計されています。必要なDMSロールは自動的に作成され、既存のロールがある場合はそれを利用します。
 
 ### 4. 接続確認
 
@@ -201,6 +181,20 @@ uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERE
 
 # 使い方 3 ) まとめて実行する場合
 ./run.sh
+
+# run.sh のオプション一覧
+# --system-prompt <ファイル名>: カスタムシステムプロンプトファイルを指定
+# -f, --file <ファイル名>: 処理対象のオブジェクトリストファイルを指定（デフォルト: object_list.ini）
+# --avoid-throttling: Bedrockのトークン制限エラー時に自動リトライを有効化
+
+# 使用例:
+./run.sh --system-prompt custom_prompt.txt
+./run.sh -f custom_object_list.ini
+./run.sh --avoid-throttling
+./run.sh --system-prompt custom_prompt.txt --file custom_list.ini --avoid-throttling
+
+# 全てのオブジェクトを一括処理する場合:
+./run.sh -f object_list_all.ini --avoid-throttling
 
 ```
 

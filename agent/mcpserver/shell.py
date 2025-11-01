@@ -1,22 +1,13 @@
 import os
 import subprocess
+import sys
 
-from strands import tool
-
-try:
-    from utils.logger import setup_logger
-except ImportError:
-    import os
-    import sys
-
-    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from utils.logger import setup_logger
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils.logger import setup_logger
 
 logger = setup_logger("shell")
 
-
-@tool
-def shell(command):
+def run_shell(command):
     """
     Execute shell command.
 
