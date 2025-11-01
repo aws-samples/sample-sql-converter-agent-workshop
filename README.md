@@ -94,27 +94,7 @@ cd ../../
 2. EC2 キーペアの取得と SSH 設定
 3. Oracle XE の自動インストール
 
-#### 参考: デプロイスクリプトがエラーとなる場合
-過去にDMSを使用したことがある場合、DMSの利用を開始するために必要なリソース作成の操作が重複することで、以下のようなエラーが出る場合があります。
-
-```text
-Resource handler returned message: "Service role name AWSServiceRoleForDMSServerless has been taken in this ac
-count, please try a different suffix.
-```
-
-このエラーが出た場合は、 `cdk/bin/cdk.ts` において、`initializeDmsSc = false` と設定して再度デプロイスクリプトを実行してください。
-
-`cdk/bin/cdk.ts`
-
-```typescript
-new SqlConverterAgentStack(app, 'SqlConverterAgentStack', {
-  initializeDmsSc: false,  // ここを false に変更
-  env: {
-    account: process.env.CDK_DEFAULT_ACCOUNT,
-    region: process.env.CDK_DEFAULT_REGION,
-  },
-});
-```
+> **Note**: このデプロイスクリプトは、DMS（Database Migration Service）の利用履歴に関係なく、任意のAWSアカウントで動作するように設計されています。必要なDMSロールは自動的に作成され、既存のロールがある場合はそれを利用します。
 
 ### 4. 接続確認
 

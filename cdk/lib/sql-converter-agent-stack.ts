@@ -6,12 +6,8 @@ import { DmsSchemaConversion } from './constructs/dms-schema-conversion';
 import { Network } from './constructs/network';
 import { OracleDbInstance } from './constructs/oracle-db-instance';
 
-export interface SqlConverterAgentStackProps extends StackProps {
-  initializeDmsSc: boolean; // true の場合、DMS SC のセットアップに必要なリソース作成を実施
-}
-
 export class SqlConverterAgentStack extends Stack {
-  constructor(scope: Construct, id: string, props: SqlConverterAgentStackProps) {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     // Network
@@ -28,6 +24,13 @@ export class SqlConverterAgentStack extends Stack {
       vpc: network.vpc,
     });
 
+    // DMS Initialization
+    const dmsInitialization = new DmsInitialization(
+      this,
+      'DmsInitialization',
+      {}
+    );
+
     // DMS SC
     const dmsSc = new DmsSchemaConversion(this, 'DmsSchemaConversion', {
       vpc: network.vpc,
@@ -38,15 +41,8 @@ export class SqlConverterAgentStack extends Stack {
       oracleInstance: oracleDb.oracleInstance,
     });
 
-    // DMS SC Initialization (if necessary)
-    if (props.initializeDmsSc) {
-      const dmsInitialization = new DmsInitialization(
-        this,
-        'DmsInitialization',
-        {}
-      );
-      dmsSc.node.addDependency(dmsInitialization);
-    }
+    // Ensure DMS initialization is completed before DMS Schema Conversion
+    dmsSc.node.addDependency(dmsInitialization);
 
     // Outputs
     // Output the S3 Bucket Name
