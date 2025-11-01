@@ -1,15 +1,19 @@
 import argparse
+import asyncio
 import gc
+import json
 import logging
 import os
+import subprocess
 from pathlib import Path
 from time import sleep
 
 from botocore.config import Config
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
 from strands import Agent
 from strands.models import BedrockModel
 from strands_tools import file_read, file_write
-from tools import run_ora_sql, run_pg_sql, shell
 from utils.callbacks import AgentCallbackHandler
 from utils.logger import setup_logger
 
@@ -17,15 +21,92 @@ logger = setup_logger("app", log_level=logging.INFO)
 os.environ["BYPASS_TOOL_CONSENT"] = "true"
 
 
+def load_mcp_config():
+    """mcp.json を読み込む"""
+    with open("mcp.json", "r") as f:
+        return json.load(f)
+
+
+async def get_mcp_tools_async():
+    """MCP サーバーからツールを取得"""
+    config = load_mcp_config()
+    server_config = config["mcpServers"]["sql-converter"]
+    
+    server_params = StdioServerParameters(
+        command=server_config["command"],
+        args=server_config["args"],
+        env=server_config.get("env", {})
+    )
+    
+    async with stdio_client(server_params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            
+            # ツール一覧を取得
+            tools_result = await session.list_tools()
+            
+            # MCP ツールをstrands用の関数に変換
+            mcp_tools = []
+            
+            for tool in tools_result.tools:
+                def create_tool_func(tool_name, tool_description):
+                    def tool_func(*args, **kwargs):
+                        # 引数を適切に処理
+                        if args and not kwargs:
+                            # 位置引数の場合、スキーマから推測
+                            if tool_name == "run_ora_sql" and len(args) == 1:
+                                kwargs = {"sql": args[0]}
+                            elif tool_name == "run_postgres_sql" and len(args) == 1:
+                                kwargs = {"sql": args[0]}
+                            elif tool_name == "shell" and len(args) == 1:
+                                kwargs = {"command": args[0]}
+                        
+                        # 同期的にMCPツールを呼び出し
+                        async def call_mcp():
+                            async with stdio_client(server_params) as (read, write):
+                                async with ClientSession(read, write) as session:
+                                    await session.initialize()
+                                    result = await session.call_tool(tool_name, kwargs)
+                                    return result.content[0].text if result.content else ""
+                        
+                        return asyncio.run(call_mcp())
+                    
+                    # strandsが認識できるように属性を設定
+                    tool_func.__name__ = tool_name
+                    tool_func.__doc__ = tool_description
+                    return tool_func
+                
+                mcp_tools.append(create_tool_func(tool.name, tool.description))
+            
+            return mcp_tools
+
+
+def get_mcp_tools():
+    """MCP ツールを同期的に取得"""
+    try:
+        return asyncio.run(get_mcp_tools_async())
+    except Exception as e:
+        logger.warning(f"MCP ツール取得に失敗、フォールバック: {e}")
+        # フォールバック: 既存ツールを使用
+        from tools import run_ora_sql, run_pg_sql, shell
+        return [run_pg_sql, run_ora_sql, shell]
+
+
 def create_agent(system_prompt_file="./system_prompt.txt"):
     prompt_dir = Path(__file__).parent / "prompts"
     with open(prompt_dir / system_prompt_file, "rt") as f:
         system_prompt = f.read()
 
+    # MCP ツールを取得
+    mcp_tools = get_mcp_tools()
+    
+    # file_read, file_writeを追加
+    all_tools = [file_read, file_write] + mcp_tools
+
     # エージェントの初期化
     return Agent(
         system_prompt=system_prompt,
-        tools=[run_pg_sql, run_ora_sql, file_read, file_write, shell],
+        tools=all_tools,
         callback_handler=AgentCallbackHandler(),
         model=BedrockModel(
             model_id="us.anthropic.claude-sonnet-4-20250514-v1:0",

@@ -182,6 +182,18 @@ uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERE
 # 使い方 3 ) まとめて実行する場合
 ./run.sh
 
+# オプション: --system-prompt (カスタムシステムプロンプト)
+# ./prompts/ ディレクトリ内のカスタムプロンプトファイルを指定します
+uv run main.py --system-prompt "custom_prompt.txt"
+
+# オプション: --avoid-throttling (スロットリング対策)
+# Bedrockのトークン制限エラー時に自動リトライを有効にします
+uv run main.py --prompt "..." --avoid-throttling
+
+# run.shでもオプションを使用可能
+./run.sh --avoid-throttling
+./run.sh --system-prompt custom_prompt.txt --avoid-throttling
+
 ```
 
 ### 5. カスタム利用例
