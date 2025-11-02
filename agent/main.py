@@ -17,7 +17,7 @@ from utils.callbacks import AgentCallbackHandler
 from utils.logger import setup_application_logging
 
 # アプリケーション開始時に統合ログ設定
-logger = setup_application_logging(log_level=logging.DEBUG)
+logger = setup_application_logging(log_level=logging.INFO)
 
 os.environ["BYPASS_TOOL_CONSENT"] = "true"
 
@@ -138,12 +138,14 @@ def main():
 
     if args.prompt:
         user_input = args.prompt
+        logger.info(f"User prompt: {user_input}")
         mcp_client, agent = create_agent(args.system_prompt)
         if args.avoid_throttling:
             response = resumable_agent_run(mcp_client, agent, user_input)
         else:
             with mcp_client:
                 response = agent(user_input)
+        logger.info(f"AI response: {str(response)}")
         print(f"\n回答: {response}\n")
 
     else:
@@ -167,16 +169,13 @@ def main():
                         print("質問を入力してください。")
                         continue
 
-                    logger.info(f"Processing request: {user_input}")
-
-                    logger.info("処理中...")
+                    logger.info(f"User input: {user_input}")
 
                     response = agent(user_input)
 
+                    logger.info(f"AI response: {response}")
                     print(f"\n回答: {response}\n")
                     print("-" * 50)
-
-                    logger.info("Request processed successfully")
 
                 except KeyboardInterrupt:
                     logger.info("\n\nエージェントを終了します。")

@@ -29,6 +29,10 @@ def setup_application_logging(log_dir="logs", log_level=logging.DEBUG):
         force=True
     )
     
+    # 外部ライブラリのログレベルを調整
+    logging.getLogger("botocore").setLevel(logging.WARNING)
+    logging.getLogger("strands.telemetry.metrics").setLevel(logging.WARNING)
+    
     # Strandsロガーの設定（推奨パターン）
     logging.getLogger("strands").setLevel(log_level)
     
