@@ -16,14 +16,12 @@ from strands_tools import file_read, file_write
 from utils.callbacks import AgentCallbackHandler
 from utils.logger import setup_application_logging
 
-# アプリケーション開始時に統合ログ設定
 logger = setup_application_logging(log_level=logging.INFO)
-
 os.environ["BYPASS_TOOL_CONSENT"] = "true"
 
 
 def load_mcp_config():
-    """mcp.json を読み込む"""
+    """MCP設定ファイルを読み込み"""
     with open("mcp.json", "r") as f:
         return json.load(f)
 
@@ -45,28 +43,23 @@ def create_mcp_client():
 
 
 def create_agent(system_prompt_file="./system_prompt.txt"):
+    """エージェントとMCPクライアントを初期化"""
     prompt_dir = Path(__file__).parent / "prompts"
     with open(prompt_dir / system_prompt_file, "rt") as f:
         system_prompt = f.read()
 
-    # MCP クライアントを作成
     mcp_client = create_mcp_client()
     
-    # MCPクライアントのコンテキスト内でツールを取得
     with mcp_client:
         mcp_tools = mcp_client.list_tools_sync()
-        
-        # file_read, file_writeを追加
         all_tools = [file_read, file_write] + mcp_tools
 
-        # エージェントの初期化
         agent = Agent(
             system_prompt=system_prompt,
             tools=all_tools,
             callback_handler=AgentCallbackHandler(),
             model=BedrockModel(
                 model_id="us.anthropic.claude-sonnet-4-20250514-v1:0",
-                # model_id="anthropic.claude-sonnet-4-20250514-v1:0",
                 region_name="us-east-1",
                 temperature=0,
                 top_p=0,
@@ -84,6 +77,7 @@ def create_agent(system_prompt_file="./system_prompt.txt"):
 
 
 def resumable_agent_run(mcp_client: MCPClient, agent: Agent, prompt: str, max_retry: int = 1000) -> Agent:
+    """エラー時の再試行機能付きエージェント実行"""
     last_user_content = prompt
 
     with mcp_client:
@@ -94,7 +88,6 @@ def resumable_agent_run(mcp_client: MCPClient, agent: Agent, prompt: str, max_re
             except Exception as e:
                 logger.error(f"エラーが発生しました (試行 {i + 1}/{max_retry}): {e}")
                 
-                # メッセージリストが空でないことを確認
                 if not agent.messages:
                     logger.warning("メッセージリストが空です。初期プロンプトで再試行します。")
                     last_user_content = prompt
@@ -102,6 +95,7 @@ def resumable_agent_run(mcp_client: MCPClient, agent: Agent, prompt: str, max_re
                     sleep(60)
                     continue
                 
+                # メッセージ履歴を調整して再試行
                 for _ in range(2):
                     if len(agent.messages) == 0:
                         break
@@ -149,14 +143,13 @@ def main():
         print(f"\n回答: {response}\n")
 
     else:
-        # エージェントを一度だけ作成して会話を継続
+        # 対話モード
         mcp_client, agent = create_agent(args.system_prompt)
 
         with mcp_client:
             while True:
                 try:
                     user_input = input("質問を入力してください: ").strip()
-                    # ターミナル制御文字を除去
                     user_input = "".join(
                         char for char in user_input if ord(char) >= 32 or char in "\t\n\r"
                     )
@@ -170,9 +163,7 @@ def main():
                         continue
 
                     logger.info(f"User input: {user_input}")
-
                     response = agent(user_input)
-
                     logger.info(f"AI response: {response}")
                     print(f"\n回答: {response}\n")
                     print("-" * 50)
@@ -182,10 +173,7 @@ def main():
                     break
                 except Exception as e:
                     logger.error(f"Error processing request: {str(e)}", exc_info=True)
-                    logger.debug(f"Exception type: {type(e).__name__}")
-                    logger.debug(f"Exception args: {e.args}")
                     
-                    # Throttling例外の詳細情報
                     if "ThrottlingException" in str(e):
                         logger.error("Bedrock throttling detected - API rate limit exceeded")
                         logger.debug("Consider using --avoid-throttling option or waiting before retry")

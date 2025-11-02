@@ -1,6 +1,4 @@
-"""
-統合ログ設定モジュール - Strandsベストプラクティス準拠
-"""
+"""統合ログ設定モジュール - Strandsベストプラクティス準拠"""
 
 import logging
 from datetime import datetime
@@ -9,11 +7,9 @@ from pathlib import Path
 def setup_application_logging(log_dir="logs", log_level=logging.DEBUG):
     """アプリケーション全体のログ設定を一度だけ実行"""
     
-    # ログディレクトリ作成
     log_path = Path(log_dir)
     log_path.mkdir(parents=True, exist_ok=True)
     
-    # 単一ログファイル
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_file = log_path / f"{timestamp}.log"
     
@@ -32,8 +28,6 @@ def setup_application_logging(log_dir="logs", log_level=logging.DEBUG):
     # 外部ライブラリのログレベルを調整
     logging.getLogger("botocore").setLevel(logging.WARNING)
     logging.getLogger("strands.telemetry.metrics").setLevel(logging.WARNING)
-    
-    # Strandsロガーの設定（推奨パターン）
     logging.getLogger("strands").setLevel(log_level)
     
     return logging.getLogger("app")

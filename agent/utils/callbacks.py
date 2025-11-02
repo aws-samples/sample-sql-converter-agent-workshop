@@ -1,5 +1,4 @@
 from time import sleep
-
 from utils.logger import get_logger
 
 logger = get_logger("callback_handler")
@@ -24,7 +23,6 @@ class AgentCallbackHandler:
                         logger.info(f"Quota recovery sleep: {sleep_time} seconds")
                         sleep(sleep_time)
         elif "message" in kwargs:
-            # ツール結果やメッセージをログに記録
             message = kwargs["message"]
             if message.get("role") == "user":
                 for content in message.get("content", []):
@@ -36,7 +34,7 @@ class AgentCallbackHandler:
                         if result_content:
                             for result_item in result_content:
                                 if 'text' in result_item:
-                                    logger.info(f"Tool result content: {result_item['text'][:500]}...")  # 最初の500文字のみ
+                                    logger.info(f"Tool result content: {result_item['text']}")
             elif message.get("role") == "assistant":
                 for content in message.get("content", []):
                     if "toolUse" in content:
