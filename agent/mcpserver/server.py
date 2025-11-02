@@ -1,7 +1,7 @@
 from mcp.server.fastmcp import FastMCP
 from oracle import oracle_execute
 from postgres import postgres_execute
-from shell import shell_execute
+from shell import mkdir_p
 try:
     from utils.logger import get_logger
 except ImportError:
@@ -42,17 +42,17 @@ def run_postgres_sql(sql):
     return postgres_execute(sql)
 
 @mcp.tool()
-def shell(command):
+def create_directory(path):
     """
-    Execute shell command.
+    Create directory and all parent directories if they don't exist (mkdir -p equivalent).
 
     Args:
-        command (str): Shell command to execute
+        path (str): Directory path to create
 
     Returns:
-        str: Command output
+        str: Success or error message
     """
-    return shell_execute(command)
+    return mkdir_p(path)
 
 if __name__ == "__main__":
     mcp.run(transport="stdio")

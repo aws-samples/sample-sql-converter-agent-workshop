@@ -1,5 +1,4 @@
 import os
-import subprocess
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -7,38 +6,20 @@ from utils.logger import get_logger
 
 logger = get_logger("shell")
 
-def shell_execute(command):
+def mkdir_p(path):
     """
-    Execute shell command.
+    Create directory and all parent directories if they don't exist (mkdir -p equivalent).
 
     Args:
-        command (str): Shell command to execute
+        path (str): Directory path to create
 
     Returns:
-        str: Command output
+        str: Success or error message
     """
-    logger.info(f"Executing: {command}")
+    logger.info(f"Creating directory: {path}")
     try:
-        result = subprocess.run(
-            command,
-            shell=True,
-            capture_output=True,
-            text=True,
-            timeout=30,
-            cwd=os.getcwd(),
-        )
-
-        output = ""
-        if result.stdout:
-            output += result.stdout
-        if result.stderr:
-            output += result.stderr
-
-        return output
-
-    except subprocess.TimeoutExpired:
-        logger.error(f"Command timed out: {command}")
-        return f"Command timed out after 30 seconds: {command}"
+        os.makedirs(path, exist_ok=True)
+        return f"Directory created successfully: {path}"
     except Exception as e:
-        logger.error(f"Error executing command: {e}")
-        return f"Error executing command: {e}"
+        logger.error(f"Error creating directory: {e}")
+        return f"Error creating directory: {e}"

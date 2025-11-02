@@ -1,6 +1,7 @@
 # Oracle to PostgreSQL Migration with Strands AI Agent
 
-このプロジェクトは、Oracle Database から Amazon Aurora PostgreSQL へのデータベース移行を支援するサンプル AI エージェントシステムです。  
+このプロジェクトは、AI エージェントを用いて、異種 DB 間で SQL を変換するワークショップです。  
+題材として Oracle Database から Amazon Aurora PostgreSQL への SQL 変換を行います。  
 AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できない Database Object を対象に Strands Agents を活用してデータベース分析と移行作業を軽減します。
 
 > [!NOTE]
