@@ -3,9 +3,9 @@ import subprocess
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from utils.logger import setup_logger
+from utils.logger import get_logger
 
-logger = setup_logger("shell")
+logger = get_logger("shell")
 
 def shell_execute(command):
     """

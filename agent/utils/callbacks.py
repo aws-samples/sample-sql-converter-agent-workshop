@@ -1,8 +1,8 @@
 from time import sleep
 
-from utils.logger import setup_logger
+from utils.logger import get_logger
 
-logger = setup_logger("callback_handler")
+logger = get_logger("callback_handler")
 
 
 class AgentCallbackHandler:

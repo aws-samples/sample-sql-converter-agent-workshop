@@ -5,9 +5,9 @@ import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from utils.logger import setup_logger
+from utils.logger import get_logger
 
-logger = setup_logger("oracle")
+logger = get_logger("oracle")
 secret_manager = boto3.client("secretsmanager")
 
 def get_db_credentials():

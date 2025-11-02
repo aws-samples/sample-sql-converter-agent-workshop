@@ -14,14 +14,11 @@ from strands.models import BedrockModel
 from strands.tools.mcp import MCPClient
 from strands_tools import file_read, file_write
 from utils.callbacks import AgentCallbackHandler
-from utils.logger import setup_logger
+from utils.logger import setup_application_logging
 
-logger = setup_logger("app", log_level=logging.DEBUG)
+# アプリケーション開始時に統合ログ設定
+logger = setup_application_logging(log_level=logging.DEBUG)
 
-# Strandsとbotocoreの詳細ログを有効化
-logging.getLogger("strands").setLevel(logging.DEBUG)
-logging.getLogger("botocore").setLevel(logging.DEBUG)
-logging.getLogger("boto3").setLevel(logging.DEBUG)
 os.environ["BYPASS_TOOL_CONSENT"] = "true"
 
 
@@ -96,7 +93,18 @@ def resumable_agent_run(mcp_client: MCPClient, agent: Agent, prompt: str, max_re
                 break
             except Exception as e:
                 logger.error(f"エラーが発生しました (試行 {i + 1}/{max_retry}): {e}")
+                
+                # メッセージリストが空でないことを確認
+                if not agent.messages:
+                    logger.warning("メッセージリストが空です。初期プロンプトで再試行します。")
+                    last_user_content = prompt
+                    gc.collect()
+                    sleep(60)
+                    continue
+                
                 for _ in range(2):
+                    if len(agent.messages) == 0:
+                        break
                     if agent.messages[-1].get("role") == "assistant":
                         del agent.messages[-1]
                     elif agent.messages[-1].get("role") == "user":
