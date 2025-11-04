@@ -1,9 +1,12 @@
+import { CfnOutput } from 'aws-cdk-lib';
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 
 export interface DmsInitializationProps {}
 
 export class DmsInitialization extends Construct {
+  public readonly initializationComplete: CfnOutput;
+
   constructor(scope: Construct, id: string, props: DmsInitializationProps) {
     super(scope, id);
 
@@ -115,5 +118,10 @@ export class DmsInitialization extends Construct {
     // Ensure dependencies
     dmsVpcRolePolicy.node.addDependency(dmsVpcRole);
     dmsCwRolePolicy.node.addDependency(dmsCwRole);
+
+    // Output to ensure initialization completion
+    this.initializationComplete = new CfnOutput(this, 'InitComplete', {
+      value: 'dms-initialization-complete'
+    });
   }
 }

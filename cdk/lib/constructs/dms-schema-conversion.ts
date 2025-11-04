@@ -136,6 +136,10 @@ export class DmsSchemaConversion extends Construct {
             key: 'Name',
             value: 'DMS Schema Conversion Subnet Group',
           },
+          {
+            key: 'DependsOn',
+            value: props.dmsInitialization.initializationComplete.value
+          },
         ],
       }
     );
