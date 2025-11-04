@@ -60,7 +60,7 @@ export class DmsInitialization extends Construct {
           RoleName: 'dms-vpc-role',
           PolicyArn: 'arn:aws:iam::aws:policy/service-role/AmazonDMSVPCManagementRole'
         },
-        ignoreErrorCodesMatching: 'NoSuchEntity',
+        ignoreErrorCodesMatching: 'EntityAlreadyExists',
         physicalResourceId: PhysicalResourceId.of('dms-vpc-role-policy')
       },
       policy: AwsCustomResourcePolicy.fromSdkCalls({
