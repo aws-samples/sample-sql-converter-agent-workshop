@@ -63,7 +63,15 @@ export class DmsInitialization extends Construct {
           RoleName: 'dms-vpc-role',
           PolicyArn: 'arn:aws:iam::aws:policy/service-role/AmazonDMSVPCManagementRole'
         },
-        ignoreErrorCodesMatching: 'EntityAlreadyExists',
+        physicalResourceId: PhysicalResourceId.of('dms-vpc-role-policy')
+      },
+      onUpdate: {
+        service: 'IAM',
+        action: 'attachRolePolicy',
+        parameters: {
+          RoleName: 'dms-vpc-role',
+          PolicyArn: 'arn:aws:iam::aws:policy/service-role/AmazonDMSVPCManagementRole'
+        },
         physicalResourceId: PhysicalResourceId.of('dms-vpc-role-policy')
       },
       policy: AwsCustomResourcePolicy.fromSdkCalls({
@@ -107,7 +115,15 @@ export class DmsInitialization extends Construct {
           RoleName: 'dms-cloudwatch-logs-role',
           PolicyArn: 'arn:aws:iam::aws:policy/service-role/AmazonDMSCloudWatchLogsRole'
         },
-        ignoreErrorCodesMatching: 'NoSuchEntity',
+        physicalResourceId: PhysicalResourceId.of('dms-cloudwatch-logs-role-policy')
+      },
+      onUpdate: {
+        service: 'IAM',
+        action: 'attachRolePolicy',
+        parameters: {
+          RoleName: 'dms-cloudwatch-logs-role',
+          PolicyArn: 'arn:aws:iam::aws:policy/service-role/AmazonDMSCloudWatchLogsRole'
+        },
         physicalResourceId: PhysicalResourceId.of('dms-cloudwatch-logs-role-policy')
       },
       policy: AwsCustomResourcePolicy.fromSdkCalls({
@@ -123,5 +139,9 @@ export class DmsInitialization extends Construct {
     this.initializationComplete = new CfnOutput(this, 'InitComplete', {
       value: 'dms-initialization-complete'
     });
+    
+    // Ensure all DMS resources are created before marking complete
+    this.initializationComplete.node.addDependency(dmsVpcRolePolicy);
+    this.initializationComplete.node.addDependency(dmsCwRolePolicy);
   }
 }

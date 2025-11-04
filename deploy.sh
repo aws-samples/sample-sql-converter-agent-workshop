@@ -1,6 +1,55 @@
 #!/bin/bash
 
+# AWS CLI ページャーを無効化
+export AWS_PAGER=""
+
 stack_name="SqlConverterAgentStack"
+
+# DMS VPC Role の管理
+echo "DMS VPC Role の設定を確認しています..."
+
+# dms-vpc-role が存在するかチェック
+if aws iam get-role --role-name dms-vpc-role >/dev/null 2>&1; then
+    echo "dms-vpc-role が存在します。ポリシーの確認中..."
+    
+    # AmazonDMSVPCManagementRole ポリシーがアタッチされているかチェック
+    if aws iam list-attached-role-policies --role-name dms-vpc-role --query 'AttachedPolicies[?PolicyName==`AmazonDMSVPCManagementRole`]' --output text | grep -q AmazonDMSVPCManagementRole; then
+        echo "dms-vpc-role に AmazonDMSVPCManagementRole が既にアタッチされています。"
+    else
+        echo "dms-vpc-role に AmazonDMSVPCManagementRole をアタッチしています..."
+        aws iam attach-role-policy --role-name dms-vpc-role --policy-arn arn:aws:iam::aws:policy/service-role/AmazonDMSVPCManagementRole
+        echo "ポリシーのアタッチが完了しました。"
+    fi
+else
+    echo "dms-vpc-role が存在しません。作成しています..."
+    
+    # Trust Policy の作成
+    cat > /tmp/dms-trust-policy.json << EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "dms.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+    
+    # ロールの作成
+    aws iam create-role --role-name dms-vpc-role --assume-role-policy-document file:///tmp/dms-trust-policy.json --description "Role for DMS VPC management"
+    
+    # ポリシーのアタッチ
+    aws iam attach-role-policy --role-name dms-vpc-role --policy-arn arn:aws:iam::aws:policy/service-role/AmazonDMSVPCManagementRole
+    
+    # 一時ファイルの削除
+    rm -f /tmp/dms-trust-policy.json
+    
+    echo "dms-vpc-role の作成とポリシーのアタッチが完了しました。"
+fi
 
 cd cdk
 cdk deploy --outputs-file output.json --require-approval never
