@@ -22,6 +22,7 @@ import {
 } from 'aws-cdk-lib/aws-s3';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
+import { DmsInitialization } from './dms-initialization';
 
 export interface DmsSchemaConversionProps {
   vpc: Vpc;
@@ -30,6 +31,7 @@ export interface DmsSchemaConversionProps {
   oracleSecurityGroup: SecurityGroup;
   dbCluster: DatabaseCluster;
   oracleInstance: Instance;
+  dmsInitialization: DmsInitialization;
 }
 
 export class DmsSchemaConversion extends Construct {
@@ -137,6 +139,9 @@ export class DmsSchemaConversion extends Construct {
         ],
       }
     );
+
+    // Ensure DMS initialization is completed before creating subnet group
+    dmsSubnetGroup.node.addDependency(props.dmsInitialization);
 
     // Create Security Group for DMS Instance Profile
     const sg = new SecurityGroup(this, 'DMSInstanceProfileSecurityGroup', {

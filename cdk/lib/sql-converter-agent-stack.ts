@@ -39,6 +39,7 @@ export class SqlConverterAgentStack extends Stack {
       oracleSecurityGroup: oracleDb.oracleSecurityGroup,
       dbCluster: auroraPg.dbCluster,
       oracleInstance: oracleDb.oracleInstance,
+      dmsInitialization: dmsInitialization,
     });
 
     // Ensure DMS initialization is completed before DMS Schema Conversion
