@@ -59,7 +59,6 @@ coverage.xml
 .pytest_cache/
 
 # キー
-cdk/oracle-xe-key.pem
 cdk/output.json
 oracle-xe-key.pem
 agent/exec_sql/*.sql
