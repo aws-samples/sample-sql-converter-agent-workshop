@@ -112,24 +112,7 @@ Host oracle
   LocalForward 11521 localhost:1521
 ```
 
-ローカルやEC2等、ワークショップ以外の環境で設定する場合は、`./cdk/oracle-xe-key.pem` を `~/.ssh/` にコピーした上で(e.g.`chmod 400 ./cdk/oracle-xe-key.pem && sudo cp ./cdk/oracle-xe-key.pem ~/.ssh/`)、`~/.ssh/config` に以下の設定を追加してください。
-
-`~/.ssh/config`
-
-```
-Host oracle
-  HostName i-xxxxxxxxxxxxxxxxx
-  User ec2-user
-  IdentityFile ~/.ssh/oracle-xe-key.pem
-  ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600
-  LocalForward 11521 localhost:1521
-```
-
-これにより、`ssh oracle` を実行すれば、AWS の認証情報を用いて EC2 Instance Connect Endpoint を経由して EC2 インスタンスに ssh で接続できるようになります。
-また、ssh で接続されている間は、Port Forwarding でローカル環境の 11521 番ポートが、EC2 インスタンスの 1521 番ポートに Forward されるようになります。
-
 別タブで新しいターミナルを開き、`ssh -F ssh-config oracle` を実行して接続できることを確認してください。
-
 
 デプロイ完了後、以下のコマンドで接続テストを実行できます。
 データベースにクエリを投げられるようになるまで、少し時間がかかる場合があるので、エラーが発生した場合はリトライしてみてください。
