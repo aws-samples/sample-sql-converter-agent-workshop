@@ -52,7 +52,7 @@ git clone https://github.com/aws-samples/sample-sql-converter-agent-workshop.git
 cd sample-sql-converter-agent-workshop
 
 # CDK依存関係のインストール
-npm install --prefix cdk && npx --prefix cdk cdk bootstrap
+npm ci --prefix cdk && npm --prefix cdk run cdk bootstrap
 ```
 
 ### 2. 必要ファイルの準備
