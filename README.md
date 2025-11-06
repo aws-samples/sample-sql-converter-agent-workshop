@@ -2,11 +2,11 @@
 
 このプロジェクトは、AI エージェントを用いて、異種 DB 間で SQL を変換するワークショップです。  
 題材として Oracle Database から Amazon Aurora PostgreSQL への SQL 変換を行います。  
-AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できない Database Object を対象に Strands Agents を活用してデータベース分析と移行作業を軽減します。
+AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できない Database Object と SQL 実行機能を有する Java アプリケーションを対象に [Strands Agents SDK](https://strandsagents.com/) を活用してデータベース分析と移行作業を軽減します。
 
 > [!NOTE]
 > このコンテンツは OracleDB と PostgreSQL を立て、この環境に閉じて AI エージェントが SQL を読み書きし、実行し、修正し、結果を残していくものです。
->  AI エージェントがシェルコマンドを実行したり、Database を操作する都合上、本番環境でのご利用は絶対におやめください。あくまで、ここでコードを作成・テストするだけにとどめてください。また AI エージェントを動かす環境も EC2 等の使い捨てできる隔離環境を**必ず**用意し、そこから実行してください。
+>  AI エージェントがシェルコマンドを実行したり、Database を操作する都合上、本番環境でのご利用はおやめください。あくまで、ここでコードを作成・テストするだけにとどめてください。また AI エージェントを動かす環境も EC2 等の使い捨てできる隔離環境を用意し、そこから実行してください。
 
 ## 🏗️ アーキテクチャ概要
 
@@ -29,7 +29,7 @@ AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベー
 
 - AWS アカウントとプロファイル設定
 - 適切な IAM 権限（EC2, RDS, Secrets Manager, S3, SSM 等）
-- デフォルトリージョン: us-east-1
+- デフォルトリージョン: us-east-1(使用する Bedrock のモデル)
 
 ## 🚀 セットアップ手順
 
@@ -52,10 +52,7 @@ git clone https://github.com/aws-samples/sample-sql-converter-agent-workshop.git
 cd sample-sql-converter-agent-workshop
 
 # CDK依存関係のインストール
-cd cdk
-npm install
-cdk bootstrap
-cd ..
+npm install --prefix cdk && npx --prefix cdk cdk bootstrap
 ```
 
 ### 2. 必要ファイルの準備
@@ -72,11 +69,10 @@ cd ..
 e.g.
 
 ```shell
-mkdir -p cdk/dmp
-cd cdk/dmp
-wget https://download.oracle.com/otn-pub/otn_software/db-express/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
-wget https://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/getPackage/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
-cd ../../
+mkdir -p cdk/dmp && \
+wget -P cdk/dmp \
+  https://download.oracle.com/otn-pub/otn_software/db-express/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm \
+  https://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/getPackage/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
 ```
 
 
@@ -95,14 +91,12 @@ cd ../../
 2. EC2 キーペアの取得と SSH 設定
 3. Oracle XE の自動インストール
 
-> **Note**: このデプロイスクリプトは、DMS（Database Migration Service）の利用履歴に関係なく、任意のAWSアカウントで動作するように設計されています。必要なDMSロールは自動的に作成され、既存のロールがある場合はそれを利用します。
-
 ### 4. 接続確認
 
 Oracle Instance に接続します。
-`cdk/output.json` に記載されている `OracleInstanceId` の値をコピーし、 `ssh-config` の `<instance id>` の箇所に貼り付けてください。
+`./output.json` に記載されている `OracleInstanceId` の値をコピーし、 `ssh-config` の `<instance id>` の箇所に貼り付けてください。
 
-`ssh-config`
+`./ssh-config`
 ```
 Host oracle
   HostName i-xxxxxxxxxxxxxxxxx
@@ -154,7 +148,7 @@ sudo su - oracle
 ### 4. エージェントの起動
 
 ```bash
-cd agent
+cd ./agent/ # リポジトリルートディレクトリがカレントディレクトリの前提です
 
 # 使い方 1 ）チャットで指示する場合
 uv run main.py
@@ -187,7 +181,7 @@ uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERE
 ポート11521が既に使用されているといったエラーが発生する場合、別ウィンドウでの実施中のSSHポート転送を終了してください
 
 ```bash
-cd agent
+cd ./agent/ # リポジトリルートディレクトリがカレントディレクトリの前提です
 
 # OracleのDDLをまとめて取得 
 ./getDDL.sh object_list.ini
@@ -209,16 +203,13 @@ uv run main.py --system-prompt sortObject.txt
 サンプルとしてOracleデータベースを使用した従業員情報の管理（登録、更新、削除、検索）を行うSpring + MyBatisアプリケーションの基盤となるスクリプト群を変換します。
 
 ### 6. サンプルアプリケーションの確認
-以下に配置されたサンプルアプリケーションの内容をチェックしてください。
+リポジトリルートディレクトリにある `./application/` に配置されたサンプルアプリケーションの内容をチェックしてください。
 
-```bash
-cd ../application/
-```
 
 ### 7. エージェントの起動
 
 ```bash
-cd ../agent
+cd ../agent # リポジトリルートディレクトリがカレントディレクトリの前提です
 
 # アプリケーションの変換
 # 例) uv run main.py --prompt "<ソースの配置場所> <アプリ名> <テスト名>" --system-prompt "system_prompt_app.txt"
