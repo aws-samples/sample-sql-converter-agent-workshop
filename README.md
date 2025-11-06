@@ -191,8 +191,6 @@ uv run main.py --system-prompt sortObject.txt
   (起動後に以下を貼り付けてください。)
   ./result
 
-  prompts/sortObject.txtに従って処理を実行してください。
-
 # 変換実行
 ./run.sh --system-prompt custom_prompt.txt --file object_list_sorted.ini
 

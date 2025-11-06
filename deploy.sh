@@ -82,7 +82,7 @@ if [ -f ../oracle-xe-key.pem ]; then
     fi
     echo "キーペアの取得に成功しました。権限は $PERMS に設定されています。"
     echo "以下のコマンドでEC2インスタンスに接続できます:"
-    echo "$(jq -r --arg stack_name "${stack_name}" '.[$stack_name].SSHCommand' output.json)"
+    echo "$(jq -r --arg stack_name "${stack_name}" '.[$stack_name].SSHCommand' ../output.json)"
 else
     echo "キーペアの取得に失敗しました。"
 fi
