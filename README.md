@@ -227,7 +227,7 @@ https://docs.aws.amazon.com/ja_jp/amazonq/latest/qdeveloper-ug/command-line-inst
 https://catalog.workshops.aws/qwords/ja-JP/10-start-workshop/16-builder-id
 
 
-###　Oracle Database への接続方法
+###　 Oracle Database への接続方法
 
 ```bash
 # Oracle XE on EC2 インスタンスへの接続 
@@ -249,3 +249,6 @@ sqlplus system/${DB_PASSWORD}@localhost/XEPDB1
 ```
 
 
+## 環境の削除
+`./destroy.sh` を実行してください。  
+`./destroy.sh` を実行する際、DMSを使用していた場合は DMS を使用した環境でスキーマ変換ウィザードを Close してから `./destroy.sh` を実行してください。Close しないとエラーが発生して削除ができません。
