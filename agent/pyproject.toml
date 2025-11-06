@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "boto3>=1.38.18",
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.9.0",
     "oracledb>=3.1.1",
     "strands-agents>=0.1.2",
     "strands-agents-tools>=0.1.1",

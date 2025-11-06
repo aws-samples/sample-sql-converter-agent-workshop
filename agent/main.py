@@ -1,69 +1,114 @@
 import argparse
 import gc
+import json
 import logging
 import os
 from pathlib import Path
 from time import sleep
 
 from botocore.config import Config
+from mcp import StdioServerParameters
+from mcp.client.stdio import stdio_client
 from strands import Agent
 from strands.models import BedrockModel
+from strands.tools.mcp import MCPClient
 from strands_tools import file_read, file_write
-from tools import run_ora_sql, run_pg_sql, shell
 from utils.callbacks import AgentCallbackHandler
-from utils.logger import setup_logger
+from utils.logger import setup_application_logging
 
-logger = setup_logger("app", log_level=logging.INFO)
+logger = setup_application_logging(log_level=logging.INFO)
 os.environ["BYPASS_TOOL_CONSENT"] = "true"
 
 
+def load_mcp_config():
+    """MCP設定ファイルを読み込み"""
+    with open("mcp.json", "r") as f:
+        return json.load(f)
+
+
+def create_mcp_client():
+    """MCP クライアントを作成"""
+    config = load_mcp_config()
+    server_config = config["mcpServers"]["sql-converter"]
+    
+    return MCPClient(
+        lambda: stdio_client(
+            StdioServerParameters(
+                command=server_config["command"],
+                args=server_config["args"],
+                env=server_config.get("env", {})
+            )
+        )
+    )
+
+
 def create_agent(system_prompt_file="./system_prompt.txt"):
+    """エージェントとMCPクライアントを初期化"""
     prompt_dir = Path(__file__).parent / "prompts"
     with open(prompt_dir / system_prompt_file, "rt") as f:
         system_prompt = f.read()
 
-    # エージェントの初期化
-    return Agent(
-        system_prompt=system_prompt,
-        tools=[run_pg_sql, run_ora_sql, file_read, file_write, shell],
-        callback_handler=AgentCallbackHandler(),
-        model=BedrockModel(
-            model_id="us.anthropic.claude-sonnet-4-20250514-v1:0",
-            # model_id="anthropic.claude-sonnet-4-20250514-v1:0",
-            region_name="us-east-1",
-            temperature=0,
-            top_p=0,
-            cache_tools="default",
-            additional_request_fields={"anthropic_beta": ["context-1m-2025-08-07"]},
-            boto_client_config=Config(
-                retries={"total_max_attempts": 5, "mode": "standard"},
-                connect_timeout=10,
-                read_timeout=600,
+    mcp_client = create_mcp_client()
+    
+    with mcp_client:
+        mcp_tools = mcp_client.list_tools_sync()
+        all_tools = [file_read, file_write] + mcp_tools
+
+        agent = Agent(
+            system_prompt=system_prompt,
+            tools=all_tools,
+            callback_handler=AgentCallbackHandler(),
+            model=BedrockModel(
+                model_id="us.anthropic.claude-sonnet-4-20250514-v1:0",
+                region_name="us-east-1",
+                temperature=0,
+                top_p=0,
+                cache_tools="default",
+                additional_request_fields={"anthropic_beta": ["context-1m-2025-08-07"]},
+                boto_client_config=Config(
+                    retries={"total_max_attempts": 5, "mode": "standard"},
+                    connect_timeout=10,
+                    read_timeout=600,
+                ),
             ),
-        ),
-    )
+        )
+        
+        return mcp_client, agent
 
 
-def resumable_agent_run(agent: Agent, prompt: str, max_retry: int = 1000) -> Agent:
+def resumable_agent_run(mcp_client: MCPClient, agent: Agent, prompt: str, max_retry: int = 1000) -> Agent:
+    """エラー時の再試行機能付きエージェント実行"""
     last_user_content = prompt
 
-    for i in range(max_retry):
-        try:
-            agent(last_user_content)
-            break
-        except Exception as e:
-            logger.error(f"エラーが発生しました (試行 {i + 1}/{max_retry}): {e}")
-            for _ in range(2):
-                if agent.messages[-1].get("role") == "assistant":
-                    del agent.messages[-1]
-                elif agent.messages[-1].get("role") == "user":
-                    last_user_content = agent.messages.pop().get("content", prompt)
-                    break
-                else:
-                    logger.error("Detect undefined role")
-                    raise e
-            gc.collect()
-            sleep(60)
+    with mcp_client:
+        for i in range(max_retry):
+            try:
+                agent(last_user_content)
+                break
+            except Exception as e:
+                logger.error(f"エラーが発生しました (試行 {i + 1}/{max_retry}): {e}")
+                
+                if not agent.messages:
+                    logger.warning("メッセージリストが空です。初期プロンプトで再試行します。")
+                    last_user_content = prompt
+                    gc.collect()
+                    sleep(60)
+                    continue
+                
+                # メッセージ履歴を調整して再試行
+                for _ in range(2):
+                    if len(agent.messages) == 0:
+                        break
+                    if agent.messages[-1].get("role") == "assistant":
+                        del agent.messages[-1]
+                    elif agent.messages[-1].get("role") == "user":
+                        last_user_content = agent.messages.pop().get("content", prompt)
+                        break
+                    else:
+                        logger.error("Detect undefined role")
+                        raise e
+                gc.collect()
+                sleep(60)
     return agent
 
 
@@ -87,51 +132,54 @@ def main():
 
     if args.prompt:
         user_input = args.prompt
-        agent = create_agent(args.system_prompt)
+        logger.info(f"User prompt: {user_input}")
+        mcp_client, agent = create_agent(args.system_prompt)
         if args.avoid_throttling:
-            response = resumable_agent_run(agent, user_input)
+            response = resumable_agent_run(mcp_client, agent, user_input)
         else:
-            response = agent(user_input)
+            with mcp_client:
+                response = agent(user_input)
+        logger.info(f"AI response: {str(response)}")
         print(f"\n回答: {response}\n")
 
     else:
-        # エージェントを一度だけ作成して会話を継続
-        agent = create_agent(args.system_prompt)
+        # 対話モード
+        mcp_client, agent = create_agent(args.system_prompt)
 
-        while True:
-            try:
-                user_input = input("質問を入力してください: ").strip()
-                # ターミナル制御文字を除去
-                user_input = "".join(
-                    char for char in user_input if ord(char) >= 32 or char in "\t\n\r"
-                )
+        with mcp_client:
+            while True:
+                try:
+                    user_input = input("質問を入力してください: ").strip()
+                    user_input = "".join(
+                        char for char in user_input if ord(char) >= 32 or char in "\t\n\r"
+                    )
 
-                if user_input.lower() in ["quit", "exit", "q"]:
-                    logger.info("エージェントを終了します。")
+                    if user_input.lower() in ["quit", "exit", "q"]:
+                        logger.info("エージェントを終了します。")
+                        break
+
+                    if not user_input:
+                        print("質問を入力してください。")
+                        continue
+
+                    logger.info(f"User input: {user_input}")
+                    response = agent(user_input)
+                    logger.info(f"AI response: {response}")
+                    print(f"\n回答: {response}\n")
+                    print("-" * 50)
+
+                except KeyboardInterrupt:
+                    logger.info("\n\nエージェントを終了します。")
                     break
-
-                if not user_input:
-                    print("質問を入力してください。")
-                    continue
-
-                logger.info(f"Processing request: {user_input}")
-
-                logger.info("処理中...")
-
-                response = agent(user_input)
-
-                print(f"\n回答: {response}\n")
-                print("-" * 50)
-
-                logger.info("Request processed successfully")
-
-            except KeyboardInterrupt:
-                logger.info("\n\nエージェントを終了します。")
-                break
-            except Exception as e:
-                logger.error(f"Error processing request: {str(e)}", exc_info=True)
-                logger.error(f"エラーが発生しました: {str(e)}")
-                logger.warning("再度お試しください。")
+                except Exception as e:
+                    logger.error(f"Error processing request: {str(e)}", exc_info=True)
+                    
+                    if "ThrottlingException" in str(e):
+                        logger.error("Bedrock throttling detected - API rate limit exceeded")
+                        logger.debug("Consider using --avoid-throttling option or waiting before retry")
+                    
+                    logger.error(f"エラーが発生しました: {str(e)}")
+                    logger.warning("再度お試しください。")
 
 
 if __name__ == "__main__":

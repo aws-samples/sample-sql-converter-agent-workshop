@@ -1,11 +1,12 @@
 # Oracle to PostgreSQL Migration with Strands AI Agent
 
-このプロジェクトは、Oracle Database から Amazon Aurora PostgreSQL へのデータベース移行を支援するサンプル AI エージェントシステムです。  
-AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できない Database Object を対象に Strands Agents を活用してデータベース分析と移行作業を軽減します。
+このプロジェクトは、AI エージェントを用いて、異種 DB 間で SQL を変換するワークショップです。  
+題材として Oracle Database から Amazon Aurora PostgreSQL への SQL 変換を行います。  
+AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できない Database Object と SQL 実行機能を有する Java アプリケーションを対象に [Strands Agents SDK](https://strandsagents.com/) を活用してデータベース分析と移行作業を軽減します。
 
 > [!NOTE]
 > このコンテンツは OracleDB と PostgreSQL を立て、この環境に閉じて AI エージェントが SQL を読み書きし、実行し、修正し、結果を残していくものです。
->  AI エージェントがシェルコマンドを実行したり、Database を操作する都合上、本番環境でのご利用は絶対におやめください。あくまで、ここでコードを作成・テストするだけにとどめてください。また AI エージェントを動かす環境も EC2 等の使い捨てできる隔離環境を**必ず**用意し、そこから実行してください。
+>  AI エージェントがシェルコマンドを実行したり、Database を操作する都合上、本番環境でのご利用はおやめください。あくまで、ここでコードを作成・テストするだけにとどめてください。また AI エージェントを動かす環境も EC2 等の使い捨てできる隔離環境を用意し、そこから実行してください。
 
 ## 🏗️ アーキテクチャ概要
 
@@ -28,7 +29,7 @@ AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベー
 
 - AWS アカウントとプロファイル設定
 - 適切な IAM 権限（EC2, RDS, Secrets Manager, S3, SSM 等）
-- デフォルトリージョン: us-east-1
+- デフォルトリージョン: us-east-1(使用する Bedrock のモデル)
 
 ## 🚀 セットアップ手順
 
@@ -51,10 +52,7 @@ git clone https://github.com/aws-samples/sample-sql-converter-agent-workshop.git
 cd sample-sql-converter-agent-workshop
 
 # CDK依存関係のインストール
-cd cdk
-npm install
-cdk bootstrap
-cd ..
+npm ci --prefix cdk && npm --prefix cdk run cdk bootstrap
 ```
 
 ### 2. 必要ファイルの準備
@@ -71,11 +69,10 @@ cd ..
 e.g.
 
 ```shell
-mkdir -p cdk/dmp
-cd cdk/dmp
-wget https://download.oracle.com/otn-pub/otn_software/db-express/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
-wget https://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/getPackage/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
-cd ../../
+mkdir -p cdk/dmp && \
+wget -P cdk/dmp \
+  https://download.oracle.com/otn-pub/otn_software/db-express/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm \
+  https://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/getPackage/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
 ```
 
 
@@ -94,34 +91,12 @@ cd ../../
 2. EC2 キーペアの取得と SSH 設定
 3. Oracle XE の自動インストール
 
-#### 参考: デプロイスクリプトがエラーとなる場合
-過去にDMSを使用したことがある場合、DMSの利用を開始するために必要なリソース作成の操作が重複することで、以下のようなエラーが出る場合があります。
-
-```text
-Resource handler returned message: "Service role name AWSServiceRoleForDMSServerless has been taken in this ac
-count, please try a different suffix.
-```
-
-このエラーが出た場合は、 `cdk/bin/cdk.ts` において、`initializeDmsSc = false` と設定して再度デプロイスクリプトを実行してください。
-
-`cdk/bin/cdk.ts`
-
-```typescript
-new SqlConverterAgentStack(app, 'SqlConverterAgentStack', {
-  initializeDmsSc: false,  // ここを false に変更
-  env: {
-    account: process.env.CDK_DEFAULT_ACCOUNT,
-    region: process.env.CDK_DEFAULT_REGION,
-  },
-});
-```
-
 ### 4. 接続確認
 
 Oracle Instance に接続します。
-`cdk/output.json` に記載されている `OracleInstanceId` の値をコピーし、 `ssh-config` の `<instance id>` の箇所に貼り付けてください。
+`./output.json` に記載されている `OracleInstanceId` の値をコピーし、 `ssh-config` の `<instance id>` の箇所に貼り付けてください。
 
-`ssh-config`
+`./ssh-config`
 ```
 Host oracle
   HostName i-xxxxxxxxxxxxxxxxx
@@ -131,24 +106,7 @@ Host oracle
   LocalForward 11521 localhost:1521
 ```
 
-ローカルやEC2等、ワークショップ以外の環境で設定する場合は、`./cdk/oracle-xe-key.pem` を `~/.ssh/` にコピーした上で(e.g.`chmod 400 ./cdk/oracle-xe-key.pem && sudo cp ./cdk/oracle-xe-key.pem ~/.ssh/`)、`~/.ssh/config` に以下の設定を追加してください。
-
-`~/.ssh/config`
-
-```
-Host oracle
-  HostName i-xxxxxxxxxxxxxxxxx
-  User ec2-user
-  IdentityFile ~/.ssh/oracle-xe-key.pem
-  ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600
-  LocalForward 11521 localhost:1521
-```
-
-これにより、`ssh oracle` を実行すれば、AWS の認証情報を用いて EC2 Instance Connect Endpoint を経由して EC2 インスタンスに ssh で接続できるようになります。
-また、ssh で接続されている間は、Port Forwarding でローカル環境の 11521 番ポートが、EC2 インスタンスの 1521 番ポートに Forward されるようになります。
-
 別タブで新しいターミナルを開き、`ssh -F ssh-config oracle` を実行して接続できることを確認してください。
-
 
 デプロイ完了後、以下のコマンドで接続テストを実行できます。
 データベースにクエリを投げられるようになるまで、少し時間がかかる場合があるので、エラーが発生した場合はリトライしてみてください。
@@ -190,7 +148,7 @@ sudo su - oracle
 ### 4. エージェントの起動
 
 ```bash
-cd agent
+cd ./agent/ # リポジトリルートディレクトリがカレントディレクトリの前提です
 
 # 使い方 1 ）チャットで指示する場合
 uv run main.py
@@ -202,6 +160,20 @@ uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERE
 # 使い方 3 ) まとめて実行する場合
 ./run.sh
 
+# run.sh のオプション一覧
+# --system-prompt <ファイル名>: カスタムシステムプロンプトファイルを指定
+# -f, --file <ファイル名>: 処理対象のオブジェクトリストファイルを指定（デフォルト: object_list.ini）
+# --avoid-throttling: Bedrockのトークン制限エラー時に自動リトライを有効化
+
+# 使用例:
+./run.sh --system-prompt custom_prompt.txt
+./run.sh -f custom_object_list.ini
+./run.sh --avoid-throttling
+./run.sh --system-prompt custom_prompt.txt --file custom_list.ini --avoid-throttling
+
+# 全てのオブジェクトを一括処理する場合:
+./run.sh -f object_list_all.ini --avoid-throttling
+
 ```
 
 ### 5. カスタム利用例
@@ -209,7 +181,7 @@ uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERE
 ポート11521が既に使用されているといったエラーが発生する場合、別ウィンドウでの実施中のSSHポート転送を終了してください
 
 ```bash
-cd agent
+cd ./agent/ # リポジトリルートディレクトリがカレントディレクトリの前提です
 
 # OracleのDDLをまとめて取得 
 ./getDDL.sh object_list.ini
@@ -218,8 +190,6 @@ cd agent
 uv run main.py --system-prompt sortObject.txt
   (起動後に以下を貼り付けてください。)
   ./result
-
-  prompts/sortObject.txtに従って処理を実行してください。
 
 # 変換実行
 ./run.sh --system-prompt custom_prompt.txt --file object_list_sorted.ini
@@ -231,16 +201,13 @@ uv run main.py --system-prompt sortObject.txt
 サンプルとしてOracleデータベースを使用した従業員情報の管理（登録、更新、削除、検索）を行うSpring + MyBatisアプリケーションの基盤となるスクリプト群を変換します。
 
 ### 6. サンプルアプリケーションの確認
-以下に配置されたサンプルアプリケーションの内容をチェックしてください。
+リポジトリルートディレクトリにある `./application/` に配置されたサンプルアプリケーションの内容をチェックしてください。
 
-```bash
-cd ../application/
-```
 
 ### 7. エージェントの起動
 
 ```bash
-cd ../agent
+cd ../agent # リポジトリルートディレクトリがカレントディレクトリの前提です
 
 # アプリケーションの変換
 # 例) uv run main.py --prompt "<ソースの配置場所> <アプリ名> <テスト名>" --system-prompt "system_prompt_app.txt"
@@ -260,7 +227,7 @@ https://docs.aws.amazon.com/ja_jp/amazonq/latest/qdeveloper-ug/command-line-inst
 https://catalog.workshops.aws/qwords/ja-JP/10-start-workshop/16-builder-id
 
 
-###　Oracle Database への接続方法
+###　 Oracle Database への接続方法
 
 ```bash
 # Oracle XE on EC2 インスタンスへの接続 
@@ -282,3 +249,6 @@ sqlplus system/${DB_PASSWORD}@localhost/XEPDB1
 ```
 
 
+## 環境の削除
+`./destroy.sh` を実行してください。  
+`./destroy.sh` を実行する際、DMSを使用していた場合は DMS を使用した環境でスキーマ変換ウィザードを Close してから `./destroy.sh` を実行してください。Close しないとエラーが発生して削除ができません。

@@ -42,8 +42,7 @@ while read -r line; do
     mkdir -p "./result/$OBJ"
     
     # SSH経由でOracleに接続してDDL取得
-#    ssh -n -F ./../ssh-config -i ./../cdk/oracle-xe-key.pem oracle "sudo su - oracle -c \"
-    ssh -n -i ./../cdk/oracle-xe-key.pem oracle "sudo su - oracle -c \"
+    ssh -n -F ../ssh-config oracle "sudo su - oracle -c \"
 sqlplus -s $USER/$PASS@//localhost:1521/XEPDB1 <<EOF
 SET PAGESIZE 0
 SET LINESIZE 1000

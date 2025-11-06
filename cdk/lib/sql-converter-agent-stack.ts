@@ -1,17 +1,12 @@
 import { CfnOutput, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { AuroraServerlessPg } from './constructs/aurora-serverless-pg';
-import { DmsInitialization } from './constructs/dms-initialization';
 import { DmsSchemaConversion } from './constructs/dms-schema-conversion';
 import { Network } from './constructs/network';
 import { OracleDbInstance } from './constructs/oracle-db-instance';
 
-export interface SqlConverterAgentStackProps extends StackProps {
-  initializeDmsSc: boolean; // true の場合、DMS SC のセットアップに必要なリソース作成を実施
-}
-
 export class SqlConverterAgentStack extends Stack {
-  constructor(scope: Construct, id: string, props: SqlConverterAgentStackProps) {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     // Network
@@ -37,16 +32,6 @@ export class SqlConverterAgentStack extends Stack {
       dbCluster: auroraPg.dbCluster,
       oracleInstance: oracleDb.oracleInstance,
     });
-
-    // DMS SC Initialization (if necessary)
-    if (props.initializeDmsSc) {
-      const dmsInitialization = new DmsInitialization(
-        this,
-        'DmsInitialization',
-        {}
-      );
-      dmsSc.node.addDependency(dmsInitialization);
-    }
 
     // Outputs
     // Output the S3 Bucket Name

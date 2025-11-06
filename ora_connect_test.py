@@ -50,7 +50,7 @@ def get_db_credentials():
         secret = json.loads(secret_response["SecretString"])
 
         # IPアドレスの取得
-        with open("./cdk/output.json", "r") as f:
+        with open("./output.json", "r") as f:
             ipaddress = json.load(f)[stack_name]["OracleInstancePublicIP"]
 
         print_success("認証情報の取得に成功しました")
