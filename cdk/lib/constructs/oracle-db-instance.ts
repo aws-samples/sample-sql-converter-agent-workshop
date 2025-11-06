@@ -161,7 +161,7 @@ export class OracleDbInstance extends Construct {
         keyPair.attrKeyPairId,
         ' --region ',
         Stack.of(this).region,
-        ' --with-decryption --query Parameter.Value --output text > oracle-xe-key.pem && chmod 400 oracle-xe-key.pem',
+        ' --with-decryption --query Parameter.Value --output text > ../oracle-xe-key.pem && chmod 400 oracle-xe-key.pem',
       ]),
       SSHCommand: Fn.join('', [
         'ssh -i oracle-xe-key.pem ec2-user@',

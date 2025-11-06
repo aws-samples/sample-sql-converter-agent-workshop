@@ -67,6 +67,11 @@ export COMMAND=$(jq -r --arg stack_name "${stack_name}" '.[$stack_name].OracleKe
 echo "実行するコマンド: $COMMAND"
 eval "$COMMAND"
 
+cd ../agent/
+[ -L oracle-xe-key.pem ] && unlink oracle-xe-key.pem
+ln -s ../oracle-xe-key.pem oracle-xe-key.pem
+cd ../cdk/
+
 # 確認 - macOS用にstat命令を修正
 if [ -f oracle-xe-key.pem ]; then
     # macOSとLinuxで異なるstat構文に対応
@@ -75,9 +80,6 @@ if [ -f oracle-xe-key.pem ]; then
     else
         PERMS=$(stat -c '%a' ../oracle-xe-key.pem)
     fi
-    cd ../agent/
-    ln -s ../oracle-xe-key.pem oracle-xe-key.pem
-    cd ../cdk/
     echo "キーペアの取得に成功しました。権限は $PERMS に設定されています。"
     echo "以下のコマンドでEC2インスタンスに接続できます:"
     echo "$(jq -r --arg stack_name "${stack_name}" '.[$stack_name].SSHCommand' output.json)"
