@@ -4,6 +4,8 @@ Host oracle
   IdentityFile ./oracle-xe-key.pem
   ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600
   LocalForward 11521 localhost:1521
+  LocalForward 5901 localhost:5901
+  LocalForward 3389 localhost:3389
   ServerAliveInterval 60
   ServerAliveCountMax 3
   TCPKeepAlive yes
