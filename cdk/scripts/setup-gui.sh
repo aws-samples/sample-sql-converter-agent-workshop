@@ -7,6 +7,10 @@ echo "=== Amazon Linux 2023 GUI環境セットアップ開始 ==="
 echo "パッケージをアップデート中..."
 dnf update -y
 
+# 必要なツールのインストール
+echo "必要なツールをインストール中..."
+dnf install -y git
+
 # GNOME デスクトップ環境のインストール
 echo "GNOME デスクトップ環境をインストール中..."
 dnf groupinstall "Desktop" -y
@@ -30,7 +34,7 @@ echo "VNCサーバー設定ファイルを作成中..."
 cat > /etc/tigervnc/vncserver-config-defaults << 'EOF'
 session=gnome
 securitytypes=vncauth,tlsvnc
-geometry=1024x768
+geometry=1440x900
 localhost
 alwaysshared
 EOF
@@ -46,6 +50,17 @@ systemctl enable vncserver@:1
 # アイドルロックスクリーンの無効化
 echo "アイドルロックスクリーンを無効化中..."
 sudo -u ec2-user bash -c 'DISPLAY=:1 gsettings set org.gnome.desktop.session idle-delay 0' || true
+
+# ワークショップリポジトリのクローン
+echo "ワークショップリポジトリをクローン中..."
+sudo -u ec2-user git clone https://github.com/aws-samples/sample-sql-converter-agent-workshop.git /home/ec2-user/sample-sql-converter-agent-workshop || true
+
+# Amazon Q Developer CLI のインストール
+echo "Amazon Q Developer CLI をインストール中..."
+sudo -u ec2-user curl --proto '=https' --tlsv1.2 -sSf "https://desktop-release.q.us-east-1.amazonaws.com/latest/q-x86_64-linux.zip" -o "/home/ec2-user/q.zip"
+sudo -u ec2-user unzip /home/ec2-user/q.zip
+sudo -u ec2-user Q_SKIP_SETUP=1 /home/ec2-user/q/install.sh
+
 
 echo "=== GUI環境セットアップ完了 ==="
 echo "接続情報:"
