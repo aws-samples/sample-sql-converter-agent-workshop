@@ -58,8 +58,9 @@ sudo -u ec2-user git clone https://github.com/aws-samples/sample-sql-converter-a
 # Amazon Q Developer CLI のインストール
 echo "Amazon Q Developer CLI をインストール中..."
 sudo -u ec2-user curl --proto '=https' --tlsv1.2 -sSf "https://desktop-release.q.us-east-1.amazonaws.com/latest/q-x86_64-linux.zip" -o "/home/ec2-user/q.zip"
-sudo -u ec2-user unzip /home/ec2-user/q.zip
+sudo -u ec2-user unzip /home/ec2-user/q.zip -d /home/ec2-user/
 sudo -u ec2-user Q_SKIP_SETUP=1 /home/ec2-user/q/install.sh
+sidp -u ec2-user wget -qO- https://astral.sh/uv/install.sh | sh
 
 
 echo "=== GUI環境セットアップ完了 ==="
