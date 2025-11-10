@@ -61,7 +61,7 @@ sudo -u ec2-user curl --proto '=https' --tlsv1.2 -sSf "https://desktop-release.q
 sudo -u ec2-user unzip /home/ec2-user/q.zip -d /home/ec2-user/
 sudo -u ec2-user Q_SKIP_SETUP=1 /home/ec2-user/q/install.sh
 sudo -u ec2-user mkdir -p /home/ec2-user/.aws/amazonq/
-sudo -u ec2-user cp /home/ec2-user/sample-sql-converter-agent-workshop/agent/mcp_q.json /home/ec2-user/.aws/amazonq/mcp.json
+sudo -u ec2-user cp /home/ec2-user/sample-sql-converter-agent-workshop/q-dev/mcp.json /home/ec2-user/.aws/amazonq/mcp.json
 
 # AWS CLI リージョン設定
 echo "AWS CLI リージョンを設定中..."

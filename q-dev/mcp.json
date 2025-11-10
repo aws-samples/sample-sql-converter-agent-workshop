@@ -5,7 +5,9 @@
       "args": [
         "--directory",
         "/home/ec2-user/sample-sql-converter-agent-workshop/agent",
-        "run", "mcpserver/server.py"],
+        "run", 
+        "mcpserver/server.py"
+      ],
       "env": {}
     }
   }

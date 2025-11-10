@@ -2,7 +2,10 @@
   "mcpServers": {
     "sql-converter": {
       "command": "uv",
-      "args": ["run", "mcpserver/server.py"],
+      "args": [
+        "run", 
+        "mcpserver/server.py"
+      ],
       "env": {}
     }
   }
