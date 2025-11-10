@@ -64,7 +64,6 @@ def execute_query(credentials):
     try:
         print_info("データベース", "Oracle DB に接続中...")
         dsn = oracledb.makedsn(
-            # host=credentials['ipaddress']},
             host="localhost",
             port=1521,
             service_name="XE",
