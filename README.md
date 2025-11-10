@@ -103,7 +103,7 @@ Host oracle
   User ec2-user
   IdentityFile ./cdk/oracle-xe-key.pem
   ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600
-  LocalForward 11521 localhost:1521
+  LocalForward 1521 localhost:1521
 ```
 
 別タブで新しいターミナルを開き、`ssh -F ssh-config oracle` を実行して接続できることを確認してください。
@@ -178,7 +178,6 @@ uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERE
 
 ### 5. カスタム利用例
 コードの行数が長い場合や複雑なプロシージャの場合に、変換順序の調整やコードを分割してから変換することが有効であるため、その実行方法をみていきます。
-ポート11521が既に使用されているといったエラーが発生する場合、別ウィンドウでの実施中のSSHポート転送を終了してください
 
 ```bash
 cd ./agent/ # リポジトリルートディレクトリがカレントディレクトリの前提です
