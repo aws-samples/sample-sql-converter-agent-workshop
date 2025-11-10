@@ -121,6 +121,20 @@ export class OracleDbInstance extends Construct {
       ]
     }));
 
+    // Add Bedrock permissions
+    instanceRole.addToPolicy(new PolicyStatement({
+      actions: [
+        'bedrock:InvokeModel',
+        'bedrock:InvokeModelWithResponseStream',
+        'bedrock:Converse',
+        'bedrock:ConverseStream'
+      ],
+      resources: [
+        'arn:aws:bedrock:*::foundation-model/*',
+        'arn:aws:bedrock:*:*:inference-profile/*'
+      ]
+    }));
+
     // Oracle XE installation user data script - simplified to download and run the script from S3
     const userDataScript = UserData.forLinux();
     userDataScript.addCommands(
