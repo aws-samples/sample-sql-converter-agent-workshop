@@ -2,18 +2,18 @@
 
 このプロジェクトは、AI エージェントを用いて、異種 DB 間で SQL を変換するワークショップです。  
 題材として Oracle Database から Amazon Aurora PostgreSQL への SQL 変換を行います。  
-AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できない Database Object と SQL 実行機能を有する Java アプリケーションを対象に [Strands Agents SDK](https://strandsagents.com/) を活用してデータベース分析と移行作業を軽減します。
+AWS CDK を使用して Oracle XE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できないデータベースオブジェクトと SQL 実行機能を有する Java アプリケーションを対象に [Strands Agents SDK](https://strandsagents.com/) を活用してデータベース分析と移行作業を軽減します。
 
 > [!NOTE]
-> このコンテンツは OracleDB と PostgreSQL を立て、この環境に閉じて AI エージェントが SQL を読み書きし、実行し、修正し、結果を残していくものです。
+> このコンテンツは Oracle DB と PostgreSQL を立て、この環境に閉じて AI エージェントが SQL を読み書きし、実行し、修正し、結果を残していくものです。
 > AI エージェントが Database を操作する都合上、本番環境でのご利用はおやめください。あくまで、ここでコードを作成・テストするだけにとどめてください。
 
 ## 🏗️ アーキテクチャ概要
 
 - **Oracle Database**: EC2 インスタンス上の Oracle XE 21c
 - **PostgreSQL**: Amazon Aurora PostgreSQL Serverless v2
-- **AI Agent**: AI Agent w/Strands Agents によるデータベース分析・移行支援
-- **Infrastructure**: AWS CDK (TypeScript)による Infrastructure as Code
+- **AI Agent**: Oracle DB と同居もしくはローカル PC
+- **Amazon Bedrock**: AI Agent が使用するモデルを提供するサービス
 
 ## 📋 前提条件
 
@@ -26,8 +26,8 @@ AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベー
 ### AWS 環境
 
 - AdministratorAccess がアタッチされ、シェルスクリプトが実行可能なコンピューティングリソース
-- Bedrock で利用するモデルは は us-east-1 です(コードの修正で変更可能)
-  - 事前に使用するモデルを unlock してください。
+- Bedrock で利用するモデルは us-east-1 です(コードの修正で変更可能)
+  - 事前に使用するモデルを unlock してください。デフォルトでは `us.anthropic.claude-sonnet-4-20250514-v1:0` を使用します。
 
 ## 🚀 セットアップ手順
 
@@ -78,7 +78,7 @@ wget -P cdk/dmp \
 ```
 
 
-### 4. インフラストラクチャのデプロイ
+### 4. デプロイ
 
 リポジトリのルートディレクトリに移動した上で、以下コマンドを実行してください。30 分ほど実行にかかります。
 
@@ -96,7 +96,7 @@ wget -P cdk/dmp \
 ### 5. 接続確認
 
 デプロイ完了後、`ssh -F ssh-config oracle` を実行して接続できることを確認してください。  
-初回接続時は接続先が信頼できるかの確認が出ますが `yes` と入力してください。  
+初回接続時は接続先の fingerprint が信頼できるかの確認が表示されます（yes/no/[fingerprint]）。`yes` と入力してください。  
 接続先で以下のコマンドを実行しデータベースに接続できることを確認してください。  
 
 ```bash
@@ -109,8 +109,8 @@ uv run ora_connect_test.py
 uv run pg_connect_test.py
 ```
 
-上記は Oracle DB がホストされている EC2 での実行ですが、`ssh -F ssh-config oracle` で接続した場合
-初回接続時は fingerprint はポートフォワーディングによって、ローカルから実行することもできます。  
+上記は Oracle DB がホストされている EC2 での実行ですが、`ssh -F ssh-config oracle` で接続した場合、
+ポートフォワーディングによって、ローカルから実行することもできます。  
 ssh 接続しているターミナルとは別にターミナルを開き、`sample-sql-converter-agent-workshop` ディレクトリから、以下を実行して確認することもできます。  
 ```bash
 # Oracle Database接続テスト
@@ -148,8 +148,7 @@ sudo su - oracle
 
 ### 1. エージェントの起動
 
-`ssh -F ssh-config oracle` でつないだ先、もしくはつないでいる PC の別ターミナルで以下を実行しま
-初回接続時は fingerprint す。  
+`ssh -F ssh-config oracle` でつないだ先、もしくはつないでいる PC の別ターミナルで以下を実行します。  
 以下操作は `sample-sql-converter-agent-workshop` ディレクトリにいることを前提とします。
 エージェントの動作をカスタマイズしたい場合は事前に `agent/prompts/system_prompt.txt` を編集してください。
 
@@ -160,13 +159,13 @@ cd ./agent/
 uv run main.py
 ```
 
-`あなたは何ができますか？` というプロンプトを打つとどんなことをできるのかを教えてくれる他、DB Object をその DB Object を Oracle から検索して PostgreSQL のオブジェクトに変換を始めます(e.g.`PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE`)。  
+`あなたは何ができますか？` というプロンプトを打つとどんなことをできるのかを教えてくれる他、データベースオブジェクトを Oracle から検索して PostgreSQL のオブジェクトに変換を始めます(e.g.`PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE`)。  
 格納されているオブジェクトリストは `object_list_all.ini` にあるので参考にしてください。  
 結果は `./result/` 以下に出力されます。  
 対話をやめたい場合は `quit` と入力すると終わります。  
 
-#### 1.2 DB Object を指定する場合
-以下コマンドを打つと指定した　Oracle DB に格納されている DB Object を自動で探して PostgreSQL のオブジェクトに変換します。  
+#### 1.2 データベースオブジェクトを指定する場合
+以下コマンドを打つと指定した Oracle DB に格納されているデータベースオブジェクトを自動で探して PostgreSQL のオブジェクトに変換します。  
 格納されているオブジェクトリストは `object_list_all.ini` にあるので参考にしてください。  
 チャット同様に結果は `./result/` 以下に出力されます。
 
@@ -177,7 +176,7 @@ uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERE
 
 #### 1.3 まとめて実行する場合
 
-`./agent/object_list.ini` にある DB Object を対象に一括変換を試みます。
+`./agent/object_list.ini` にあるデータベースオブジェクトを対象に一括変換を試みます。
 
 ```bash
 cd ./agent/
@@ -198,7 +197,7 @@ uv run main.py --system-prompt custom_prompt.txt
 # 一括変換のオブジェクト一覧指定
 ./run.sh -f custom_object_list.ini
 
-# 自動リトライ & sleep
+# 自動リトライ&sleep
 uv run main.py --avoid-throttling
 ./run.sh --avoid-throttling
 
@@ -207,7 +206,7 @@ uv run main.py --avoid-throttling
 
 ```
 
-### 5. (オプション)カスタム利用例
+## 5. (オプション)カスタム利用例
 コードの行数が長い場合や複雑なプロシージャの場合に、変換順序の調整やコードを分割してから変換することが有効であるため、その実行方法をみていきます。
 以下操作は `sample-sql-converter-agent-workshop` ディレクトリにいることを前提とします。
 
@@ -217,7 +216,7 @@ cd ./agent/
 # OracleのDDLをまとめて取得 
 ./getDDL.sh object_list.ini
 
-#並び替え
+# 並び替え
 uv run main.py --system-prompt sortObject.txt
   (起動後に以下を貼り付けてください。)
   ./result
@@ -249,10 +248,10 @@ uv run main.py --prompt "../application/employee-mgmt/application employee-mgmt 
 ```
 
 ## Amazon Q Developer CLI をコーディングエージェントとして使う場合
-Oracle DB/PostgreSQL へのアクセスするツールは MCP サーバー化してあるため、Strands Agents を使わずに Amazon Q Developer CLI から同様のことを行うこともできます。  
-Amazon Q Developer CLI のインストール方法及びサブスクライブの方法については[install](https://docs.aws.amazon.com/ja_jp/amazonq/latest/qdeveloper-ug/command-line-installing.html),[subscribe](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-admin-setup-subscribe-general.html)を参照してください。  
+Oracle DB/PostgreSQLへのアクセスするツールはMCPサーバー化してあるため、Strands Agentsを使わずにAmazon Q Developer CLIから同様のことを行うこともできます。  
+Amazon Q Developer CLIのインストール方法及びサブスクライブの方法については[install](https://docs.aws.amazon.com/ja_jp/amazonq/latest/qdeveloper-ug/command-line-installing.html),[subscribe](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-admin-setup-subscribe-general.html)を参照してください。  
 リモートサーバーの場合はインストール済のためサブスクライブだけで済みます。
-ssh で繋いでトンネリングしたローカル環境で Amazon Q Developer CLI を実行する場合は、`~/.aws/amazonq/` に `q-dev/mcp.json` をコピーしてください。リモートサーバーは設定済です。
+sshで繋いでトンネリングしたローカル環境でAmazon Q Developer CLIを実行する場合は、`~/.aws/amazonq/` に `q-dev/mcp.json` をコピーしてください。リモートサーバーは設定済です。
 
 ### Q Developer の起動
 以下コマンドを実行してください。
@@ -262,7 +261,7 @@ cd q-dev
 q login
 # q login 実行後、表示される指示に従う
 q chat
-# q chat を打ち込むと対話できるようになるため、DB オブジェクトを入力することで変換作業を行うことができます。(e.g. PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE)
+# q chatを打ち込むと対話できるようになるため、データベースオブジェクトを入力することで変換作業を行うことができます。(e.g. PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE)
 ```
 
 ### Q Developer のカスタマイズ
@@ -271,4 +270,4 @@ q chat
 
 ## 環境の削除
 `./destroy.sh` を実行してください。  
-`./destroy.sh` を実行する際、DMSを使用していた場合は DMS を使用した環境でスキーマ変換ウィザードを Close してから `./destroy.sh` を実行してください。Close しないとエラーが発生して削除ができません。
+`./destroy.sh` を実行する際、DMSを使用していた場合はDMSを使用した環境でスキーマ変換ウィザードをCloseしてから `./destroy.sh` を実行してください。Closeしないとエラーが発生して削除ができません。
