@@ -78,7 +78,7 @@ aws configure set region "$REGION"
 
 echo "Region set to: $REGION"
 '
-sudo -u ec2-user wget -qO- https://astral.sh/uv/install.sh | sh
+sudo -u ec2-user bash -c 'wget -qO- https://astral.sh/uv/install.sh | sh'
 
 
 echo "=== GUI環境セットアップ完了 ==="

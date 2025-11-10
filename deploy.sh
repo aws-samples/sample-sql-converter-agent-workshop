@@ -185,12 +185,14 @@ while true; do
 done
 
 # 成功した場合は出力を表示
-echo "コマンド出力:"
-aws ssm get-command-invocation \
-  --command-id "$COMMAND_ID" \
-  --instance-id "$ORACLE_INSTANCE_ID" \
-  --query "StandardOutputContent" \
-  --output text
+if [[ "$ORACLE_INSTALL_SKIPPED" == "false" ]]; then
+    echo "Oracle XE インストール出力:"
+    aws ssm get-command-invocation \
+      --command-id "$COMMAND_ID" \
+      --instance-id "$ORACLE_INSTANCE_ID" \
+      --query "StandardOutputContent" \
+      --output text
+fi
 
 echo "Oracle XEのインストールが完了しました"
 fi
