@@ -60,6 +60,8 @@ echo "Amazon Q Developer CLI をインストール中..."
 sudo -u ec2-user curl --proto '=https' --tlsv1.2 -sSf "https://desktop-release.q.us-east-1.amazonaws.com/latest/q-x86_64-linux.zip" -o "/home/ec2-user/q.zip"
 sudo -u ec2-user unzip /home/ec2-user/q.zip -d /home/ec2-user/
 sudo -u ec2-user Q_SKIP_SETUP=1 /home/ec2-user/q/install.sh
+sudo -u ec2-user mkdir -p /home/ec2-user/.aws/amazonq/
+sudo -u ec2-user cp /home/ec2-user/sample-sql-converter-agent-workshop/agent/mcp.json /home/ec2-user/.aws/amazonq/
 
 # AWS CLI リージョン設定
 echo "AWS CLI リージョンを設定中..."
