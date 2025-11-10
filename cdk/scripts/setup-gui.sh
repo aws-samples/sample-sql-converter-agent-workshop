@@ -60,7 +60,25 @@ echo "Amazon Q Developer CLI をインストール中..."
 sudo -u ec2-user curl --proto '=https' --tlsv1.2 -sSf "https://desktop-release.q.us-east-1.amazonaws.com/latest/q-x86_64-linux.zip" -o "/home/ec2-user/q.zip"
 sudo -u ec2-user unzip /home/ec2-user/q.zip -d /home/ec2-user/
 sudo -u ec2-user Q_SKIP_SETUP=1 /home/ec2-user/q/install.sh
-sidp -u ec2-user wget -qO- https://astral.sh/uv/install.sh | sh
+
+# AWS CLI リージョン設定
+echo "AWS CLI リージョンを設定中..."
+sudo -u ec2-user bash -c '
+# IMDSv2を使用してトークンを取得
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" \
+    -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" \
+    -s)
+
+# リージョンを取得
+REGION=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" \
+    -s http://169.254.169.254/latest/meta-data/placement/region)
+
+# リージョンを設定
+aws configure set region "$REGION"
+
+echo "Region set to: $REGION"
+'
+sudo -u ec2-user wget -qO- https://astral.sh/uv/install.sh | sh
 
 
 echo "=== GUI環境セットアップ完了 ==="
