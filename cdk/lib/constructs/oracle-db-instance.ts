@@ -14,7 +14,7 @@ import {
   UserData,
   Vpc,
 } from 'aws-cdk-lib/aws-ec2';
-import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import {
   BlockPublicAccess,
   Bucket,
@@ -100,6 +100,12 @@ export class OracleDbInstance extends Construct {
     // Add S3 read permissions to the instance role
     scriptBucket.grantRead(instanceRole);
     oracleCredentials.grantRead(instanceRole);
+
+    // Add Secrets Manager read permissions for oracle-credentials
+    instanceRole.addToPolicy(new PolicyStatement({
+      actions: ['secretsmanager:GetSecretValue'],
+      resources: ['arn:aws:secretsmanager:*:*:secret:oracle-credentials*']
+    }));
 
     // Oracle XE installation user data script - simplified to download and run the script from S3
     const userDataScript = UserData.forLinux();
