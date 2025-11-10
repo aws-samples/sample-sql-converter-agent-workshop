@@ -107,6 +107,12 @@ export class OracleDbInstance extends Construct {
       resources: ['arn:aws:secretsmanager:*:*:secret:oracle-credentials*']
     }));
 
+    // Add CloudFormation read permissions for stack outputs
+    instanceRole.addToPolicy(new PolicyStatement({
+      actions: ['cloudformation:DescribeStacks'],
+      resources: [`arn:aws:cloudformation:*:*:stack/${Stack.of(this).stackName}/*`]
+    }));
+
     // Oracle XE installation user data script - simplified to download and run the script from S3
     const userDataScript = UserData.forLinux();
     userDataScript.addCommands(

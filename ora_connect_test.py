@@ -49,9 +49,19 @@ def get_db_credentials():
         secret_response = secret_manager.get_secret_value(SecretId="oracle-credentials")
         secret = json.loads(secret_response["SecretString"])
 
-        # IPアドレスの取得
-        with open("./output.json", "r") as f:
-            ipaddress = json.load(f)[stack_name]["OracleInstancePublicIP"]
+        # CloudFormationスタックからIPアドレスを取得
+        print_info("IPアドレス", "CloudFormationスタックから取得中...")
+        cf_client = boto3.client("cloudformation")
+        stack_response = cf_client.describe_stacks(StackName=stack_name)
+        
+        ipaddress = None
+        for output in stack_response["Stacks"][0]["Outputs"]:
+            if output["OutputKey"] == "OracleInstancePublicIP":
+                ipaddress = output["OutputValue"]
+                break
+        
+        if not ipaddress:
+            raise Exception("OracleInstancePublicIP が見つかりません")
 
         print_success("認証情報の取得に成功しました")
         return {
