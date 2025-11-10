@@ -107,6 +107,20 @@ export class OracleDbInstance extends Construct {
       resources: ['arn:aws:secretsmanager:*:*:secret:oracle-credentials*']
     }));
 
+    // Add PostgreSQL connection test permissions
+    instanceRole.addToPolicy(new PolicyStatement({
+      actions: [
+        'secretsmanager:GetSecretValue',
+        'rds-data:ExecuteStatement',
+        'sts:GetCallerIdentity'
+      ],
+      resources: [
+        'arn:aws:secretsmanager:*:*:secret:aurora-pg-credentials*',
+        'arn:aws:rds:*:*:cluster:*',
+        '*'
+      ]
+    }));
+
     // Oracle XE installation user data script - simplified to download and run the script from S3
     const userDataScript = UserData.forLinux();
     userDataScript.addCommands(
