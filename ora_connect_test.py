@@ -81,7 +81,7 @@ def execute_query(credentials):
         dsn = oracledb.makedsn(
             # host=credentials['ipaddress']},
             host="localhost",
-            port=11521,
+            port=1521,
             service_name="XE",
         )
         connection = oracledb.connect(
