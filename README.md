@@ -6,7 +6,7 @@ AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベー
 
 > [!NOTE]
 > このコンテンツは OracleDB と PostgreSQL を立て、この環境に閉じて AI エージェントが SQL を読み書きし、実行し、修正し、結果を残していくものです。
->  AI エージェントがシェルコマンドを実行したり、Database を操作する都合上、本番環境でのご利用はおやめください。あくまで、ここでコードを作成・テストするだけにとどめてください。また AI エージェントを動かす環境も EC2 等の使い捨てできる隔離環境を用意し、そこから実行してください。
+> AI エージェントが Database を操作する都合上、本番環境でのご利用はおやめください。あくまで、ここでコードを作成・テストするだけにとどめてください。
 
 ## 🏗️ アーキテクチャ概要
 
@@ -19,49 +19,51 @@ AWS CDK を使用して OracleXE on EC2 と Aurora PostgreSQL のデータベー
 
 ### 必要なソフトウェア
 
-- Python 3.12 以上
-- Node.js 18 以上
-- AWS CLI v2
-- AWS CDK v2
-- uv (Python package manager)
+- Node.js 22 以上
+
+他、必要なものはこのワークショップを実行時にインストールします。
 
 ### AWS 環境
 
-- AWS アカウントとプロファイル設定
-- 適切な IAM 権限（EC2, RDS, Secrets Manager, S3, SSM 等）
-- デフォルトリージョン: us-east-1(使用する Bedrock のモデル)
+- AdministratorAccess がアタッチされ、シェルスクリプトが実行可能なコンピューティングリソース
+- Bedrock で利用するモデルは は us-east-1 です(コードの修正で変更可能)
+  - 事前に使用するモデルを unlock してください。
 
 ## 🚀 セットアップ手順
 
 ### 0. 前提条件のセットアップ
 
-Workshop 環境では、以下の手順を実行して CDK や uv をインストールしてください。
+以下の手順を実行して CDK や uv をインストールしてください。
 
 ```bash
 # CDK のインストール
 npm install -g aws-cdk
 
 # uv のインストール
-pip install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### 1. CDK 依存関係のインストール
-
+### 1. リポジトリのクローン
 ```bash
 git clone https://github.com/aws-samples/sample-sql-converter-agent-workshop.git
 cd sample-sql-converter-agent-workshop
+```
 
+### 2. CDK 依存関係のインストール
+
+```bash
 # CDK依存関係のインストール
+# sample-sql-converter-agent-workshop ディレクトリで実行してください
 npm ci --prefix cdk && npm --prefix cdk run cdk bootstrap
 ```
 
-### 2. 必要ファイルの準備
+### 3. 必要ファイルの準備
 
 **⚠️ 重要: 以下のファイルはユーザーが事前に用意する必要があります**
 
 #### Oracle Database RPM ファイル
 
-`cdk/dmp/` ディレクトリに以下の RPM ファイルをインターネットからダウンロードして配置してください：
+`sample-sql-converter-agent-workshop` の配下の `cdk/dmp/` ディレクトリに以下の RPM ファイルをインターネットからダウンロードして配置してください：
 
 - `oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm` - Oracle XE 21c 本体
 - `oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm` - Oracle 前提パッケージ
@@ -76,12 +78,11 @@ wget -P cdk/dmp \
 ```
 
 
-### 3. インフラストラクチャのデプロイ
+### 4. インフラストラクチャのデプロイ
 
-リポジトリのルートディレクトリに移動した上で、以下コマンドを実行してください。
+リポジトリのルートディレクトリに移動した上で、以下コマンドを実行してください。30 分ほど実行にかかります。
 
 ```bash
-# デプロイスクリプトの実行
 ./deploy.sh
 ```
 
@@ -90,27 +91,27 @@ wget -P cdk/dmp \
 1. AWS CDK によるインフラストラクチャのデプロイ
 2. EC2 キーペアの取得と SSH 設定
 3. Oracle XE の自動インストール
+4. エージェントを実行する環境準備
 
-### 4. 接続確認
+### 5. 接続確認
 
-Oracle Instance に接続します。
-`./output.json` に記載されている `OracleInstanceId` の値をコピーし、 `ssh-config` の `<instance id>` の箇所に貼り付けてください。
+デプロイ完了後、`ssh -F ssh-config oracle` を実行して接続できることを確認してください。  
+初回接続時は接続先が信頼できるかの確認が出ますが `yes` と入力してください。  
+接続先で以下のコマンドを実行しデータベースに接続できることを確認してください。  
 
-`./ssh-config`
+```bash
+cd sample-sql-converter-agent-workshop
+
+# Oracle Database接続テスト
+uv run ora_connect_test.py
+
+# PostgreSQL接続テスト
+uv run pg_connect_test.py
 ```
-Host oracle
-  HostName i-xxxxxxxxxxxxxxxxx
-  User ec2-user
-  IdentityFile ./cdk/oracle-xe-key.pem
-  ProxyCommand aws ec2-instance-connect open-tunnel --instance-id %h --max-tunnel-duration 3600
-  LocalForward 1521 localhost:1521
-```
 
-別タブで新しいターミナルを開き、`ssh -F ssh-config oracle` を実行して接続できることを確認してください。
-
-デプロイ完了後、以下のコマンドで接続テストを実行できます。
-データベースにクエリを投げられるようになるまで、少し時間がかかる場合があるので、エラーが発生した場合はリトライしてみてください。
-
+上記は Oracle DB がホストされている EC2 での実行ですが、`ssh -F ssh-config oracle` で接続した場合
+初回接続時は fingerprint はポートフォワーディングによって、ローカルから実行することもできます。  
+ssh 接続しているターミナルとは別にターミナルを開き、`sample-sql-converter-agent-workshop` ディレクトリから、以下を実行して確認することもできます。  
 ```bash
 # Oracle Database接続テスト
 uv run ora_connect_test.py
@@ -119,10 +120,11 @@ uv run ora_connect_test.py
 uv run pg_connect_test.py
 ```
 
-## (Option) データベースオブジェクトのロード
-
+## 6. (Option) データベースオブジェクトのロード
+このワークショップでは、すでにいくつかのデータベースオブジェクトが Oracle DB に格納されていますが、自身のデータベースオブジェクトを持ち込むことも可能です。
+ローカルもしくはリモート(Oracle DB がホストされている EC2)で、
 以下の手順に従って、データベースオブジェクトをアップロードしてください。
-1. `./import-schema/dumpfile` に `{name}_METADATAONLY.DMP` をアップロードしてください。
+1. `./import-schema/dumpfile` に `{name}_METADATAONLY.DMP` を用意してください。
 2. `import-schema` フォルダ配下の各シェルスクリプトについて、コメントの指示に従い、スキーマ名でループしている箇所に、アップロードしたファイルのスキーマ名を列挙してください。
 3. `import-schema` フォルダ配下のシェルスクリプトを番号順に実行してください。
 
@@ -139,48 +141,78 @@ ORA-31640: unable to open dump file "/home/oracle/dumpfile/3E0A3xxxxxE003yyyyyyy
 
 ログイン手順
 ```bash
-ssh -F ssh-config oracle
 sudo su - oracle
 ```
 
-## 🤖 AI エージェントを使用したデータベースコードオブジェクトの変換
+## 🤖 AI エージェント(Strands Agents)を使用したデータベースコードオブジェクトの変換
 
-### 4. エージェントの起動
+### 1. エージェントの起動
+
+`ssh -F ssh-config oracle` でつないだ先、もしくはつないでいる PC の別ターミナルで以下を実行しま
+初回接続時は fingerprint す。  
+以下操作は `sample-sql-converter-agent-workshop` ディレクトリにいることを前提とします。
+エージェントの動作をカスタマイズしたい場合は事前に `agent/prompts/system_prompt.txt` を編集してください。
+
+#### 1.1 チャットで指示する場合
+以下コマンドを打つとユーザーの入力を待ち受けている状態になります。
+```bash
+cd ./agent/ 
+uv run main.py
+```
+
+`あなたは何ができますか？` というプロンプトを打つとどんなことをできるのかを教えてくれる他、DB Object をその DB Object を Oracle から検索して PostgreSQL のオブジェクトに変換を始めます(e.g.`PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE`)。  
+格納されているオブジェクトリストは `object_list_all.ini` にあるので参考にしてください。  
+結果は `./result/` 以下に出力されます。  
+対話をやめたい場合は `quit` と入力すると終わります。  
+
+#### 1.2 DB Object を指定する場合
+以下コマンドを打つと指定した　Oracle DB に格納されている DB Object を自動で探して PostgreSQL のオブジェクトに変換します。  
+格納されているオブジェクトリストは `object_list_all.ini` にあるので参考にしてください。  
+チャット同様に結果は `./result/` 以下に出力されます。
 
 ```bash
-cd ./agent/ # リポジトリルートディレクトリがカレントディレクトリの前提です
-
-# 使い方 1 ）チャットで指示する場合
-uv run main.py
-
-# 使い方 2 ) DB Object を指定する場合
-# DB_ONJECT_TYPE[space]SCHEMA_NAME.OBJECT_NAME で指定してください
+cd ./agent/ 
 uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE"
+```
 
-# 使い方 3 ) まとめて実行する場合
+#### 1.3 まとめて実行する場合
+
+`./agent/object_list.ini` にある DB Object を対象に一括変換を試みます。
+
+```bash
+cd ./agent/
 ./run.sh
+```
 
-# run.sh のオプション一覧
+`run.sh` および `main.py` にはいくつかのオプションがあります。
+
+```bash
 # --system-prompt <ファイル名>: カスタムシステムプロンプトファイルを指定
 # -f, --file <ファイル名>: 処理対象のオブジェクトリストファイルを指定（デフォルト: object_list.ini）
-# --avoid-throttling: Bedrockのトークン制限エラー時に自動リトライを有効化
+# --avoid-throttling: Bedrockのトークン制限エラー時に自動リトライ及び token 使用量に応じた sleep を有効化
 
-# 使用例:
+# カスタムシステムプロンプト
+uv run main.py --system-prompt custom_prompt.txt
 ./run.sh --system-prompt custom_prompt.txt
+
+# 一括変換のオブジェクト一覧指定
 ./run.sh -f custom_object_list.ini
+
+# 自動リトライ & sleep
+uv run main.py --avoid-throttling
 ./run.sh --avoid-throttling
-./run.sh --system-prompt custom_prompt.txt --file custom_list.ini --avoid-throttling
 
 # 全てのオブジェクトを一括処理する場合:
 ./run.sh -f object_list_all.ini --avoid-throttling
 
 ```
 
-### 5. カスタム利用例
+### 5. (オプション)カスタム利用例
 コードの行数が長い場合や複雑なプロシージャの場合に、変換順序の調整やコードを分割してから変換することが有効であるため、その実行方法をみていきます。
+以下操作は `sample-sql-converter-agent-workshop` ディレクトリにいることを前提とします。
 
 ```bash
-cd ./agent/ # リポジトリルートディレクトリがカレントディレクトリの前提です
+cd ./agent/
 
 # OracleのDDLをまとめて取得 
 ./getDDL.sh object_list.ini
@@ -199,14 +231,16 @@ uv run main.py --system-prompt sortObject.txt
 ## 🤖 AI エージェントを使用したアプリケーションSQLの変換
 サンプルとしてOracleデータベースを使用した従業員情報の管理（登録、更新、削除、検索）を行うSpring + MyBatisアプリケーションの基盤となるスクリプト群を変換します。
 
-### 6. サンプルアプリケーションの確認
+### 1. サンプルアプリケーションの確認
 リポジトリルートディレクトリにある `./application/` に配置されたサンプルアプリケーションの内容をチェックしてください。
 
 
-### 7. エージェントの起動
+### 2. エージェントの起動
+
+以下操作は `sample-sql-converter-agent-workshop` ディレクトリにいることを前提とします。
 
 ```bash
-cd ../agent # リポジトリルートディレクトリがカレントディレクトリの前提です
+cd ./agent # リポジトリルートディレクトリがカレントディレクトリの前提です
 
 # アプリケーションの変換
 # 例) uv run main.py --prompt "<ソースの配置場所> <アプリ名> <テスト名>" --system-prompt "system_prompt_app.txt"
@@ -214,38 +248,25 @@ uv run main.py --prompt "../application/employee-mgmt/application employee-mgmt 
 
 ```
 
+## Amazon Q Developer CLI をコーディングエージェントとして使う場合
+Oracle DB/PostgreSQL へのアクセスするツールは MCP サーバー化してあるため、Strands Agents を使わずに Amazon Q Developer CLI から同様のことを行うこともできます。  
+Amazon Q Developer CLI のインストール方法及びサブスクライブの方法については[install](https://docs.aws.amazon.com/ja_jp/amazonq/latest/qdeveloper-ug/command-line-installing.html),[subscribe](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-admin-setup-subscribe-general.html)を参照してください。  
+リモートサーバーの場合はインストール済のためサブスクライブだけで済みます。
+ssh で繋いでトンネリングしたローカル環境で Amazon Q Developer CLI を実行する場合は、`~/.aws/amazonq/` に `q-dev/mcp.json` をコピーしてください。リモートサーバーは設定済です。
 
-## その他
-
-### Amazon Q Developer のセットアップ方法
-
-インストール方法
-https://docs.aws.amazon.com/ja_jp/amazonq/latest/qdeveloper-ug/command-line-installing-ssh-setup-autocomplete.html#command-line-install-q
-
-セットアップ方法（認証設定から「CLI」タブを選択）
-https://catalog.workshops.aws/qwords/ja-JP/10-start-workshop/16-builder-id
-
-
-###　 Oracle Database への接続方法
+### Q Developer の起動
+以下コマンドを実行してください。
 
 ```bash
-# Oracle XE on EC2 インスタンスへの接続 
-cd sample-sql-converter-agent-workshop/
-ssh -F ssh-config oracle
-
-# Oracle ユーザーに遷移
-sudo su - oracle
-
-# Oracle Database の SYSおよびSYSTEMスキーマのパスワードを取得
-SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id oracle-credentials --region us-east-1 --query SecretString --output text)
-DB_PASSWORD=$(echo "$SECRET_JSON" | jq -r '.password')
-
-# Oracle Database に接続
-sqlplus sys/${DB_PASSWORD}@localhost/XEPDB1 as sysdba
-
-sqlplus system/${DB_PASSWORD}@localhost/XEPDB1 
-
+cd q-dev
+q login
+# q login 実行後、表示される指示に従う
+q chat
+# q chat を打ち込むと対話できるようになるため、DB オブジェクトを入力することで変換作業を行うことができます。(e.g. PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE)
 ```
+
+### Q Developer のカスタマイズ
+`q-dev/AmazonQ.md` の指示を参照します。カスタマイズしたい場合は `AmazonQ.md` を編集するか、[こちら](https://docs.aws.amazon.com/ja_jp/amazonq/latest/qdeveloper-ug/command-line-context.html)を参照して、指示をカスタマイズしてください。
 
 
 ## 環境の削除
