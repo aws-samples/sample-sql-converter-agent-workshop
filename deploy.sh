@@ -75,7 +75,11 @@ cd ../
 # ssh-config の HostName を新しいインスタンスIDで更新
 export NEW_INSTANCE_ID=$(jq -r --arg stack_name "${stack_name}" '.[$stack_name].OracleInstanceId' output.json)
 if [ -f ssh-config ] && [ ! -z "$NEW_INSTANCE_ID" ]; then
-    sed -i '' "s/HostName .*/HostName $NEW_INSTANCE_ID/" ssh-config
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i '' "s/HostName .*/HostName $NEW_INSTANCE_ID/" ssh-config
+    else
+        sed -i "s/HostName .*/HostName $NEW_INSTANCE_ID/" ssh-config
+    fi
     echo "ssh-config を新しいインスタンスID ($NEW_INSTANCE_ID) で更新しました。"
 fi
 
