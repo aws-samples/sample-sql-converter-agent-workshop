@@ -94,6 +94,7 @@ export class OracleDbInstance extends Construct {
       assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
+        ManagedPolicy.fromAwsManagedPolicyName('AmazonBedrockFullAccess'),
       ],
     });
 
@@ -118,20 +119,6 @@ export class OracleDbInstance extends Construct {
         'arn:aws:secretsmanager:*:*:secret:aurora-pg-credentials*',
         'arn:aws:rds:*:*:cluster:*',
         '*'
-      ]
-    }));
-
-    // Add Bedrock permissions
-    instanceRole.addToPolicy(new PolicyStatement({
-      actions: [
-        'bedrock:InvokeModel',
-        'bedrock:InvokeModelWithResponseStream',
-        'bedrock:Converse',
-        'bedrock:ConverseStream'
-      ],
-      resources: [
-        'arn:aws:bedrock:*::foundation-model/*',
-        'arn:aws:bedrock:*:*:inference-profile/*'
       ]
     }));
 

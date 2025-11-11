@@ -83,16 +83,5 @@ echo "Region set to: $REGION"
 sudo -u ec2-user bash -c 'wget -qO- https://astral.sh/uv/install.sh | sh'
 sudo -u ec2-user bash -c 'curl -fsSL https://raw.githubusercontent.com/abhilashiig/kiro-ide-linux-installation/main/clone-and-install-kiro.sh | bash'
 
-echo "=== GUI環境セットアップ完了 ==="
 echo "接続情報:"
-echo ""
-echo "【VNC接続】"
-echo "  ポート: 5901"
-echo "  パスワード: rdppassword123"
-echo "  対応クライアント:"
-echo "    - macOS Screen Sharing: vnc://localhost:5901"
-echo "    - RealVNC Viewer: localhost:5901"
-echo "    - その他VNCクライアント"
-echo ""
-echo "SSH トンネリング:"
-echo "  ssh -F ssh-config -L 5901:localhost:5901 oracle"
+echo "  ssh -F ssh-config oracle"
