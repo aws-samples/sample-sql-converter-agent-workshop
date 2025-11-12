@@ -14,7 +14,7 @@ import {
   UserData,
   Vpc,
 } from 'aws-cdk-lib/aws-ec2';
-import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import {
   BlockPublicAccess,
   Bucket,
@@ -94,12 +94,33 @@ export class OracleDbInstance extends Construct {
       assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
+        ManagedPolicy.fromAwsManagedPolicyName('AmazonBedrockFullAccess'),
       ],
     });
 
     // Add S3 read permissions to the instance role
     scriptBucket.grantRead(instanceRole);
     oracleCredentials.grantRead(instanceRole);
+
+    // Add Secrets Manager read permissions for oracle-credentials
+    instanceRole.addToPolicy(new PolicyStatement({
+      actions: ['secretsmanager:GetSecretValue'],
+      resources: ['arn:aws:secretsmanager:*:*:secret:oracle-credentials*']
+    }));
+
+    // Add PostgreSQL connection test permissions
+    instanceRole.addToPolicy(new PolicyStatement({
+      actions: [
+        'secretsmanager:GetSecretValue',
+        'rds-data:ExecuteStatement',
+        'sts:GetCallerIdentity'
+      ],
+      resources: [
+        'arn:aws:secretsmanager:*:*:secret:aurora-pg-credentials*',
+        'arn:aws:rds:*:*:cluster:*',
+        '*'
+      ]
+    }));
 
     // Oracle XE installation user data script - simplified to download and run the script from S3
     const userDataScript = UserData.forLinux();
@@ -110,9 +131,18 @@ export class OracleDbInstance extends Construct {
       'mkdir -p /opt/oracle-install/',
       'echo asset ダウンロード',
       `aws s3 sync s3://${scriptBucket.bucketName}/ /opt/oracle-install/`,
-      'chmod +x /opt/oracle-install/install-oracle-xe.sh'
+      'chmod +x /opt/oracle-install/install-oracle-xe.sh',
       // user data 内でインストールスクリプトを流すとなぜか再起動が発生して途中で止まるので別途 run command で実行
       // '/opt/oracle-install/install-oracle-xe.sh'
+      
+      // RDP環境のセットアップ
+      'echo "RDP環境のセットアップ開始"',
+      'dnf config-manager --enable crb || true',
+      'dnf install -y xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-apps',
+      'dnf install -y @xfce-desktop-environment',
+      'dnf install -y firefox xfce4-terminal xrdp',
+      'systemctl enable xrdp',
+      'echo "RDP環境のセットアップ完了"'
     );
 
     // Create the EC2 instance with Oracle XE

@@ -49,15 +49,10 @@ def get_db_credentials():
         secret_response = secret_manager.get_secret_value(SecretId="oracle-credentials")
         secret = json.loads(secret_response["SecretString"])
 
-        # IPアドレスの取得
-        with open("./output.json", "r") as f:
-            ipaddress = json.load(f)[stack_name]["OracleInstancePublicIP"]
-
         print_success("認証情報の取得に成功しました")
         return {
             "username": secret["username"],
             "password": secret["password"],
-            "ipaddress": ipaddress,
         }
     except Exception as e:
         print_error("認証情報の取得に失敗しました")
@@ -69,9 +64,8 @@ def execute_query(credentials):
     try:
         print_info("データベース", "Oracle DB に接続中...")
         dsn = oracledb.makedsn(
-            # host=credentials['ipaddress']},
             host="localhost",
-            port=11521,
+            port=1521,
             service_name="XE",
         )
         connection = oracledb.connect(

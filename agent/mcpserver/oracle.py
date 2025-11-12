@@ -26,7 +26,7 @@ def get_db_credentials():
     user = secret_response["username"]
     password = secret_response["password"]
 
-    dsn = oracledb.makedsn(host="localhost", port=11521, service_name="XEPDB1")
+    dsn = oracledb.makedsn(host="localhost", port=1521, service_name="XEPDB1")
 
     return {
         "user": user,
