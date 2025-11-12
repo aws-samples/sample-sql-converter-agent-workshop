@@ -149,15 +149,6 @@ su - oracle -c "lsnrctl status"
 echo --------------------------------------------------
 echo "Oracle Database XE 21c のインストールが完了しました"
 
-echo --------------------------------------------------
-echo "datapump でスキーマ情報を取り込みます"
-chown oracle:oinstall /opt/oracle-install/*.dmp 2>/dev/null || echo "No .dmp files found"
-# dmpファイルを/opt/oracle-installから/home/oracleに移動
-if ls /opt/oracle-install/*.dmp 1> /dev/null 2>&1; then
-    mv /opt/oracle-install/*.dmp /home/oracle/
-    chown oracle:oinstall /home/oracle/*.dmp
-fi
-
 # XEPDB1への接続確認
 echo --------------------------------------------------
 echo "XEPDB1への接続確認"
@@ -173,15 +164,6 @@ for i in {1..10}; do
         exit 1
     fi
 done
-
-# 各dmpファイルに対してインポートを実行
-if [ -z "$dump_files" ]; then
-    echo "Info: No dump files found in /home/oracle - skipping import"
-else
-    for dump_file in $dump_files; do
-        import_schema "$dump_file"
-    done
-fi
 
 echo --------------------------------------------------
 echo "DB オブジェクトを作成します"

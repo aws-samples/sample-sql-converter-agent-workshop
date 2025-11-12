@@ -122,30 +122,6 @@ uv run ora_connect_test.py
 uv run pg_connect_test.py
 ```
 
-## 6. (オプション) データベースオブジェクトのロード
-このワークショップでは、すでにいくつかのデータベースオブジェクトが Oracle DB に格納されていますが、自身のデータベースオブジェクトを持ち込むことも可能です。
-ローカルもしくはリモート(Oracle DB がホストされている EC2)で、
-以下の手順に従って、データベースオブジェクトをアップロードしてください。
-1. `./import-schema/dumpfile` に `{name}_METADATAONLY.DMP` を用意してください。
-2. `import-schema` フォルダ配下の各シェルスクリプトについて、コメントの指示に従い、スキーマ名でループしている箇所に、アップロードしたファイルのスキーマ名を列挙してください。
-3. `import-schema` フォルダ配下のシェルスクリプトを番号順に実行してください。
-
-```bash
-chmod +x import-schema/1pre.sh
-./import-schema/1pre.sh
-chmod +x import-schema/2load.sh
-./import-schema/2load.sh
-```
-
-`2load.sh` で以下のエラーが出る場合は、Oracle on EC2 インスタンスに oracle ユーザーでログインし、パスが一致するようにディレクトリを作成し、ダンプファイルを移動してください。
-
-ORA-31640: unable to open dump file "/home/oracle/dumpfile/3E0A3xxxxxE003yyyyyyyy0C/TESTUSER_METADATAONLY.DMP" for read
-
-ログイン手順
-```bash
-sudo su - oracle
-```
-
 ## 🤖 AI エージェント(Strands Agents)を使用したデータベースコードオブジェクトの変換
 
 ### 1. エージェントの起動
@@ -208,27 +184,6 @@ uv run main.py --avoid-throttling
 
 ```
 
-### 1.4 (オプション)カスタム利用例
-コードの行数が長い場合や複雑なプロシージャの場合に、変換順序の調整やコードを分割してから変換することが有効であるため、その実行方法をみていきます。
-以下操作は `sample-sql-converter-agent-workshop` ディレクトリにいることを前提とします。
-
-```bash
-cd ./agent/
-
-# OracleのDDLをまとめて取得 
-./getDDL.sh object_list.ini
-
-# 並び替え
-uv run main.py --system-prompt sortObject.txt
-  (起動後に以下を貼り付けてください。)
-  ./result
-
-# 変換実行
-./run.sh --system-prompt custom_prompt.txt --file object_list_sorted.ini
-
-```
-
-
 ## 🤖 AI エージェントを使用したアプリケーションSQLの変換
 サンプルとしてOracleデータベースを使用した従業員情報の管理（登録、更新、削除、検索）を行うSpring + MyBatisアプリケーションの基盤となるスクリプト群を変換します。
 
@@ -272,4 +227,4 @@ q chat
 
 ## 環境の削除
 `./destroy.sh` を実行してください。  
-`./destroy.sh` を実行する際、DMSを使用していた場合はDMSを使用した環境でスキーマ変換ウィザードをCloseしてから `./destroy.sh` を実行してください。Closeしないとエラーが発生して削除ができません。
+`./destroy.sh` を実行する際、DMS を使用していた場合は DMS を使用した環境でスキーマ変換ウィザードを Close してから `./destroy.sh` を実行してください。Close しないとエラーが発生して削除ができません。
