@@ -18,10 +18,10 @@ export class Network extends Construct {
   constructor(scope: Construct, id: string, props: NetworkProps) {
     super(scope, id);
 
-    // VPC (1 public subnet and 1 private subnet)
+    // VPC (1 public subnet, 1 private subnet with NAT Gateway, and 1 isolated subnet)
     const vpc = new Vpc(this, 'Vpc', {
       maxAzs: 2,
-      natGateways: 0,
+      natGateways: 1,
       subnetConfiguration: [
         {
           cidrMask: 24,
@@ -31,6 +31,11 @@ export class Network extends Construct {
         {
           cidrMask: 24,
           name: 'private',
+          subnetType: SubnetType.PRIVATE_WITH_EGRESS,
+        },
+        {
+          cidrMask: 24,
+          name: 'isolated',
           subnetType: SubnetType.PRIVATE_ISOLATED,
         },
       ],
@@ -60,7 +65,7 @@ export class Network extends Construct {
       this,
       'InstanceConnectEndpoint',
       {
-        subnetId: vpc.isolatedSubnets[0].subnetId,
+        subnetId: vpc.privateSubnets[0].subnetId,
         preserveClientIp: false,
         securityGroupIds: [sgIce.securityGroupId],
       }

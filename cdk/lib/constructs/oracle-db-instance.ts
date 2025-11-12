@@ -37,7 +37,6 @@ export class OracleDbInstance extends Construct {
 
   readonly outputs: {
     ScriptBucketName: string;
-    OracleInstancePublicIP: string;
     OracleInstanceId: string;
     OracleKeyPairRetrievalCommand: string;
     SSHCommand: string;
@@ -162,7 +161,7 @@ export class OracleDbInstance extends Construct {
       userData: userDataScript,
       role: instanceRole,
       vpcSubnets: {
-        subnetType: SubnetType.PUBLIC,
+        subnetType: SubnetType.PRIVATE_WITH_EGRESS,
       },
       detailedMonitoring: true,
       // Increase root volume size to accommodate Oracle XE
@@ -184,7 +183,6 @@ export class OracleDbInstance extends Construct {
 
     this.outputs = {
       ScriptBucketName: scriptBucket.bucketName,
-      OracleInstancePublicIP: oracleInstance.instancePublicIp,
       OracleInstanceId: oracleInstance.instanceId,
       OracleKeyPairRetrievalCommand: Fn.join('', [
         'aws ssm get-parameter --name /ec2/keypair/',
@@ -194,8 +192,7 @@ export class OracleDbInstance extends Construct {
         ' --with-decryption --query Parameter.Value --output text > ../oracle-xe-key.pem && chmod 400 ../oracle-xe-key.pem',
       ]),
       SSHCommand: Fn.join('', [
-        'ssh -i oracle-xe-key.pem ec2-user@',
-        oracleInstance.instancePublicIp,
+        'ssh -F ssh-config oracle',
       ]),
     };
 
