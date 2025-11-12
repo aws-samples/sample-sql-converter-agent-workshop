@@ -1,25 +1,27 @@
-# Oracle to PostgreSQL Migration with Strands AI Agent
+# SQL Converter Agent Workshop
 
 このプロジェクトは、AI エージェントを用いて、異種 DB 間で SQL を変換するワークショップです。  
 題材として Oracle Database から Amazon Aurora PostgreSQL への SQL 変換を行います。  
-AWS CDK を使用して Oracle XE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できないデータベースオブジェクトと SQL 実行機能を有する Java アプリケーションを対象に [Strands Agents SDK](https://strandsagents.com/) を活用してデータベース分析と移行作業を軽減します。
+AWS CDK を使用して Oracle XE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できないデータベースオブジェクトと SQL 実行機能を有する Java アプリケーションを対象に [Strands Agents SDK](https://strandsagents.com/) 及び [Amazon Q Developer CLI](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line.html) を活用して SQL 変換作業を軽減します。
 
 > [!NOTE]
 > このコンテンツは Oracle DB と PostgreSQL を立て、この環境に閉じて AI エージェントが SQL を読み書きし、実行し、修正し、結果を残していくものです。
-> AI エージェントが Database を操作する都合上、本番環境でのご利用はおやめください。あくまで、ここでコードを作成・テストするだけにとどめてください。
+> AI エージェントが Database を操作する都合上、本番環境でのご利用はおやめください。あくまで、ここでコードを生成・テストするだけにとどめてください。
 
 ## 🏗️ アーキテクチャ概要
 
 - **Oracle Database**: EC2 インスタンス上の Oracle XE 21c
 - **PostgreSQL**: Amazon Aurora PostgreSQL Serverless v2
-- **AI Agent**: Oracle DB と同居もしくはローカル PC
-- **Amazon Bedrock**: AI Agent が使用するモデルを提供するサービス
+- **AI エージェント**: Oracle DB を立てている EC2 に配置した Strands Agent 製 AI エージェントもしくは Amazon Q Developer
+- **Amazon Bedrock**: Strands Agent 製 AI エージェントが使用するモデルを提供するサービス
+
+![](./image/architecture.png)
 
 ## 📋 前提条件
 
 ### 必要なソフトウェア
 
-- Node.js 22 以上
+- Node.js
 
 他、必要なものはこのワークショップを実行時にインストールします。
 
