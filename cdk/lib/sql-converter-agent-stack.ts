@@ -41,13 +41,6 @@ export class SqlConverterAgentStack extends Stack {
       description: 'ScriptBucketName',
     });
 
-    // Output the EC2 instance public IP
-    new CfnOutput(this, 'OracleInstancePublicIP', {
-      exportName: 'OracleInstancePublicIP',
-      value: oracleDb.outputs.OracleInstancePublicIP,
-      description: 'Public IP address of the Oracle XE instance',
-    });
-
     // Output the EC2 instance ID
     new CfnOutput(this, 'OracleInstanceId', {
       exportName: 'OracleInstanceId',
