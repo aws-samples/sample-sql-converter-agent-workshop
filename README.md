@@ -165,13 +165,13 @@ cd ./agent/
 `run.sh` および `main.py` にはいくつかのオプションがあります。
 
 ```bash
-# --system-prompt <ファイル名>: カスタムシステムプロンプトファイルを指定
-# -f, --file <ファイル名>: 処理対象のオブジェクトリストファイルを指定（デフォルト: object_list.ini）
+# --mode custom: agent/prompts/custom/custon.txt に記載のプロンプトで動作します。
+# (run.sh のみで動作) -f, --file <ファイル名>: 処理対象のオブジェクトリストファイルを指定（デフォルト: object_list.ini）
 # --avoid-throttling: Bedrockのトークン制限エラー時に自動リトライ及び token 使用量に応じた sleep を有効化
 
 # カスタムシステムプロンプト
-uv run main.py --system-prompt custom_prompt.txt
-./run.sh --system-prompt custom_prompt.txt
+uv run main.py --mode custom
+./run.sh --mode custom
 
 # 一括変換のオブジェクト一覧指定
 ./run.sh -f custom_object_list.ini
@@ -200,7 +200,7 @@ uv run main.py --avoid-throttling
 cd ./agent # リポジトリルートディレクトリがカレントディレクトリの前提です
 
 # アプリケーションの変換
-# 例) uv run main.py --prompt "<ソースの配置場所> <アプリ名> <テスト名>" --system-prompt "system_prompt_app.txt"
+# 例) uv run main.py --prompt "<ソースの配置場所> <アプリ名> <テスト名>" --mode "app"
 uv run main.py --prompt "../application/employee-mgmt/application employee-mgmt test01" --mode "app"
 
 ```

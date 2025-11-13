@@ -118,7 +118,7 @@ def main():
         "--mode",
         type=str,
         default="db_object",
-        help="db_object or app",
+        help="db_object or app or custom",
     )
     parser.add_argument(
         "--avoid-throttling",

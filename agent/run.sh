@@ -4,13 +4,13 @@
 trap 'echo "\nInterrupted. Exiting..."; exit 1' INT
 
 # Parse options
-SYSTEM_PROMPT_OPT=""
+MODE_OPT=""
 CONFIG_FILE="object_list.ini"
 AVOID_THROTTLING=""
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --system-prompt)
-            SYSTEM_PROMPT_OPT="--system-prompt $2"
+        --mode)
+            MODE_OPT="--mode $2"
             shift 2
             ;;
         -f|--file)
@@ -38,7 +38,7 @@ while IFS= read -r line; do
     fi
     
     echo "Processing: $line"
-    if uv run main.py --prompt "$line" $SYSTEM_PROMPT_OPT $AVOID_THROTTLING; then
+    if uv run main.py --prompt "$line" $MODE_OPT $AVOID_THROTTLING; then
         # Comment out the processed line (macOS compatible)
         if [[ "$OSTYPE" == "darwin"* ]]; then
             # macOS (BSD sed)
