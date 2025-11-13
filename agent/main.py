@@ -15,6 +15,7 @@ from strands.tools.mcp import MCPClient
 from strands_tools import file_read, file_write
 from utils.callbacks import AgentCallbackHandler
 from utils.logger import setup_application_logging
+from prompts.prompts import get_system_prompt
 
 logger = setup_application_logging(log_level=logging.INFO)
 os.environ["BYPASS_TOOL_CONSENT"] = "true"
@@ -42,12 +43,11 @@ def create_mcp_client():
     )
 
 
-def create_agent(system_prompt_file="./system_prompt.txt"):
+def create_agent(mode="db_object"):
     """エージェントとMCPクライアントを初期化"""
-    prompt_dir = Path(__file__).parent / "prompts"
-    with open(prompt_dir / system_prompt_file, "rt") as f:
-        system_prompt = f.read()
-
+    
+    system_prompt = get_system_prompt(mode)
+    
     mcp_client = create_mcp_client()
     
     with mcp_client:
@@ -59,10 +59,9 @@ def create_agent(system_prompt_file="./system_prompt.txt"):
             tools=all_tools,
             callback_handler=AgentCallbackHandler(),
             model=BedrockModel(
-                model_id="us.anthropic.claude-sonnet-4-20250514-v1:0",
+                model_id="global.anthropic.claude-sonnet-4-5-20250929-v1:0",
                 region_name="us-east-1",
                 temperature=0,
-                top_p=0,
                 cache_tools="default",
                 additional_request_fields={"anthropic_beta": ["context-1m-2025-08-07"]},
                 boto_client_config=Config(
@@ -116,10 +115,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--prompt", type=str, help="Prompt text")
     parser.add_argument(
-        "--system-prompt",
+        "--mode",
         type=str,
-        default="./system_prompt.txt",
-        help="System prompt text file path from ./prompts",
+        default="db_object",
+        help="db_object or app or custom",
     )
     parser.add_argument(
         "--avoid-throttling",
@@ -133,7 +132,7 @@ def main():
     if args.prompt:
         user_input = args.prompt
         logger.info(f"User prompt: {user_input}")
-        mcp_client, agent = create_agent(args.system_prompt)
+        mcp_client, agent = create_agent(args.mode)
         if args.avoid_throttling:
             response = resumable_agent_run(mcp_client, agent, user_input)
         else:
@@ -144,7 +143,7 @@ def main():
 
     else:
         # 対話モード
-        mcp_client, agent = create_agent(args.system_prompt)
+        mcp_client, agent = create_agent(args.mode)
 
         with mcp_client:
             while True:

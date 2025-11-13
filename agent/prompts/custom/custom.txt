@@ -1,0 +1,2 @@
+与えられた Oracle の DB Object をデータベースから抽出して PostgreSQL に変換して実行してください。
+変換後の SQL は ./result/{オブジェクトの名前}.sql に保存してください。

@@ -1,6 +1,6 @@
 # SQL Converter Agent Workshop
 
-このプロジェクトは、AI エージェントを用いて、異種 DB 間で SQL を変換するワークショップです。  
+SQL Converter Agent Workshop は、AI エージェントを用いて、異種 DB 間で SQL を変換するワークショップです。  
 題材として Oracle Database から Amazon Aurora PostgreSQL への SQL 変換を行います。  
 AWS CDK を使用して Oracle XE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できないデータベースオブジェクトと SQL 実行機能を有する Java アプリケーションを対象に [Strands Agents SDK](https://strandsagents.com/) 及び [Amazon Q Developer CLI](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line.html) を活用して SQL 変換作業を軽減します。
 
@@ -162,27 +162,33 @@ cd ./agent/
 ./run.sh
 ```
 
-`run.sh` および `main.py` にはいくつかのオプションがあります。
+#### 1.4 (Option) 呼出時に受付可能な引数
+`run.sh` および `main.py` にはいくつかのオプション機能があります。
+
+##### システムプロンプトのカスタマイズ
+`run.sh` 及び `main.py` ではシステムプロンプトのカスタマイズを受け付けます。  
+`--mode custom` を付加すると、`agent/prompts/custom/custom.txt` で記述するプロンプトが適用されます。  
+`custom.txt` を編集して用途にあったプロンプトを設定してください。
 
 ```bash
-# --system-prompt <ファイル名>: カスタムシステムプロンプトファイルを指定
-# -f, --file <ファイル名>: 処理対象のオブジェクトリストファイルを指定（デフォルト: object_list.ini）
-# --avoid-throttling: Bedrockのトークン制限エラー時に自動リトライ及び token 使用量に応じた sleep を有効化
+uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE" --mode "custom"
+./run.sh --mode custom
+```
 
-# カスタムシステムプロンプト
-uv run main.py --system-prompt custom_prompt.txt
-./run.sh --system-prompt custom_prompt.txt
+##### DB Object のファイル指定
+一括で変換をかける際、変換したい DB Object リストを `-f, --file <テキストファイル名>`の形で DB Object を改行で列挙したテキストファイルで渡すことができます。デフォルトでは `-f object_list.ini` が設定されています。
 
-# 一括変換のオブジェクト一覧指定
+```bash
 ./run.sh -f custom_object_list.ini
+```
 
-# 自動リトライ&sleep
+##### トークン制限及び sleep 機能
+
+`--avoid-throttling` オプションを使うことで Bedrock のトークン制限エラー時に自動リトライ及び token 使用量に応じた sleep を有効化できます。
+
+```bash
 uv run main.py --avoid-throttling
 ./run.sh --avoid-throttling
-
-# 全てのオブジェクトを一括処理する場合:
-./run.sh -f object_list_all.ini --avoid-throttling
-
 ```
 
 ## 🤖 AI エージェントを使用したアプリケーションSQLの変換
@@ -200,8 +206,8 @@ uv run main.py --avoid-throttling
 cd ./agent # リポジトリルートディレクトリがカレントディレクトリの前提です
 
 # アプリケーションの変換
-# 例) uv run main.py --prompt "<ソースの配置場所> <アプリ名> <テスト名>" --system-prompt "system_prompt_app.txt"
-uv run main.py --prompt "../application/employee-mgmt/application employee-mgmt test01" --system-prompt "system_prompt_app.txt"
+# 例) uv run main.py --prompt "<ソースの配置場所> <アプリ名> <テスト名>" --mode "app"
+uv run main.py --prompt "../application/employee-mgmt/application employee-mgmt test01" --mode "app"
 
 ```
 
