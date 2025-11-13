@@ -162,27 +162,33 @@ cd ./agent/
 ./run.sh
 ```
 
-`run.sh` および `main.py` にはいくつかのオプションがあります。
+#### 1.4 (Option) 呼出時の機能
+`run.sh` および `main.py` にはいくつかのオプション機能があります。
+
+##### システムプロンプトのカスタマイズ
+`run.sh` 及び `main.py` ではシステムプロンプトのカスタマイズを受け付けます。  
+`--mode custom` を付加すると、`agent/prompts/custom/custom.txt` で記述するプロンプトが適用されます。  
+`custom.txt` を編集して用途にあったプロンプトを設定してください。
 
 ```bash
-# --mode custom: agent/prompts/custom/custon.txt に記載のプロンプトで動作します。
-# (run.sh のみで動作) -f, --file <ファイル名>: 処理対象のオブジェクトリストファイルを指定（デフォルト: object_list.ini）
-# --avoid-throttling: Bedrockのトークン制限エラー時に自動リトライ及び token 使用量に応じた sleep を有効化
-
-# カスタムシステムプロンプト
-uv run main.py --mode custom
+uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE" --mode "custom"
 ./run.sh --mode custom
+```
 
-# 一括変換のオブジェクト一覧指定
+##### DB Object のファイル指定
+一括で変換をかける際、変換したい DB Object リストを `-f, --file <テキストファイル名>`の形で DB Object を改行で列挙したテキストファイルで渡すことができます。デフォルトでは `-f object_list.ini` が設定されています。
+
+```bash
 ./run.sh -f custom_object_list.ini
+```
 
-# 自動リトライ&sleep
+##### トークン制限及び sleep 機能
+
+`--avoid-throttling` オプションを使うことで Bedrock のトークン制限エラー時に自動リトライ及び token 使用量に応じた sleep を有効化できます。
+
+```bash
 uv run main.py --avoid-throttling
 ./run.sh --avoid-throttling
-
-# 全てのオブジェクトを一括処理する場合:
-./run.sh -f object_list_all.ini --avoid-throttling
-
 ```
 
 ## 🤖 AI エージェントを使用したアプリケーションSQLの変換
