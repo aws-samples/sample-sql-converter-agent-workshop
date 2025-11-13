@@ -182,7 +182,7 @@ uv run main.py --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERE
 ./run.sh -f custom_object_list.ini
 ```
 
-##### トークン制限及び sleep 機能
+##### エラー時のリトライ及び sleep 機能
 
 `--avoid-throttling` オプションを使うことで Bedrock のトークン制限エラー時に自動リトライ及び token 使用量に応じた sleep を有効化できます。
 
