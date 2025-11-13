@@ -1,6 +1,6 @@
 # SQL Converter Agent Workshop
 
-このプロジェクトは、AI エージェントを用いて、異種 DB 間で SQL を変換するワークショップです。  
+SQL Converter Agent Workshop は、AI エージェントを用いて、異種 DB 間で SQL を変換するワークショップです。  
 題材として Oracle Database から Amazon Aurora PostgreSQL への SQL 変換を行います。  
 AWS CDK を使用して Oracle XE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できないデータベースオブジェクトと SQL 実行機能を有する Java アプリケーションを対象に [Strands Agents SDK](https://strandsagents.com/) 及び [Amazon Q Developer CLI](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line.html) を活用して SQL 変換作業を軽減します。
 
