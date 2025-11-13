@@ -2,6 +2,7 @@ import os
 
 module_dir = os.path.dirname(os.path.abspath(__file__))
 db_object_dir = os.path.join(module_dir, "./db_object")
+app_dir = os.path.join(module_dir, "./app")
 
 def load_file(dir,filename)->str:
     with open(os.path.join(dir,filename),"rt") as f:
@@ -27,8 +28,26 @@ class DBObject():
 """
         return prompt
 
+class App():
+    def __init__(self):
+        self.instruction = load_file(app_dir, "instruction.txt")
+        self.workflow = load_file(app_dir, "workflow.txt")
+        self.general_rule = load_file(app_dir, "general_rule.txt")
+        self.conversion_rules = load_file(module_dir, "conversion_rules.txt")
+        self.prompt = self.create_system_prompt()
+    def create_system_prompt(self) -> str:
+        prompt = f"""
+{self.instruction}
+{self.workflow}
+{self.general_rule}
+{self.conversion_rules}
+"""
+        return prompt
+
 def get_system_prompt(use_case):
     prompt = ""
-    if use_case == "DB_OBJECT":
+    if use_case == "db_object":
         prompt = DBObject().prompt
+    elif use_case == "app":
+        prompt = App().prompt
     return prompt

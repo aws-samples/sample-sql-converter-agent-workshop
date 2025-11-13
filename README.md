@@ -201,7 +201,7 @@ cd ./agent # リポジトリルートディレクトリがカレントディレ�
 
 # アプリケーションの変換
 # 例) uv run main.py --prompt "<ソースの配置場所> <アプリ名> <テスト名>" --system-prompt "system_prompt_app.txt"
-uv run main.py --prompt "../application/employee-mgmt/application employee-mgmt test01" --system-prompt "system_prompt_app.txt"
+uv run main.py --prompt "../application/employee-mgmt/application employee-mgmt test01" --mode "app"
 
 ```
 

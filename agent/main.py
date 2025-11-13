@@ -43,10 +43,11 @@ def create_mcp_client():
     )
 
 
-def create_agent(system_prompt_file="./system_prompt.txt"):
+def create_agent(mode="db_object"):
     """エージェントとMCPクライアントを初期化"""
-    system_prompt = get_system_prompt("DB_OBJECT")
-
+    
+    system_prompt = get_system_prompt(mode)
+    
     mcp_client = create_mcp_client()
     
     with mcp_client:
@@ -114,10 +115,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--prompt", type=str, help="Prompt text")
     parser.add_argument(
-        "--system-prompt",
+        "--mode",
         type=str,
-        default="./system_prompt.txt",
-        help="System prompt text file path from ./prompts",
+        default="db_object",
+        help="db_object or app",
     )
     parser.add_argument(
         "--avoid-throttling",
@@ -131,7 +132,7 @@ def main():
     if args.prompt:
         user_input = args.prompt
         logger.info(f"User prompt: {user_input}")
-        mcp_client, agent = create_agent(args.system_prompt)
+        mcp_client, agent = create_agent(args.mode)
         if args.avoid_throttling:
             response = resumable_agent_run(mcp_client, agent, user_input)
         else:
@@ -142,7 +143,7 @@ def main():
 
     else:
         # 対話モード
-        mcp_client, agent = create_agent(args.system_prompt)
+        mcp_client, agent = create_agent(args.mode)
 
         with mcp_client:
             while True:
