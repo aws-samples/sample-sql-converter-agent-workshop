@@ -52,7 +52,10 @@ EOF
 fi
 
 cd cdk
-cdk deploy --outputs-file ../output.json --require-approval never
+if ! cdk deploy --outputs-file ../output.json --require-approval never; then
+    echo "エラー: CDK デプロイに失敗しました"
+    exit 1
+fi
 
 # oracle-xe-key.pem ファイルが存在するか確認し、存在する場合は削除
 if [ -f ../oracle-xe-key.pem ]; then
