@@ -13,6 +13,7 @@ sts = boto3.client("sts")
 account_id = sts.get_caller_identity()["Account"]
 region = sts.meta.region_name
 
+
 def get_db_credentials():
     """
     AWS Secrets Manager から Aurora PostgreSQL の認証情報を取得する
@@ -44,6 +45,7 @@ def get_db_credentials():
     except Exception as e:
         logger.error(f"Failed to get credentials: {str(e)}", exc_info=True)
         raise Exception(f"Failed to get credentials: {str(e)}")
+
 
 def execute_query(credentials, sql):
     """
@@ -80,6 +82,7 @@ def execute_query(credentials, sql):
     except Exception as e:
         logger.error(f"Failed to execute query: {str(e)}", exc_info=True)
         raise Exception(str(e))
+
 
 def postgres_execute(sql):
     """

@@ -10,6 +10,7 @@ from utils.logger import get_logger
 logger = get_logger("oracle")
 secret_manager = boto3.client("secretsmanager")
 
+
 def get_db_credentials():
     """
     Get Oracle database credentials from AWS Secrets Manager and IP address from CDK output.
@@ -33,6 +34,7 @@ def get_db_credentials():
         "password": password,
         "dsn": dsn,
     }
+
 
 def execute_query(sql):
     """
@@ -69,11 +71,11 @@ def execute_query(sql):
             for row in response:
                 processed_row = []
                 for item in row:
-                    if hasattr(item, 'read'):
+                    if hasattr(item, "read"):
                         try:
                             lob_data = item.read()
                             if isinstance(lob_data, bytes):
-                                lob_data = lob_data.decode('utf-8', errors='ignore')
+                                lob_data = lob_data.decode("utf-8", errors="ignore")
                             processed_row.append(lob_data)
                         except Exception as e:
                             logger.error(f"Error reading LOB: {e}")
@@ -104,6 +106,7 @@ def execute_query(sql):
             cursor.close()
         if connection:
             connection.close()
+
 
 def oracle_execute(sql):
     """

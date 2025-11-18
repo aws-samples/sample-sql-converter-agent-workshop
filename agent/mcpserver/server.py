@@ -2,6 +2,7 @@ from mcp.server.fastmcp import FastMCP
 from oracle import oracle_execute
 from postgres import postgres_execute
 from shell import mkdir_p
+
 try:
     from utils.logger import get_logger
 except ImportError:
@@ -14,6 +15,7 @@ except ImportError:
 logger = get_logger("server")
 
 mcp = FastMCP("sql-converter")
+
 
 @mcp.tool()
 def run_ora_sql(sql):
@@ -28,6 +30,7 @@ def run_ora_sql(sql):
     """
     return oracle_execute(sql)
 
+
 @mcp.tool()
 def run_postgres_sql(sql):
     """
@@ -41,6 +44,7 @@ def run_postgres_sql(sql):
     """
     return postgres_execute(sql)
 
+
 @mcp.tool()
 def create_directory(path):
     """
@@ -53,6 +57,7 @@ def create_directory(path):
         str: Success or error message
     """
     return mkdir_p(path)
+
 
 if __name__ == "__main__":
     mcp.run(transport="stdio")

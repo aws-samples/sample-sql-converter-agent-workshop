@@ -31,13 +31,13 @@ def create_mcp_client():
     """MCP クライアントを作成"""
     config = load_mcp_config()
     server_config = config["mcpServers"]["sql-converter"]
-    
+
     return MCPClient(
         lambda: stdio_client(
             StdioServerParameters(
                 command=server_config["command"],
                 args=server_config["args"],
-                env=server_config.get("env", {})
+                env=server_config.get("env", {}),
             )
         )
     )
@@ -45,11 +45,11 @@ def create_mcp_client():
 
 def create_agent(mode="db_object"):
     """エージェントとMCPクライアントを初期化"""
-    
+
     system_prompt = get_system_prompt(mode)
-    
+
     mcp_client = create_mcp_client()
-    
+
     with mcp_client:
         mcp_tools = mcp_client.list_tools_sync()
         all_tools = [file_read, file_write] + mcp_tools
@@ -71,11 +71,13 @@ def create_agent(mode="db_object"):
                 ),
             ),
         )
-        
+
         return mcp_client, agent
 
 
-def resumable_agent_run(mcp_client: MCPClient, agent: Agent, prompt: str, max_retry: int = 1000) -> Agent:
+def resumable_agent_run(
+    mcp_client: MCPClient, agent: Agent, prompt: str, max_retry: int = 1000
+) -> Agent:
     """エラー時の再試行機能付きエージェント実行"""
     last_user_content = prompt
 
@@ -86,14 +88,16 @@ def resumable_agent_run(mcp_client: MCPClient, agent: Agent, prompt: str, max_re
                 break
             except Exception as e:
                 logger.error(f"エラーが発生しました (試行 {i + 1}/{max_retry}): {e}")
-                
+
                 if not agent.messages:
-                    logger.warning("メッセージリストが空です。初期プロンプトで再試行します。")
+                    logger.warning(
+                        "メッセージリストが空です。初期プロンプトで再試行します。"
+                    )
                     last_user_content = prompt
                     gc.collect()
                     sleep(60)
                     continue
-                
+
                 # メッセージ履歴を調整して再試行
                 for _ in range(2):
                     if len(agent.messages) == 0:
@@ -150,7 +154,9 @@ def main():
                 try:
                     user_input = input("質問を入力してください: ").strip()
                     user_input = "".join(
-                        char for char in user_input if ord(char) >= 32 or char in "\t\n\r"
+                        char
+                        for char in user_input
+                        if ord(char) >= 32 or char in "\t\n\r"
                     )
 
                     if user_input.lower() in ["quit", "exit", "q"]:
@@ -172,11 +178,15 @@ def main():
                     break
                 except Exception as e:
                     logger.error(f"Error processing request: {str(e)}", exc_info=True)
-                    
+
                     if "ThrottlingException" in str(e):
-                        logger.error("Bedrock throttling detected - API rate limit exceeded")
-                        logger.debug("Consider using --avoid-throttling option or waiting before retry")
-                    
+                        logger.error(
+                            "Bedrock throttling detected - API rate limit exceeded"
+                        )
+                        logger.debug(
+                            "Consider using --avoid-throttling option or waiting before retry"
+                        )
+
                     logger.error(f"エラーが発生しました: {str(e)}")
                     logger.warning("再度お試しください。")
 

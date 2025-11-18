@@ -6,6 +6,7 @@ from utils.logger import get_logger
 
 logger = get_logger("shell")
 
+
 def mkdir_p(path):
     """
     Create directory and all parent directories if they don't exist (mkdir -p equivalent).
