@@ -59,7 +59,7 @@ export class AuroraServerlessPg extends Construct {
 
     // Allow Oracle security group to access PostgreSQL
     if (props.oracleSecurityGroup) {
-      dbCluster.connections.allowFrom(props.oracleSecurityGroup, dbCluster.connections.defaultPort);
+      dbCluster.connections.allowFrom(props.oracleSecurityGroup, dbCluster.connections.defaultPort!);
     }
 
     this.auroraPgCredentials = auroraPgCredentials;
