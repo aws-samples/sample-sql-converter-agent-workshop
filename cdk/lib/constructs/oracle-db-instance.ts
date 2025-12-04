@@ -58,6 +58,19 @@ export class OracleDbInstance extends Construct {
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
+    // Create credentials for SCHEMA_SAMPLE database
+    const oracleSchemaSampleCredentials = new Secret(this, 'OracleSchemaSampleCredentials', {
+      secretName: 'oracle-credentials-schema-sample',
+      generateSecretString: {
+        secretStringTemplate: JSON.stringify({ username: 'SCHEMA_SAMPLE' }),
+        excludePunctuation: true,
+        includeSpace: false,
+        generateStringKey: 'password',
+        passwordLength: 12,
+      },
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
+
     // Create a security group for the Oracle EC2 instance
     const oracleSecurityGroup = new SecurityGroup(this, 'OracleSecurityGroup', {
       vpc: props.vpc,
@@ -100,11 +113,15 @@ export class OracleDbInstance extends Construct {
     // Add S3 read permissions to the instance role
     scriptBucket.grantRead(instanceRole);
     oracleCredentials.grantRead(instanceRole);
+    oracleSchemaSampleCredentials.grantRead(instanceRole);
 
     // Add Secrets Manager read permissions for oracle-credentials
     instanceRole.addToPolicy(new PolicyStatement({
       actions: ['secretsmanager:GetSecretValue'],
-      resources: ['arn:aws:secretsmanager:*:*:secret:oracle-credentials*']
+      resources: [
+        'arn:aws:secretsmanager:*:*:secret:oracle-credentials*',
+        'arn:aws:secretsmanager:*:*:secret:oracle-credentials-schema-sample*'
+      ]
     }));
 
     // Add PostgreSQL connection test permissions

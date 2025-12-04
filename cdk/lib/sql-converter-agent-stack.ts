@@ -21,6 +21,7 @@ export class SqlConverterAgentStack extends Stack {
     // Aurora Serverless
     const auroraPg = new AuroraServerlessPg(this, 'AuroraServerlessPg', {
       vpc: network.vpc,
+      oracleSecurityGroup: oracleDb.oracleSecurityGroup,
     });
 
     // DMS SC
