@@ -1,5 +1,5 @@
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { SecurityGroup, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import {
   AuroraPostgresEngineVersion,
   ClusterInstance,
@@ -12,6 +12,7 @@ import { Construct } from 'constructs';
 
 export interface AuroraServerlessPgProps {
   vpc: Vpc;
+  oracleSecurityGroup?: SecurityGroup;
 }
 
 export class AuroraServerlessPg extends Construct {
@@ -55,6 +56,11 @@ export class AuroraServerlessPg extends Construct {
       // Data APIを有効化
       enableDataApi: true,
     });
+
+    // Allow Oracle security group to access PostgreSQL
+    if (props.oracleSecurityGroup) {
+      dbCluster.connections.allowFrom(props.oracleSecurityGroup, dbCluster.connections.defaultPort!);
+    }
 
     this.auroraPgCredentials = auroraPgCredentials;
     this.dbCluster = dbCluster;

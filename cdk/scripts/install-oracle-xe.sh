@@ -24,7 +24,7 @@ retry_command "dnf makecache"
 
 echo --------------------------------------------------
 echo 必要なパッケージのインストール
-retry_command "dnf install -y libnsl bc binutils ksh libaio openssl-libs perl"
+retry_command "dnf install -y libnsl bc binutils ksh libaio openssl-libs perl postgresql15"
 
 echo --------------------------------------------------
 echo redhat release の設置

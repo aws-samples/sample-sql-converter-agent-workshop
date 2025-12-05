@@ -8,13 +8,15 @@ DB_PORT=1521
 DB_NAME=XEPDB1
 
 # Basically, the default value is fine
-DB_USERNAME=SCHEMA_SAMPLE
-DB_PASSWORD=PASSWORD
+DB_USERNAME=$(aws secretsmanager get-secret-value --secret-id oracle-credentials-schema-sample --query SecretString --output text | jq -r .username)
+DB_PASSWORD=$(aws secretsmanager get-secret-value --secret-id oracle-credentials-schema-sample --query SecretString --output text | jq -r .password)
 DB_0032_USERNAME=T_0032_USER
 DB_0032_PASSWORD=PASSWORD
 
+export NLS_LANG=JAPANESE_JAPAN.AL32UTF8 
+
 sqlplus -S ${ADMIN_USERNAME}/${ADMIN_PASSWORD}@//${DB_ENDPOINT}:${DB_PORT}/${DB_NAME} <<- EOF
-	CREATE USER ${DB_USERNAME} IDENTIFIED BY ${DB_PASSWORD};
+	CREATE USER ${DB_USERNAME} IDENTIFIED BY "${DB_PASSWORD}";
 	GRANT CREATE SESSION TO ${DB_USERNAME};
 	GRANT DBA TO ${DB_USERNAME};
 EOF
