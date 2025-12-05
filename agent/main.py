@@ -45,34 +45,32 @@ def create_mcp_client():
 
 def create_agent(mode="db_object"):
     """エージェントとMCPクライアントを初期化"""
-
     system_prompt = get_system_prompt(mode)
-
     mcp_client = create_mcp_client()
-
+    
     with mcp_client:
         mcp_tools = mcp_client.list_tools_sync()
         all_tools = [file_read, file_write] + mcp_tools
 
-        agent = Agent(
-            system_prompt=system_prompt,
-            tools=all_tools,
-            callback_handler=AgentCallbackHandler(),
-            model=BedrockModel(
-                model_id="global.anthropic.claude-sonnet-4-5-20250929-v1:0",
-                region_name="us-east-1",
-                temperature=0,
-                cache_tools="default",
-                additional_request_fields={"anthropic_beta": ["context-1m-2025-08-07"]},
-                boto_client_config=Config(
-                    retries={"total_max_attempts": 5, "mode": "standard"},
-                    connect_timeout=10,
-                    read_timeout=600,
-                ),
+    agent = Agent(
+        system_prompt=system_prompt,
+        tools=all_tools,
+        callback_handler=AgentCallbackHandler(),
+        model=BedrockModel(
+            model_id="global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+            region_name="us-east-1",
+            temperature=0,
+            cache_tools="default",
+            additional_request_fields={"anthropic_beta": ["context-1m-2025-08-07"]},
+            boto_client_config=Config(
+                retries={"total_max_attempts": 5, "mode": "standard"},
+                connect_timeout=10,
+                read_timeout=600,
             ),
-        )
+        ),
+    )
 
-        return mcp_client, agent
+    return mcp_client, agent
 
 
 def resumable_agent_run(
