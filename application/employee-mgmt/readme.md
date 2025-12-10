@@ -21,27 +21,33 @@
 
 ## 主な特徴
 
-### 1. Oracle固有機能を含む複雑な構造
+### 1. 複雑な記法
+- 動的SQL（MyBatis XMLマッパー）
+- IF THEN ELSE による条件付け
+
+### 2. Oracle固有機能を含む複雑な構造
 - SEQUENCE（employee_seq.NEXTVAL）
 - ROWNUM によるページネーション
+- NVL関数によるNULL値処理
+- DECODE関数による条件分岐
+- TO_DATE、TO_CHAR関数による日付変換・フォーマット
+- (+)による外部結合構文
 - CONNECT BY による階層クエリ
 - PIVOT操作
 - ウィンドウ関数（RANK, LAG, LEAD）
 - SYSDATE関数
 
-### 2. 複雑なクエリパターン
-- 動的SQL（MyBatis XMLマッパー）
-- 複数テーブルJOIN
-- 集計・統計クエリ
-- 条件付きソート・ページネーション
-
 ### 3. PostgreSQL変換が必要な要素
 - SEQUENCE.NEXTVAL → nextval('sequence_name')
 - ROWNUM → ROW_NUMBER() OVER()
+- NVL → COALESCE
+- DECODE → CASE WHEN
+- TO_DATE → TO_DATE (構文調整)
+- TO_CHAR → TO_CHAR (構文調整)
+- (+)外部結合 → LEFT JOIN
 - SYSDATE → CURRENT_TIMESTAMP
 - CONNECT BY → 再帰CTE
 - DUAL → 削除
 - VARCHAR2 → VARCHAR
 - NUMBER → NUMERIC
-
 
