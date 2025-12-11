@@ -26,12 +26,17 @@ public interface EmployeeDao {
     int insertEmployee(Employee employee);
     
     @Select({
-        "SELECT e.*, d.department_name,",
-        "       m.first_name || ' ' || m.last_name as manager_name",
-        "FROM employees e",
-        "LEFT JOIN departments d ON e.department_id = d.department_id",
-        "LEFT JOIN employees m ON e.manager_id = m.employee_id",
-        "WHERE e.employee_id = #{employeeId}"
+        "SELECT e.*, NVL(d.department_name, 'No Department') as department_name,",
+        "       NVL(m.first_name || ' ' || m.last_name, 'No Manager') as manager_name,",
+        "       DECODE(e.salary, NULL, 'No Salary',",
+        "              DECODE(SIGN(e.salary - 10000), 1, 'High',",
+        "                     DECODE(SIGN(e.salary - 5000), 1, 'Medium', 'Low'))) as salary_grade,",
+        "       TO_CHAR(e.hire_date, 'YYYY-MM-DD') as hire_date_formatted,",
+        "       TO_CHAR(e.created_at, 'YYYY-MM-DD HH24:MI:SS') as created_at_formatted",
+        "FROM employees e, departments d, employees m",
+        "WHERE e.department_id = d.department_id(+)",
+        "  AND e.manager_id = m.employee_id(+)",
+        "  AND e.employee_id = #{employeeId}"
     })
     Employee findById(Long employeeId);
     
@@ -60,14 +65,16 @@ public interface EmployeeDao {
     
     @Select({
         "SELECT * FROM (",
-        "  SELECT e.*, d.department_name,",
-        "         m.first_name || ' ' || m.last_name as manager_name,",
+        "  SELECT e.*, NVL(d.department_name, 'Unknown') as department_name,",
+        "         NVL(m.first_name || ' ' || m.last_name, 'No Manager') as manager_name,",
+        "         DECODE(e.salary, NULL, 0, e.salary) as display_salary,",
+        "         TO_CHAR(e.hire_date, 'Mon DD, YYYY') as hire_date_display,",
         "         ROWNUM as rn",
-        "  FROM employees e",
-        "  LEFT JOIN departments d ON e.department_id = d.department_id",
-        "  LEFT JOIN employees m ON e.manager_id = m.employee_id",
-        "  WHERE e.department_id = #{departmentId}",
-        "  ORDER BY e.salary DESC",
+        "  FROM employees e, departments d, employees m",
+        "  WHERE e.department_id = d.department_id(+)",
+        "    AND e.manager_id = m.employee_id(+)",
+        "    AND e.department_id = #{departmentId}",
+        "  ORDER BY NVL(e.salary, 0) DESC",
         ") WHERE rn BETWEEN #{startRow} AND #{endRow}"
     })
     List<Employee> findTopEarnersByDepartment(@Param("departmentId") Long departmentId,

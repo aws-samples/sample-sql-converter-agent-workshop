@@ -7,69 +7,77 @@
     <!-- 動的検索クエリ -->
     <select id="findBySearchCriteria" parameterType="com.example.dto.EmployeeSearchCriteria" 
             resultType="com.example.entity.Employee">
-        SELECT e.employee_id,
-               e.first_name,
-               e.last_name,
-               e.email,
-               e.phone_number,
-               e.hire_date,
-               e.job_id,
-               e.salary,
-               e.commission_pct,
-               e.manager_id,
-               e.department_id,
-               e.created_at,
-               e.updated_at,
-               d.department_name,
-               m.first_name || ' ' || m.last_name as manager_name
-        FROM employees e
-        LEFT JOIN departments d ON e.department_id = d.department_id
-        LEFT JOIN employees m ON e.manager_id = m.employee_id
-        <where>
-            <if test="firstName != null and firstName != ''">
-                AND UPPER(e.first_name) LIKE UPPER('%' || #{firstName} || '%')
+        SELECT * FROM (
+            SELECT e.employee_id,
+                   e.first_name,
+                   e.last_name,
+                   e.email,
+                   e.phone_number,
+                   e.hire_date,
+                   e.job_id,
+                   NVL(e.salary, 0) as salary,
+                   e.commission_pct,
+                   e.manager_id,
+                   e.department_id,
+                   e.created_at,
+                   e.updated_at,
+                   NVL(d.department_name, 'No Department') as department_name,
+                   NVL(m.first_name || ' ' || m.last_name, 'No Manager') as manager_name,
+                   DECODE(e.salary, NULL, 'No Salary', 
+                          CASE WHEN e.salary > 10000 THEN 'High'
+                               WHEN e.salary > 5000 THEN 'Medium'
+                               ELSE 'Low' END) as salary_grade,
+                   TO_CHAR(e.hire_date, 'YYYY-MM-DD') as hire_date_str,
+                   ROWNUM as rn
+            FROM employees e, departments d, employees m
+            WHERE e.department_id = d.department_id(+)
+              AND e.manager_id = m.employee_id(+)
+            <where>
+                <if test="firstName != null and firstName != ''">
+                    AND UPPER(e.first_name) LIKE UPPER('%' || #{firstName} || '%')
+                </if>
+                <if test="lastName != null and lastName != ''">
+                    AND UPPER(e.last_name) LIKE UPPER('%' || #{lastName} || '%')
+                </if>
+                <if test="email != null and email != ''">
+                    AND UPPER(e.email) LIKE UPPER('%' || #{email} || '%')
+                </if>
+                <if test="jobIds != null and jobIds.size() > 0">
+                    AND e.job_id IN
+                    <foreach collection="jobIds" item="jobId" open="(" separator="," close=")">
+                        #{jobId}
+                    </foreach>
+                </if>
+                <if test="minSalary != null">
+                    AND NVL(e.salary, 0) >= #{minSalary}
+                </if>
+                <if test="maxSalary != null">
+                    AND NVL(e.salary, 0) &lt;= #{maxSalary}
+                </if>
+                <if test="departmentId != null">
+                    AND e.department_id = #{departmentId}
+                </if>
+                <if test="hireDateFrom != null">
+                    AND e.hire_date >= TO_DATE(#{hireDateFrom}, 'YYYY-MM-DD')
+                </if>
+                <if test="hireDateTo != null">
+                    AND e.hire_date &lt;= TO_DATE(#{hireDateTo}, 'YYYY-MM-DD')
+                </if>
+            </where>
+            <if test="sortBy != null and sortBy != ''">
+                ORDER BY 
+                <choose>
+                    <when test="sortBy == 'firstName'">e.first_name</when>
+                    <when test="sortBy == 'lastName'">e.last_name</when>
+                    <when test="sortBy == 'salary'">NVL(e.salary, 0)</when>
+                    <when test="sortBy == 'hireDate'">e.hire_date</when>
+                    <otherwise>e.employee_id</otherwise>
+                </choose>
+                <if test="sortOrder != null and sortOrder.toUpperCase() == 'DESC'">DESC</if>
             </if>
-            <if test="lastName != null and lastName != ''">
-                AND UPPER(e.last_name) LIKE UPPER('%' || #{lastName} || '%')
-            </if>
-            <if test="email != null and email != ''">
-                AND UPPER(e.email) LIKE UPPER('%' || #{email} || '%')
-            </if>
-            <if test="jobIds != null and jobIds.size() > 0">
-                AND e.job_id IN
-                <foreach collection="jobIds" item="jobId" open="(" separator="," close=")">
-                    #{jobId}
-                </foreach>
-            </if>
-            <if test="minSalary != null">
-                AND e.salary >= #{minSalary}
-            </if>
-            <if test="maxSalary != null">
-                AND e.salary &lt;= #{maxSalary}
-            </if>
-            <if test="departmentId != null">
-                AND e.department_id = #{departmentId}
-            </if>
-            <if test="hireDateFrom != null">
-                AND e.hire_date >= #{hireDateFrom}
-            </if>
-            <if test="hireDateTo != null">
-                AND e.hire_date &lt;= #{hireDateTo}
-            </if>
-        </where>
-        <if test="sortBy != null and sortBy != ''">
-            ORDER BY 
-            <choose>
-                <when test="sortBy == 'firstName'">e.first_name</when>
-                <when test="sortBy == 'lastName'">e.last_name</when>
-                <when test="sortBy == 'salary'">e.salary</when>
-                <when test="sortBy == 'hireDate'">e.hire_date</when>
-                <otherwise>e.employee_id</otherwise>
-            </choose>
-            <if test="sortOrder != null and sortOrder.toUpperCase() == 'DESC'">DESC</if>
-        </if>
+        )
         <if test="offset != null and limit != null">
-            OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+            WHERE rn > #{offset} AND rn &lt;= (#{offset} + #{limit})
         </if>
     </select>
 
@@ -95,19 +103,19 @@
                 </foreach>
             </if>
             <if test="minSalary != null">
-                AND e.salary >= ${minSalary}
+                AND NVL(e.salary, 0) >= ${minSalary}
             </if>
             <if test="maxSalary != null">
-                AND e.salary &lt;= ${maxSalary}
+                AND NVL(e.salary, 0) &lt;= ${maxSalary}
             </if>
             <if test="departmentId != null">
                 AND e.department_id = ${departmentId}
             </if>
             <if test="hireDateFrom != null">
-                AND e.hire_date >= ${hireDateFrom}
+                AND e.hire_date >= TO_DATE(${hireDateFrom}, 'YYYY-MM-DD')
             </if>
             <if test="hireDateTo != null">
-                AND e.hire_date &lt;= ${hireDateTo}
+                AND e.hire_date &lt;= TO_DATE(${hireDateTo}, 'YYYY-MM-DD')
             </if>
         </where>
     </select>
