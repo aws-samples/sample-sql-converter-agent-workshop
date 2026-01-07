@@ -6,6 +6,9 @@ import os
 from pathlib import Path
 
 from multi_agent_config import MultiAgentPromptConfig
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def load_prompt(prompt_path: str) -> str:
@@ -105,27 +108,21 @@ def run_multi_agent_conversion(
                 agent(message)
 
     # Stage 1: Oracle検証
-    print(f"\n{'='*60}")
-    print(f"[Stage 1/3] Oracle検証: {object_spec}")
-    print(f"{'='*60}")
+    logger.info(f"[Stage 1/3] Oracle検証開始: {object_spec}")
     oracle_agent = create_agent_func(prompts["oracle"])
     run_agent(oracle_agent, oracle_message)
+    logger.info(f"[Stage 1/3] Oracle検証完了: {object_spec}")
 
     # Stage 2: PostgreSQL変換
-    print(f"\n{'='*60}")
-    print(f"[Stage 2/3] PostgreSQL変換: {object_spec}")
-    print(f"{'='*60}")
+    logger.info(f"[Stage 2/3] PostgreSQL変換開始: {object_spec}")
     conversion_agent = create_agent_func(prompts["conversion"])
     run_agent(conversion_agent, conversion_message)
+    logger.info(f"[Stage 2/3] PostgreSQL変換完了: {object_spec}")
 
     # Stage 3: PostgreSQL検証
-    print(f"\n{'='*60}")
-    print(f"[Stage 3/3] PostgreSQL検証: {object_spec}")
-    print(f"{'='*60}")
+    logger.info(f"[Stage 3/3] PostgreSQL検証開始: {object_spec}")
     verification_agent = create_agent_func(prompts["verification"])
     run_agent(verification_agent, verification_message)
+    logger.info(f"[Stage 3/3] PostgreSQL検証完了: {object_spec}")
 
-    print(f"\n{'='*60}")
-    print(f"完了: {object_spec}")
-    print(f"結果ディレクトリ: {result_dir}")
-    print(f"{'='*60}")
+    logger.info(f"マルチエージェント変換完了: {object_spec}, 結果ディレクトリ: {result_dir}")
