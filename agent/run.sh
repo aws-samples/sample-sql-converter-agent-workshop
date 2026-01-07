@@ -7,6 +7,7 @@ trap 'echo "\nInterrupted. Exiting..."; exit 1' INT
 MODE_OPT=""
 CONFIG_FILE="object_list.ini"
 AVOID_THROTTLING=""
+MULTI_AGENT=""
 while [[ $# -gt 0 ]]; do
     case $1 in
         --mode)
@@ -19,6 +20,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --avoid-throttling)
             AVOID_THROTTLING="--avoid-throttling"
+            shift
+            ;;
+        --multi-agent)
+            MULTI_AGENT="--multi-agent"
             shift
             ;;
         *)
@@ -38,7 +43,7 @@ while IFS= read -r line; do
     fi
     
     echo "Processing: $line"
-    if uv run main.py --prompt "$line" $MODE_OPT $AVOID_THROTTLING; then
+    if uv run main.py --prompt "$line" $MODE_OPT $AVOID_THROTTLING $MULTI_AGENT; then
         # Comment out the processed line (macOS compatible)
         if [[ "$OSTYPE" == "darwin"* ]]; then
             # macOS (BSD sed)

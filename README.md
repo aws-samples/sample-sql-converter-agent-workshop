@@ -191,6 +191,28 @@ uv run main.py --avoid-throttling
 ./run.sh --avoid-throttling
 ```
 
+##### マルチエージェント変換モード
+
+`--multi-agent` オプションを使うことで、3段階のマルチエージェント変換を実行できます。このモードでは以下の3つの専門エージェントが順次処理を行います：
+
+1. **Oracle検証エージェント**: DDL取得、テストコード作成、Oracle上でのテスト実行
+2. **PostgreSQL変換エージェント**: Oracle→PostgreSQL変換、構文チェック
+3. **PostgreSQL検証エージェント**: テスト実行、結果比較、OK/NG判定
+
+```bash
+# 単一オブジェクトのマルチエージェント変換
+uv run main.py --multi-agent --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE"
+
+# スロットリング対策付き
+uv run main.py --multi-agent --avoid-throttling --prompt "PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE"
+
+# バッチ処理（run.sh経由）
+./run.sh --multi-agent
+./run.sh --multi-agent --avoid-throttling
+```
+
+マルチエージェントのプロンプト設定は `agent/multi_agent_config.py` でカスタマイズできます。
+
 ## 🤖 AI エージェントを使用したアプリケーションSQLの変換
 サンプルとしてOracleデータベースを使用した従業員情報の管理（登録、更新、削除、検索）を行うSpring + MyBatisアプリケーションの基盤となるスクリプト群を変換します。
 

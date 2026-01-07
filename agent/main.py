@@ -27,6 +27,22 @@ def load_mcp_config():
         return json.load(f)
 
 
+def create_bedrock_model():
+    """BedrockModelを作成"""
+    return BedrockModel(
+        model_id="global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        region_name="us-east-1",
+        temperature=0,
+        cache_tools="default",
+        additional_request_fields={"anthropic_beta": ["context-1m-2025-08-07"]},
+        boto_client_config=Config(
+            retries={"total_max_attempts": 5, "mode": "standard"},
+            connect_timeout=10,
+            read_timeout=600,
+        ),
+    )
+
+
 def create_mcp_client():
     """MCP クライアントを作成"""
     config = load_mcp_config()
@@ -43,9 +59,15 @@ def create_mcp_client():
     )
 
 
-def create_agent(mode="db_object"):
-    """エージェントとMCPクライアントを初期化"""
-    system_prompt = get_system_prompt(mode)
+def create_agent(mode="db_object", system_prompt=None):
+    """エージェントとMCPクライアントを初期化
+
+    Args:
+        mode: プロンプトモード（db_object, app, custom）
+        system_prompt: 直接指定するシステムプロンプト（指定された場合はmodeを無視）
+    """
+    if system_prompt is None:
+        system_prompt = get_system_prompt(mode)
     mcp_client = create_mcp_client()
     
     with mcp_client:
@@ -56,18 +78,7 @@ def create_agent(mode="db_object"):
         system_prompt=system_prompt,
         tools=all_tools,
         callback_handler=AgentCallbackHandler(),
-        model=BedrockModel(
-            model_id="global.anthropic.claude-sonnet-4-5-20250929-v1:0",
-            region_name="us-east-1",
-            temperature=0,
-            cache_tools="default",
-            additional_request_fields={"anthropic_beta": ["context-1m-2025-08-07"]},
-            boto_client_config=Config(
-                retries={"total_max_attempts": 5, "mode": "standard"},
-                connect_timeout=10,
-                read_timeout=600,
-            ),
-        ),
+        model=create_bedrock_model(),
     )
 
     return mcp_client, agent
@@ -127,11 +138,53 @@ def main():
         action="store_true",
         help="if true, it assumes severe token shortage environment",
     )
+    parser.add_argument(
+        "--multi-agent",
+        action="store_true",
+        help="Enable multi-agent 3-stage conversion (Oracle validation -> PostgreSQL conversion -> PostgreSQL verification)",
+    )
     args = parser.parse_args()
 
     logger.info("Conversion start")
 
-    if args.prompt:
+    if args.multi_agent:
+        # マルチエージェント3段階変換モード
+        from multi_agent_processor import run_multi_agent_conversion
+
+        if not args.prompt:
+            logger.error("--prompt is required with --multi-agent option")
+            print("Error: --prompt is required with --multi-agent option")
+            return
+
+        user_input = args.prompt
+        logger.info(f"Multi-agent conversion: {user_input}")
+
+        # MCPクライアントを作成
+        mcp_client = create_mcp_client()
+
+        # エージェント作成関数（各段階のシステムプロンプトを受け取る）
+        def create_agent_with_prompt(system_prompt):
+            with mcp_client:
+                mcp_tools = mcp_client.list_tools_sync()
+                all_tools = [file_read, file_write] + mcp_tools
+
+            return Agent(
+                system_prompt=system_prompt,
+                tools=all_tools,
+                callback_handler=AgentCallbackHandler(avoid_throttling=args.avoid_throttling),
+                model=create_bedrock_model(),
+            )
+
+        run_multi_agent_conversion(
+            user_input,
+            create_agent_with_prompt,
+            mcp_client,
+            avoid_throttling=args.avoid_throttling,
+            resumable_agent_run_func=resumable_agent_run if args.avoid_throttling else None,
+        )
+        logger.info("Multi-agent conversion completed")
+
+    elif args.prompt:
         user_input = args.prompt
         logger.info(f"User prompt: {user_input}")
         mcp_client, agent = create_agent(args.mode)
