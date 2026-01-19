@@ -211,7 +211,7 @@ uv run main.py --multi-agent --avoid-throttling --prompt "PROCEDURE SCHEMA_SAMPL
 ./run.sh --multi-agent --avoid-throttling
 ```
 
-マルチエージェントのプロンプト設定は `agent/multi_agent_config.py` でカスタマイズできます。
+マルチエージェントのプロンプト設定は `agent/prompts/prompts.py` の `MultiAgent` クラスで管理されています。各段階のプロンプトファイルは `agent/prompts/db_object/multi_agent/` に配置されています。
 
 ## 🤖 AI エージェントを使用したアプリケーションSQLの変換
 サンプルとしてOracleデータベースを使用した従業員情報の管理（登録、更新、削除、検索）を行うSpring + MyBatisアプリケーションの基盤となるスクリプト群を変換します。

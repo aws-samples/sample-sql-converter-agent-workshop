@@ -3,46 +3,11 @@
 3段階（Oracle検証→PostgreSQL変換→PostgreSQL検証）で変換を実行
 """
 import os
-from pathlib import Path
 
-from multi_agent_config import MultiAgentPromptConfig
+from prompts.prompts import MultiAgent
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
-
-
-def load_prompt(prompt_path: str) -> str:
-    """プロンプトファイルを読み込む"""
-    module_dir = Path(__file__).parent
-    full_path = module_dir / prompt_path
-    with open(full_path, "r", encoding="utf-8") as f:
-        return f.read()
-
-
-def get_multi_agent_prompts(config: MultiAgentPromptConfig = None) -> dict:
-    """各段階のシステムプロンプトを読み込む"""
-    if config is None:
-        config = MultiAgentPromptConfig()
-
-    # 共通の変換ルールを読み込む
-    conversion_rules = load_prompt(config.conversion_rules)
-
-    # 出力仕様を読み込む
-    output_specification = load_prompt(config.output_specification)
-
-    # 変換プロンプトに変換ルールを埋め込む
-    conversion_prompt = load_prompt(config.conversion)
-    conversion_prompt = conversion_prompt.replace("{CONVERSION_RULES}", conversion_rules)
-
-    # 検証プロンプトに出力仕様を埋め込む
-    verification_prompt = load_prompt(config.verification)
-    verification_prompt = verification_prompt.replace("{OUTPUT_SPECIFICATION}", output_specification)
-
-    return {
-        "oracle": load_prompt(config.oracle),
-        "conversion": conversion_prompt,
-        "verification": verification_prompt,
-    }
 
 
 def get_result_dir(object_spec: str, base_dir: str = "./result") -> str:
@@ -75,7 +40,6 @@ def run_multi_agent_conversion(
     object_spec: str,
     create_agent_func,
     mcp_client,
-    config: MultiAgentPromptConfig = None,
     avoid_throttling: bool = False,
     resumable_agent_run_func=None,
 ):
@@ -86,11 +50,10 @@ def run_multi_agent_conversion(
         object_spec: オブジェクト指定（例: "procedure SCHEMA.PROC_NAME"）
         create_agent_func: エージェント作成関数（システムプロンプトを引数に取り、Agentを返す）
         mcp_client: MCPクライアント（コンテキストマネージャーとして使用）
-        config: プロンプト設定（Noneの場合はデフォルト設定を使用）
         avoid_throttling: スロットリング対策を有効にするか
         resumable_agent_run_func: スロットリング対策用の再試行関数
     """
-    prompts = get_multi_agent_prompts(config)
+    prompts = MultiAgent().get_prompts()
     result_dir = get_result_dir(object_spec)
     os.makedirs(result_dir, exist_ok=True)
 
