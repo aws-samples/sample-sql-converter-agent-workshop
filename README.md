@@ -2,7 +2,7 @@
 
 SQL Converter Agent Workshop は、AI エージェントを用いて、異種 DB 間で SQL を変換するワークショップです。  
 題材として Oracle Database から Amazon Aurora PostgreSQL への SQL 変換を行います。  
-AWS CDK を使用して Oracle XE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できないデータベースオブジェクトと SQL 実行機能を有する Java アプリケーションを対象に [Strands Agents SDK](https://strandsagents.com/) 及び [Amazon Q Developer CLI](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line.html) を活用して SQL 変換作業を軽減します。
+AWS CDK を使用して Oracle XE on EC2 と Aurora PostgreSQL のデータベースを構築し、SCT では変換できないデータベースオブジェクトと SQL 実行機能を有する Java アプリケーションを対象に [Strands Agents SDK](https://strandsagents.com/) 及び [Kiro CLI](https://cli.kiro.dev/) を活用して SQL 変換作業を軽減します。
 
 > [!NOTE]
 > このコンテンツは Oracle DB と PostgreSQL を立て、この環境に閉じて AI エージェントが SQL を読み書きし、実行し、修正し、結果を残していくものです。
@@ -12,7 +12,7 @@ AWS CDK を使用して Oracle XE on EC2 と Aurora PostgreSQL のデータベ�
 
 - **Oracle Database**: EC2 インスタンス上の Oracle XE 21c
 - **PostgreSQL**: Amazon Aurora PostgreSQL Serverless v2
-- **AI エージェント**: Oracle DB を立てている EC2 に配置した Strands Agent 製 AI エージェントもしくは Amazon Q Developer
+- **AI エージェント**: Oracle DB を立てている EC2 に配置した Strands Agent 製 AI エージェントもしくは Kiro CLI
 - **Amazon Bedrock**: Strands Agent 製 AI エージェントが使用するモデルを提供するサービス
 
 ![](./image/architecture.png)
@@ -233,26 +233,24 @@ uv run main.py --prompt "../application/employee-mgmt/application employee-mgmt 
 
 ```
 
-## Amazon Q Developer CLI をコーディングエージェントとして使う場合
-Oracle DB/PostgreSQLへのアクセスするツールはMCPサーバー化してあるため、Strands Agentsを使わずにAmazon Q Developer CLIから同様のことを行うこともできます。  
-Amazon Q Developer CLIのインストール方法及びサブスクライブの方法については[install](https://docs.aws.amazon.com/ja_jp/amazonq/latest/qdeveloper-ug/command-line-installing.html),[subscribe](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-admin-setup-subscribe-general.html)を参照してください。  
-リモートサーバーの場合はインストール済のためサブスクライブだけで済みます。
-sshで繋いでトンネリングしたローカル環境でAmazon Q Developer CLIを実行する場合は、`~/.aws/amazonq/` に `q-dev/mcp.json` をコピーしてください。リモートサーバーは設定済です。
+## Kiro CLI をコーディングエージェントとして使う場合
+Oracle DB/PostgreSQLへのアクセスするツールはMCPサーバー化してあるため、Strands Agentsを使わずにKiro CLIから同様のことを行うこともできます。  
+Kiro CLIのインストール方法等は [AWS ブログ:Kiro CLI のご紹介] (https://aws.amazon.com/jp/blogs/news/introducing-kiro-cli/)を参照してください。 
 
-### Q Developer の起動
+### Kiro CLI の起動
 以下コマンドを実行してください。
 
 ```bash
-cd q-dev
-q login
-# q login 実行後、表示される指示に従う
-q chat
-# q chatを打ち込むと対話できるようになるため、データベースオブジェクトを入力することで変換作業を行うことができます。(e.g. PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE)
+kiro-cli login --use-device-flow
+# kiro-cli login 実行後、表示される指示に従う
+
+kiro-cli
+# kiro-cli 打ち込むと対話できるようになるため、データベースオブジェクトを入力することで変換作業を行うことができます。
+# (e.g. PROCEDURE SCHEMA_SAMPLE.SCT_0001_CALCULATE_TIME_DIFFERENCE)
 ```
 
-### Q Developer のカスタマイズ
-`q-dev/AmazonQ.md` の指示を参照します。カスタマイズしたい場合は `AmazonQ.md` を編集するか、[こちら](https://docs.aws.amazon.com/ja_jp/amazonq/latest/qdeveloper-ug/command-line-context.html)を参照して、指示をカスタマイズしてください。
-
+### Kiro CLI のカスタマイズ
+プロンプトをカスタマイズしたい場合は、`~/.kiro/settings/` に配置した設定ファイルを編集してください。
 
 ## 環境の削除
 `./destroy.sh` を実行してください。  
