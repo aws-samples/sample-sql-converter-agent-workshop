@@ -52,6 +52,7 @@ EOF
 fi
 
 cd cdk
+cdk bootstrap
 if ! cdk deploy --outputs-file ../output.json --require-approval never; then
     echo "エラー: CDK デプロイに失敗しました"
     exit 1
