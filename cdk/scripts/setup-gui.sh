@@ -65,10 +65,11 @@ sudo -u ec2-user mv /home/ec2-user/sample-sql-converter-agent-workshop/q-dev/mcp
 
 # Kiro CLI のインストール
 echo "Kiro CLI をインストール中..."
-sudo -u ec2-user bash -c 'curl -fsSL https://cli.kiro.dev/install | bash'
+# sudo -u ec2-user bash -c 'curl -fsSL https://cli.kiro.dev/install | bash'
+sudo -u ec2-user bash -c 'curl -fsSL https://cli.kiro.dev/install | bash -s -- --force'
 sudo -u ec2-user mkdir -p /home/ec2-user/.kiro/settings
-cp /home/ec2-user/.aws/amazonq/mcp.json /home/ec2-user/.kiro/settings/.
-cp /home/ec2-user/sample-sql-converter-agent-workshop/q-dev/AmazonQ.md /home/ec2-user/.kiro/settings/.
+sudo -u ec2-user cp /home/ec2-user/.aws/amazonq/mcp.json /home/ec2-user/.kiro/settings/.
+sudo -u ec2-user cp /home/ec2-user/sample-sql-converter-agent-workshop/q-dev/AmazonQ.md /home/ec2-user/.kiro/settings/.
 
 # AWS CLI リージョン設定
 echo "AWS CLI リージョンを設定中..."
