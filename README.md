@@ -235,7 +235,7 @@ uv run main.py --prompt "../application/employee-mgmt/application employee-mgmt 
 
 ## Kiro CLI をコーディングエージェントとして使う場合
 Oracle DB/PostgreSQLへのアクセスするツールはMCPサーバー化してあるため、Strands Agentsを使わずにKiro CLIから同様のことを行うこともできます。  
-Kiro CLIのインストール方法等は [AWS ブログ:Kiro CLI のご紹介] (https://aws.amazon.com/jp/blogs/news/introducing-kiro-cli/)を参照してください。 
+Kiro CLIのインストール方法等は [AWS ブログ:Kiro CLI のご紹介](https://aws.amazon.com/jp/blogs/news/introducing-kiro-cli/)を参照してください。 
 
 ### Kiro CLI の起動
 以下コマンドを実行してください。
