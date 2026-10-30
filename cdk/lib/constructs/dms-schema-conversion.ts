@@ -147,6 +147,10 @@ export class DmsSchemaConversion extends Construct {
     props.oracleSecurityGroup.connections.allowFrom(sg, Port.tcp(1521));
     props.dbCluster.connections.allowFrom(sg, Port.POSTGRES);
 
+    // Let the agent on the Oracle EC2 read the Schema Conversion results
+    // (download_s3_input MCP tool). Read-only.
+    dmsSchemaConversionBucket.grantRead(props.oracleInstance.role);
+
     // Create DMS Instance Profile
     const dmsInstanceProfile = new CfnInstanceProfile(
       this,

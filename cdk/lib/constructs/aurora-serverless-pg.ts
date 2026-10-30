@@ -37,7 +37,7 @@ export class AuroraServerlessPg extends Construct {
     // Create the Aurora PostgreSQL Serverless v2 cluster
     const dbCluster = new DatabaseCluster(this, 'AuroraPostgreSQLCluster', {
       engine: DatabaseClusterEngine.auroraPostgres({
-        version: AuroraPostgresEngineVersion.VER_15_10,
+        version: AuroraPostgresEngineVersion.VER_17_7,
       }),
       credentials: Credentials.fromSecret(auroraPgCredentials),
       vpc: props.vpc,
@@ -53,8 +53,8 @@ export class AuroraServerlessPg extends Construct {
       backup: {
         retention: Duration.days(7), // Minimum backup retention
       },
-      // Data APIを有効化
-      enableDataApi: true,
+      // The agent connects directly over the VPC (psycopg), so the RDS Data
+      // API (a public HTTPS endpoint) is not enabled.
     });
 
     // Allow Oracle security group to access PostgreSQL

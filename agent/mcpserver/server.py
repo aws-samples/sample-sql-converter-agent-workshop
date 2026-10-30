@@ -34,13 +34,19 @@ def run_ora_sql(sql):
 @mcp.tool()
 def run_postgres_sql(sql):
     """
-    Execute SQL query on PostgreSQL database.
+    Execute SQL on the Aurora PostgreSQL database (direct connection).
+
+    Several statements separated by semicolons can be sent in one call.
+    RAISE NOTICE messages are returned in "notices", so a DO block can report
+    comparison values with RAISE NOTICE instead of RAISE EXCEPTION.
+    Statements run in autocommit mode.
 
     Args:
-        sql (str): SQL query to execute on the PostgreSQL database.
+        sql (str): SQL to execute on the PostgreSQL database.
 
     Returns:
-        dict: Query execution results from the PostgreSQL database.
+        dict: {"results": [{"status", "row_count", "columns", "rows"}, ...],
+        "notices": [...]}. One entry in "results" per statement.
     """
     return postgres_execute(sql)
 

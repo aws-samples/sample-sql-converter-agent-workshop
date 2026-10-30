@@ -63,3 +63,13 @@ output.json
 oracle-xe-key.pem
 agent/exec_sql/*.sql
 agent/result/*
+
+# Q-SPEC作業ドキュメント（社内参照実装のURL・パス等、内部情報を含むため非公開）
+.kiro/specs/
+
+# User data and conversion results (keep customer data out of git)
+/input/**
+!/input/**/
+!/input/README.md
+!/input/**/.gitkeep
+/result/

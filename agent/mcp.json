@@ -1,12 +1,14 @@
 {
   "mcpServers": {
-    "sql-converter": {
+    "scaw_tools": {
       "command": "uv",
-      "args": [
-        "run", 
-        "mcpserver/server.py"
-      ],
-      "env": {}
+      "args": ["run", "--project", "./agent", "python", "./agent/tools/server.py"],
+      "timeout": 30000
+    },
+    "scaw_mcpserver": {
+      "command": "uv",
+      "args": ["run", "--project", "./agent", "python", "./agent/mcpserver/server.py"],
+      "timeout": 30000
     }
   }
 }
