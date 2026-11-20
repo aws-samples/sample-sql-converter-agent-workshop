@@ -1,0 +1,52 @@
+{
+  "name": "scaw-migration-db",
+  "description": "SCAW2.0: AWS SCT / DMS Schema Conversionが変換しきれなかったOracleのDBオブジェクト（スキーマ、DDL、PL/SQL、ストアドプロシージャ）をPostgreSQLに変換する。入力はAWS SCTまたはDMS Schema Conversionの出力（ローカルのファイルまたはs3://）。",
+  "prompt": "言語のルール（最優先）:\n- ユーザーの最新のメッセージと同じ言語で応答する。日本語なら「です」「ます」調、英語なら英語で書く。\n- ひらがなやカタカナを含むメッセージは日本語である。ユーザーが中国語で書かない限り、中国語で応答しない。\n- 途中の進捗メッセージと最後の要約も含め、見せる前にユーザーの言語になっているかを確かめる。\n\n役割:\nあなたは、AWS SCT / DMS Schema Conversionが変換しきれなかったOracleのDBオブジェクトをPostgreSQLに変換するエージェントである。変換の手順はworkflow-db-convert、構文の書き方はdomain-conversion-rules、判定区分はtool-review-status、出力の形式はtool-output-layoutに従う。応答の仕方はsteeringのルールに従う。\nSQLの書き換えはあなた自身が行い、MCPツールは解析、検証、実行、書き出しに使う。シェルのコマンドは実行できない。\n\nscaw-migration-db-batchのサブエージェントとして動くとき（依頼文にそう書かれている）:\n- write_skill_draftを呼ばない（複数のサブエージェントが同じファイルに同時に書き込むのを防ぐため）。変換パターンの候補は、結果の「追記候補パターン」という見出しの下に、見つけたオブジェクト名と一緒に書く。\n- 確認を求めて止まらない。人の判断が必要なものは、結果に要確認として書く。\n\nシェルやkiro-cliで、自分自身やほかのscaw-*エージェントを呼び出さない。",
+  "tools": [
+    "fs_read",
+    "fs_write",
+    "grep",
+    "glob",
+    "@scaw_tools",
+    "@scaw_mcpserver"
+  ],
+  "allowedTools": [
+    "fs_read",
+    "grep",
+    "glob",
+    "@scaw_tools",
+    "@scaw_mcpserver"
+  ],
+  "resources": [
+    "file://{PROJECT_ROOT}/agent/skills/workflow-db-convert/SKILL.md",
+    "skill://{PROJECT_ROOT}/agent/skills/domain-conversion-rules/SKILL.md",
+    "file://{PROJECT_ROOT}/agent/skills/tool-review-status/SKILL.md",
+    "file://{PROJECT_ROOT}/agent/skills/tool-output-layout/SKILL.md",
+    "file://{PROJECT_ROOT}/agent/skills/workshop-custom-rules/SKILL.md",
+    "file://{PROJECT_ROOT}/agent/skills/steering/*.md"
+  ],
+  "mcpServers": {
+    "scaw_tools": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--project",
+        "{PROJECT_ROOT}/agent",
+        "python",
+        "{PROJECT_ROOT}/agent/tools/server.py"
+      ],
+      "timeout": 30000
+    },
+    "scaw_mcpserver": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--project",
+        "{PROJECT_ROOT}/agent",
+        "python",
+        "{PROJECT_ROOT}/agent/mcpserver/server.py"
+      ],
+      "timeout": 30000
+    }
+  }
+}

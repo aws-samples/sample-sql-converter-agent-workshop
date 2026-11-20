@@ -1,0 +1,243 @@
+rules:
+  # Java
+  - id: java-sql-taint
+    mode: taint
+    languages: [java]
+    severity: INFO
+    message: SQL lifecycle
+    pattern-sources:
+      - patterns:
+          - pattern: |
+              "$SQL"
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?i)(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    pattern-sinks:
+      - pattern-either:
+          - pattern: $OBJ.prepareStatement(...)
+          - pattern: $OBJ.prepareCall(...)
+          - pattern: $VAR.toString()
+          - pattern: $OBJ.executeQuery(...)
+          - pattern: $OBJ.executeUpdate(...)
+          - pattern: $OBJ.execute(...)
+          - pattern: $OBJ.addBatch(...)
+          # JPA / Hibernate / Spring JdbcTemplate
+          - pattern: $OBJ.createQuery(...)
+          - pattern: $OBJ.createNativeQuery(...)
+          - pattern: $OBJ.query(...)
+          - pattern: $OBJ.queryForList(...)
+          - pattern: $OBJ.queryForObject(...)
+          - pattern: $OBJ.queryForMap(...)
+          - pattern: $OBJ.update(...)
+          - pattern: $OBJ.batchUpdate(...)
+          # A SQL string built with String += / + and handed to a helper method
+          # in the same class (e.g. query(sql, params)), which runs it.
+          - pattern: $F(...)
+    pattern-propagators:
+      - pattern: $V.append($S)
+        from: $S
+        to: $V
+      - pattern: $V.concat($S)
+        from: $S
+        to: $V
+
+  # Python
+  - id: python-sql-taint
+    mode: taint
+    languages: [python]
+    severity: INFO
+    message: SQL lifecycle
+    pattern-sources:
+      - patterns:
+          - pattern-either:
+              - pattern: |
+                  "$SQL"
+              - pattern: |
+                  '$SQL'
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?i)(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+      - patterns:
+          - pattern: |
+              $X = $SQL
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?si).*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    pattern-sinks:
+      - pattern-either:
+          - pattern: $OBJ.execute(...)
+          - pattern: $OBJ.executemany(...)
+
+  # PHP
+  - id: php-sql-taint
+    mode: taint
+    languages: [php]
+    severity: INFO
+    message: SQL lifecycle
+    pattern-sources:
+      - patterns:
+          - pattern-either:
+              - pattern: |
+                  "$SQL"
+              - pattern: |
+                  '$SQL'
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?i)(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+      - patterns:
+          - pattern: |
+              $X = $SQL
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?si).*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    pattern-sinks:
+      - pattern-either:
+          - pattern: oci_parse($CONN, ...)
+          - pattern: oci_execute(...)
+          - pattern: $OBJ->prepare(...)
+          - pattern: $OBJ->query(...)
+          - pattern: $OBJ->execute(...)
+
+  # JavaScript / TypeScript
+  - id: js-sql-taint
+    mode: taint
+    languages: [javascript, typescript]
+    severity: INFO
+    message: SQL lifecycle
+    pattern-sources:
+      - patterns:
+          - pattern-either:
+              - pattern: |
+                  "$SQL"
+              - pattern: |
+                  '$SQL'
+              - pattern: |
+                  `$SQL`
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?i)(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+      - patterns:
+          - pattern: |
+              $X = $SQL
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?si).*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    pattern-sinks:
+      - pattern-either:
+          - pattern: $OBJ.execute(...)
+          - pattern: $OBJ.query(...)
+
+  # Ruby
+  - id: ruby-sql-taint
+    mode: taint
+    languages: [ruby]
+    severity: INFO
+    message: SQL lifecycle
+    pattern-sources:
+      - patterns:
+          - pattern-either:
+              - pattern: |
+                  "$SQL"
+              - pattern: |
+                  '$SQL'
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?i)(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+      - patterns:
+          - pattern: |
+              $X = $SQL
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?si).*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    pattern-sinks:
+      - pattern-either:
+          - pattern: $OBJ.exec(...)
+          - pattern: $OBJ.execute(...)
+          - pattern: $OBJ.parse(...)
+
+  # C#
+  - id: csharp-sql-taint
+    mode: taint
+    languages: [csharp]
+    severity: INFO
+    message: SQL lifecycle
+    pattern-sources:
+      - patterns:
+          - pattern-either:
+              - pattern: |
+                  "$SQL"
+              - pattern: |
+                  @"$SQL"
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?i)(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+      - patterns:
+          - pattern: |
+              $X = $SQL
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?si).*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    pattern-sinks:
+      - pattern-either:
+          - pattern: new OracleCommand(...)
+          - pattern: $OBJ.ExecuteReader(...)
+          - pattern: $OBJ.ExecuteNonQuery(...)
+          - pattern: $OBJ.ExecuteScalar(...)
+    pattern-propagators:
+      - pattern: $V.Append($S)
+        from: $S
+        to: $V
+
+  # VB.NET
+  - id: vb-sql-taint
+    mode: taint
+    languages: [vb]
+    severity: INFO
+    message: SQL lifecycle
+    pattern-sources:
+      - patterns:
+          - pattern: |
+              "$SQL"
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?i)(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+      - patterns:
+          - pattern: |
+              $X = $SQL
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?si).*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    pattern-sinks:
+      - pattern-either:
+          - pattern: New OracleCommand(...)
+          - pattern: $OBJ.ExecuteReader(...)
+          - pattern: $OBJ.ExecuteNonQuery(...)
+          - pattern: $OBJ.ExecuteScalar(...)
+    pattern-propagators:
+      - pattern: $V.Append($S)
+        from: $S
+        to: $V
+
+  # C / C++
+  - id: c-sql-taint
+    mode: taint
+    languages: [c, cpp]
+    severity: INFO
+    message: SQL lifecycle
+    pattern-sources:
+      - patterns:
+          - pattern: |
+              "$SQL"
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?i)(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+      - patterns:
+          - pattern: |
+              $X = $SQL
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: '(?si).*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    pattern-sinks:
+      - pattern-either:
+          - pattern: OCIStmtPrepare(...)
+          - pattern: OCIStmtExecute(...)

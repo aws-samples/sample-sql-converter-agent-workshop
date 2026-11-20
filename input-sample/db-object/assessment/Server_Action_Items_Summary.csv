@@ -1,0 +1,86 @@
+Schema,Action item,Number of occurrences,Learning curve efforts,Efforts to convert an occurrence of the action item,Action item description,Recommended action
+SCHEMA_SAMPLE,5027,1,1.0,0.5,The package body doesn't include source code,"Make sure that the package body includes source code, and try again. Or convert your source code manually."
+SCHEMA_SAMPLE,5028,5,40.0,8.0,DMS SC can't convert unsupported data types,"DMS SC created a method stub. To replace it, convert your source code manually."
+SCHEMA_SAMPLE,5029,14,40.0,8.0,DMS SC can't convert the usage of objects with unsupported data types,"DMS SC created a method stub. To replace it, convert your source code manually."
+SCHEMA_SAMPLE,5030,20,80.0,40.0,DMS SC can't convert the usage of objects with unsupported data types,"DMS SC created a method stub. To replace it, convert your source code manually."
+SCHEMA_SAMPLE,5032,1,0.0,8.0,DMS SC can't convert user-defined data types with incomplete definitions,Complete the data type definition on your source database and try again.
+SCHEMA_SAMPLE,5033,1,0.0,0.2,Your source routine has too many INOUT parameters,PostgreSQL routines support up to 100 INOUT parameters. Convert your source code manually.
+SCHEMA_SAMPLE,5034,41,0.1,0.1,PostgreSQL doesn't support transaction control that is implemented in your source database,PostgreSQL supports transaction control from the top level or nested call invocations without any other intervening command. Revise your transaction control settings and try again.
+SCHEMA_SAMPLE,5035,39,8.0,2.0,Your code ends a transaction inside a block with exception handlers,Revise your code to move transaction control to the application side and try again.
+SCHEMA_SAMPLE,5039,1,0.0,0.01,"In PostgreSQL, you can access cursor attributes locally","If your source code includes references to cursor attributes from global routines, convert your code manually. ."
+SCHEMA_SAMPLE,5045,4,0.0,0.1,DMS SC can't convert the RAISE_APPLICATION_ERROR call with the third parameter,"See the errors stack at runtime. To avoid unexpected results at runtime, review the converted code and use GET STACKED DIAGNOSTICS/pg_exception_context in the exception handler."
+SCHEMA_SAMPLE,5065,1,0.5,4.0,PostgreSQL doesn't support the UPDATE statement for subqueries,Revise your code to run the UPDATE statement and subqueries on the underlying tables separately.
+SCHEMA_SAMPLE,5068,1,0.5,4.0,PostgreSQL doesn't support the DELETE statement for subqueries,Revise your code to run the DELETE statement and subqueries on the underlying tables separately.
+SCHEMA_SAMPLE,5075,1,0.0,0.1,PostgreSQL doesn't support the WITH READ ONLY clause for views,Revise your code to use views without the subquery restriction clause.
+SCHEMA_SAMPLE,5077,3,0.0,8.0,PostgreSQL doesn't support the PIVOT clause for SELECT statements,Revise your code to use a procedure to prepare data and then return data as a view.
+SCHEMA_SAMPLE,5081,31,0.0,0.0,Review the converted dynamic SQL code,Review the converted code to make sure that dynamic SQL statements use the right dependencies.
+SCHEMA_SAMPLE,5088,1,40.0,3.0,PostgreSQL doesn't support EXECUTE IMMEDIATE statements with the BULK COLLECT clause,Convert your source code manually.
+SCHEMA_SAMPLE,5095,3,2.0,8.0,PostgreSQL doesn't support DML statements on materialized views,Revise your code to use the REFRESH MATERIALIZED VIEW statement.
+SCHEMA_SAMPLE,5103,12,40.0,0.1,DMS SC can't convert hints,Use PostgreSQL methods for performance tuning.
+SCHEMA_SAMPLE,5117,3,8.0,2.0,DMS SC can't convert cursor attributes,Convert the references to the cursor attributes manually.
+SCHEMA_SAMPLE,5127,1,16.0,160.0,Using CROSS JOIN in PostgreSQL might lead to slow performance,Review and modify the converted code to improve performance.
+SCHEMA_SAMPLE,5138,1,0.5,0.2,You can use the XMLSequence function only in a TABLE clause,Convert your source code manually.
+SCHEMA_SAMPLE,5143,2,0.5,0.2,Converted code might not work correctly,Make sure that the converted code returns well-formed XML documents or convert your code manually.
+SCHEMA_SAMPLE,5144,2,4.0,2.0,PostgreSQL doesn't support FOR UPDATE WAIT,Revise your code to use FOR UPDATE without WAIT.
+SCHEMA_SAMPLE,5196,1,4.0,4.0,PostgreSQL doesn't support OBJECT TABLE,Revise your code to avoid the use of OBJECT TABLE.
+SCHEMA_SAMPLE,5199,2,0.0,8.0,PostgreSQL doesn't support CLUSTERED TABLE,Revise your code to use a table with triggers.
+SCHEMA_SAMPLE,5200,1,40.0,20.0,PostgreSQL doesn't support EXTERNAL TABLES,Revise your code to use tables.
+SCHEMA_SAMPLE,5206,1,0.0,40.0,PostgreSQL doesn't support bitmap indexes,Revise your code to use simple indexes.
+SCHEMA_SAMPLE,5208,1,8.0,40.0,PostgreSQL doesn't support domain indexes,Revise your code to use simple indexes.
+SCHEMA_SAMPLE,5212,2,40.0,8.0,PostgreSQL doesn't support the BFILE data type,Revise your code to use a routine to get a file from the file system or store a BLOB in your database.
+SCHEMA_SAMPLE,5213,1,8.0,0.5,"PostgreSQL ensures support of microseconds for time, datetime, and timestamp data types",Review the converted code to avoid loss of resolution.
+SCHEMA_SAMPLE,5226,4,0.0,0.1,PostgreSQL doesn't support the TYPE ... IS REF CURSOR usage,Revise your code to use the REFCURSOR data type.
+SCHEMA_SAMPLE,5238,1,0.2,1.0,PostgreSQL doesn't support REFERENCING clauses,Revise your code to use OLD and NEW instead of references to pseudo rows.
+SCHEMA_SAMPLE,5320,1,0.0,0.5,PostgreSQL doesn't support views with the INVALID status,Convert your source code manually.
+SCHEMA_SAMPLE,5326,5,0.0,0.2,PostgreSQL doesn't support status definitions in CREATE statements for triggers and constraints,Revise your code to turn off the trigger or drop the constraint manually and try again.
+SCHEMA_SAMPLE,5334,17,40.0,1.0,DMS SC can't convert statements with dynamic SQL,Convert your source code manually.
+SCHEMA_SAMPLE,5340,25,80.0,16.0,DMS SC can't convert functions,Revise your code to use another function or create a user-defined function.
+SCHEMA_SAMPLE,5350,1,40.0,2.0,DMS SC can't convert statements that explicitly apply or cancel a transaction,Revise your code to move transaction control to the application side and try again.
+SCHEMA_SAMPLE,5351,10,40.0,40.0,DMS SC can't convert objects,Convert your source code manually.
+SCHEMA_SAMPLE,5501,2,80.0,160.0,DMS SC can't convert scheduled jobs,Revise your converted code to use AWS Lambda with scheduled events.
+SCHEMA_SAMPLE,5550,7,0.0,8.0,PostgreSQL doesn't support the ROWID data type,Review the converted code and change it where necessary.
+SCHEMA_SAMPLE,5551,2,0.0,8.0,PostgreSQL doesn't support the UROWID data type,Review the converted code and change it where necessary.
+SCHEMA_SAMPLE,5554,1,0.0,0.1,PostgreSQL doesn't support virtual columns,Revise your code to use triggers to emulate virtual columns and try again.
+SCHEMA_SAMPLE,5556,4,4.0,4.0,PostgreSQL doesn't support conditional predicates,Revise your code to use simple indexes and try again.
+SCHEMA_SAMPLE,5561,1,16.0,8.0,DMS SC can't convert pre-defined exceptions,Revise your code to use another type of exception and try again.
+SCHEMA_SAMPLE,5562,1,4.0,1.0,DMS SC can't convert the CURSOR_ALREADY_OPEN exception with the current local cursor conversion logic,Revise your code to use another type of exception and try again.
+SCHEMA_SAMPLE,5572,3,40.0,40.0,PostgreSQL doesn't support object type methods,Revise your code to use a custom solution for the user type and try again.
+SCHEMA_SAMPLE,5578,17,0.0,8.0,DMS SC can't convert the SELECT statement,Revise your SELECT statement and try again.
+SCHEMA_SAMPLE,5579,1,0.0,8.0,Review the converted code,Review the converted code and convert your source code manually where necessary.
+SCHEMA_SAMPLE,5580,2,0.0,1.0,The exception block in the converted code is empty,Review the converted code and convert your source code manually where necessary.
+SCHEMA_SAMPLE,5581,2,4.0,0.1,PostgreSQL doesn't support index-organized tables,Revise your code to use a custom solution for the table type and try again.
+SCHEMA_SAMPLE,5584,27,0.0,0.2,Review the converted function,Review the converted code and set the time zone manually where necessary.
+SCHEMA_SAMPLE,5586,2,8.0,8.0,DMS SC can't convert queries with the NOCYCLE clause,Convert your source code manually.
+SCHEMA_SAMPLE,5594,1,8.0,8.0,DMS SC can't convert date time expressions,"Revise your code to make sure that your data doesn't violate the restrictions and try again, or convert your source code manually."
+SCHEMA_SAMPLE,5599,4,16.0,1.0,PostgreSQL doesn't support references to SQLERRM outside of an exception handler,Review the converted code and replace the empty string with the required string literal.
+SCHEMA_SAMPLE,5600,1,16.0,1.0,PostgreSQL doesn't support references to SQLERRM with any specified parameter value,Review the converted code and replace the empty string with the required string literal.
+SCHEMA_SAMPLE,5601,3,16.0,1.0,PostgreSQL doesn't support references to SQLCODE outside of an exception handler,Review the converted code and replace the empty string with the required string literal.
+SCHEMA_SAMPLE,5605,1,8.0,8.0,PostgreSQL doesn't support the usage of database links,Revise your code to avoid using database links and try again.
+SCHEMA_SAMPLE,5607,4,20.0,20.0,DMS SC can't convert Java stored routine,Convert your source code manually.
+SCHEMA_SAMPLE,5611,4,8.0,2.0,PostgreSQL doesn't support SAVEPOINT and ROLLBACK TO SAVEPOINT inside routines,Convert your source code manually.
+SCHEMA_SAMPLE,5617,13,8.0,0.5,Converted code might produce different results compared to the source code,Check the results produced by your converted code and update regular expressions where necessary.
+SCHEMA_SAMPLE,5624,4,0.0,1.0,Converted code might not work correctly because of the bind variable names,Review the list of bind variables they meet the PostgreSQL requirements and try again.
+SCHEMA_SAMPLE,5628,13,4.0,6.0,Converted code might produce different results compared to the source code,"Review the converted code to make sure that it produces the same results as the source code. Rewrite dynamic statements in your source code, then try to convert again."
+SCHEMA_SAMPLE,5639,2,1.0,0.5,Make sure that you installed the postgres_fdw extension,"Review your connection options, install the postgres_fdw extension, and try again."
+SCHEMA_SAMPLE,5652,1,16.0,16.0,PostgreSQL doesn't have a mechanism that handles null values for partition keys,The converted code stores the null values in the DEFAULT partition. Review the converted code to make sure that it produces the same results as the source code.
+SCHEMA_SAMPLE,5653,1,24.0,24.0,PostgreSQL doesn't support foreign keys that reference partitioned tables,Convert your source code manually.
+SCHEMA_SAMPLE,5656,5,12.0,12.0,The timestamp data type in converted code might produce different results compared to the source code,Convert your source code manually.
+SCHEMA_SAMPLE,5659,4,0.0,0.1,DMS SC can't convert tables without a primary key,Make sure that you create a primary key on the table. The lack of a primary key might lead to slow performance of DMS SC.
+SCHEMA_SAMPLE,5661,21,12.0,12.0,The INTERVAL clause in converted code might lead to different data distribution compared to the source code,Convert your source code manually.
+SCHEMA_SAMPLE,5662,10,0.2,0.1,Converted code might produce different results compared to the source code because the error code type isn't a number in PostgreSQL,Review your converted code to make sure that you assigned the value of the error code correctly.
+SCHEMA_SAMPLE,5663,5,0.5,0.5,PostgreSQL doesn't support pragmas,Review the converted code to avoid performance issues and change it where necessary.
+SCHEMA_SAMPLE,5664,1,8.0,8.0,PostgreSQL doesn't support cursor variables defined with PRAGMA AUTONOMOUS_TRANSACTION as routine parameters,Review the converted code and change it where necessary.
+SCHEMA_SAMPLE,5666,2,8.0,160.0,PostgreSQL supports only global application contexts in routines with PRAGMA AUTONOMOUS_TRANSACTION,Revise your code to use global application contexts and try again. Or convert your source code manually.
+SCHEMA_SAMPLE,5668,1,0.0,0.5,DMS SC can't resolve a remote object to convert,"Revise your code to make sure that you added the remote server to the project and associated the database link with it, and try again."
+SCHEMA_SAMPLE,5798,2,3.0,1.0,DBMS_LOB package methods might work incorrectly with a temporary LOB,DMS SC creates or uses a LOB with non-empty zero-length value of the TEXT or BYTEA data type. This LOB isn't temporary. Check the converted code behavior and correct the logic if necessary.
+SCHEMA_SAMPLE,5966,8,16.0,16.0,DMS SC can't convert DDL commands,Revise your code to avoid using this statement and try again. Or convert your source code manually.
+SCHEMA_SAMPLE,5969,1,1.0,0.5,DMS SC can't convert linguistic sort sequences,"Revise your code to use the COLLATE option with the appropriate locale that corresponds to the linguistic sort sequence in the ORDER BY clause of query, and try again."
+SCHEMA_SAMPLE,5976,1,0.0,0.01,You source code uses the crypto() function from the pgcrypto extension,"Make sure that you install the pgcrypto extension, and then convert your source code manually."
+SCHEMA_SAMPLE,5982,2,16.0,3.0,DMS SC can't convert primary key and unique constraints with the NOT VALID option,Revise your code to avoid using NOT VALID and try again.
+SCHEMA_SAMPLE,5984,125,0.5,0.5,Specify the precision and scale values for your source column,"To improve the conversion and use the optimized data type mapping, specify the precision and scale values for the column in your source code. Then, convert the table again."
+SCHEMA_SAMPLE,9993,13,40.0,40.0,Unable to transform statement due to references to unresolved object,"Verify if unresolved object is present in the database. If it isn't, check the object name or add the object. If the object is present, please submit report to developers."
+SCHEMA_SAMPLE,9994,2,40.0,40.0,Unable to convert objects,Perform manual conversion.
+SCHEMA_SAMPLE,9996,9,40.0,40.0,Internal Converter error occurred,Please submit report to developers.
+SCHEMA_SAMPLE,9997,27,0.0,3.0E-4,Unable to resolve objects,"Verify the object name and conversion scope, grant the source database user access if needed, and reconvert. Review runtime-built or unsupported references manually."
+SCHEMA_SAMPLE,10000,2,0.0,0.0,It is not allowed to convert an object without its parent,"Please, check parent object. ."
+SCHEMA_SAMPLE,30213,1,3.0,3.0,DMS SC can't convert dbms_sql$to_cursor_number method. Make sure that each REFCURSOR column has a unique alias. ,"Revise your code to assign unique aliases to all columns within the REFCURSOR, and try again."

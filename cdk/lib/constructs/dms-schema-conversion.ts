@@ -128,7 +128,10 @@ export class DmsSchemaConversion extends Construct {
         replicationSubnetGroupIdentifier: 'dms-schema-conversion-subnet-group',
         replicationSubnetGroupDescription:
           'Subnet group for DMS Schema Conversion',
-        subnetIds: props.vpc.publicSubnets.map((subnet) => subnet.subnetId),
+        // Private subnets (outbound through the NAT gateway). Schema Conversion
+        // reaches Oracle / Aurora inside the VPC and S3 / Secrets Manager
+        // through the NAT gateway, so it needs no public IP.
+        subnetIds: props.vpc.privateSubnets.map((subnet) => subnet.subnetId),
         tags: [
           {
             key: 'Name',
@@ -147,6 +150,10 @@ export class DmsSchemaConversion extends Construct {
     props.oracleSecurityGroup.connections.allowFrom(sg, Port.tcp(1521));
     props.dbCluster.connections.allowFrom(sg, Port.POSTGRES);
 
+    // Let the agent on the Oracle EC2 read the Schema Conversion results
+    // (download_s3_input MCP tool). Read-only.
+    dmsSchemaConversionBucket.grantRead(props.oracleInstance.role);
+
     // Create DMS Instance Profile
     const dmsInstanceProfile = new CfnInstanceProfile(
       this,
@@ -156,6 +163,8 @@ export class DmsSchemaConversion extends Construct {
         description:
           'Instance profile for Oracle to PostgreSQL schema conversion (CDK managed)',
         networkType: 'IPV4',
+        // The default is true (a public IP address). Keep it private.
+        publiclyAccessible: false,
         subnetGroupIdentifier: dmsSubnetGroup.replicationSubnetGroupIdentifier,
         vpcSecurityGroups: [sg.securityGroupId],
       }

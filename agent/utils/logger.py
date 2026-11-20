@@ -1,4 +1,4 @@
-"""統合ログ設定モジュール - Strandsベストプラクティス準拠"""
+"""MCPサーバー（agent/mcpserver）のログ設定"""
 
 import logging
 from datetime import datetime
@@ -28,8 +28,6 @@ def setup_application_logging(log_dir="logs", log_level=logging.DEBUG):
 
     # 外部ライブラリのログレベルを調整
     logging.getLogger("botocore").setLevel(logging.WARNING)
-    logging.getLogger("strands.telemetry.metrics").setLevel(logging.WARNING)
-    logging.getLogger("strands").setLevel(log_level)
 
     return logging.getLogger("app")
 

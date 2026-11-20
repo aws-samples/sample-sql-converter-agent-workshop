@@ -1,0 +1,195 @@
+rules:
+  - id: java-sql-pattern
+    patterns:
+      - pattern: |
+          "$SQL"
+      - metavariable-regex:
+          metavariable: $SQL
+          regex: '^\s*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    languages: [java]
+    severity: INFO
+    message: SQL pattern
+    options:
+      constant_propagation: false
+
+  - id: java-sql-pivot
+    pattern-regex: '\b(PIVOT|UNPIVOT)\s*\('
+    languages: [java]
+    severity: INFO
+    message: SQL PIVOT/UNPIVOT pattern
+
+  - id: jpa-named-query
+    patterns:
+      - pattern: |
+          @NamedQuery(
+            ...,
+            query = $SQL,
+            ...
+          )
+    languages: [java]
+    severity: INFO
+    message: JPA NamedQuery
+
+  - id: jpa-named-native-query
+    patterns:
+      - pattern: |
+          @NamedNativeQuery(
+            ...,
+            query = $SQL,
+            ...
+          )
+    languages: [java]
+    severity: INFO
+    message: JPA NamedNativeQuery
+
+  - id: spring-query
+    patterns:
+      - pattern: |
+          @Query($SQL)
+    languages: [java]
+    severity: INFO
+    message: Spring Query
+
+  - id: python-sql-pattern
+    patterns:
+      - pattern-either:
+          - pattern: |
+              "$SQL"
+          - pattern: |
+              '$SQL'
+      - metavariable-regex:
+          metavariable: $SQL
+          regex: '(?s)^\s*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    languages: [python]
+    severity: INFO
+    message: SQL pattern
+    options:
+      constant_propagation: false
+
+  - id: python-exec-triple
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $OBJ.execute("""...""")
+          - pattern: |
+              $OBJ.executemany("""...""")
+    languages: [python]
+    severity: INFO
+    message: SQL exec triple
+
+  - id: php-sql-pattern
+    patterns:
+      - pattern-either:
+          - pattern: |
+              "$SQL"
+          - pattern: |
+              '$SQL'
+      - metavariable-regex:
+          metavariable: $SQL
+          regex: '^\s*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    languages: [php]
+    severity: INFO
+    message: SQL pattern
+    options:
+      constant_propagation: false
+
+  - id: php-laravel-raw
+    pattern-either:
+      - pattern: DB::raw("$SQL")
+      - pattern: |
+          $OBJ->whereRaw("$SQL")
+      - pattern: |
+          $OBJ::whereRaw("$SQL")
+      - pattern: |
+          $OBJ->selectRaw("$SQL")
+      - pattern: |
+          $OBJ::selectRaw("$SQL")
+    languages: [php]
+    severity: INFO
+    message: SQL pattern
+    options:
+      constant_propagation: false
+
+  - id: js-sql-pattern
+    patterns:
+      - pattern-either:
+          - pattern: |
+              "$SQL"
+          - pattern: |
+              '$SQL'
+          - pattern: |
+              `$SQL`
+      - metavariable-regex:
+          metavariable: $SQL
+          regex: '^\s*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    languages: [javascript, typescript]
+    severity: INFO
+    message: SQL pattern
+    options:
+      constant_propagation: false
+
+  - id: ruby-sql-pattern
+    patterns:
+      - pattern-either:
+          - pattern: |
+              "$SQL"
+          - pattern: |
+              '$SQL'
+      - metavariable-regex:
+          metavariable: $SQL
+          regex: '^\s*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    languages: [ruby]
+    severity: INFO
+    message: SQL pattern
+    options:
+      constant_propagation: false
+
+  - id: ruby-heredoc-sql
+    pattern-regex: '<<[-~]SQL.*?\n([\s\S]*?)\n\s*SQL'
+    languages: [generic]
+    severity: INFO
+    message: Ruby heredoc SQL
+    paths:
+      include: ["*.rb"]
+
+  - id: csharp-sql-pattern
+    patterns:
+      - pattern-either:
+          - pattern: |
+              "$SQL"
+          - pattern: |
+              @"$SQL"
+      - metavariable-regex:
+          metavariable: $SQL
+          regex: '^\s*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    languages: [csharp]
+    severity: INFO
+    message: SQL pattern
+    options:
+      constant_propagation: false
+
+  - id: vb-sql-pattern
+    patterns:
+      - pattern: |
+          "$SQL"
+      - metavariable-regex:
+          metavariable: $SQL
+          regex: '^\s*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH)\s'
+    languages: [vb]
+    severity: INFO
+    message: SQL pattern
+    options:
+      constant_propagation: false
+
+  - id: c-sql-pattern
+    patterns:
+      - pattern: |
+          "$SQL"
+      - metavariable-regex:
+          metavariable: $SQL
+          regex: '^\s*(SELECT|INSERT|UPDATE|DELETE|MERGE|WITH|EXEC SQL)\s'
+    languages: [c, cpp]
+    severity: INFO
+    message: SQL pattern
+    options:
+      constant_propagation: false

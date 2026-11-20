@@ -95,10 +95,23 @@ export class OracleDbInstance extends Construct {
       serverAccessLogsPrefix: 'AccessLogs/',
     });
 
-    // Deploy the Oracle installation script to the S3 bucket
+    // Deploy the Oracle installation script to the S3 bucket.
+    // schema_sample/ is deployed separately (below); exclude it here so this
+    // deployment does not prune it.
     const scriptDeployment = new BucketDeployment(this, 'DeployOracleScript', {
       sources: [Source.asset(path.join(__dirname, './../../scripts'))],
       destinationBucket: scriptBucket,
+      exclude: ['schema_sample/*'],
+    });
+
+    // Deploy the sample DB objects (DDL) created in Oracle at install time.
+    // They live in input-sample/db-object/ddl/ so that all workshop sample
+    // data is in one place; install-oracle-xe.sh runs
+    // /opt/oracle-install/schema_sample/setup.sh.
+    const schemaSampleDeployment = new BucketDeployment(this, 'DeploySchemaSample', {
+      sources: [Source.asset(path.join(__dirname, './../../../input-sample/db-object/ddl'))],
+      destinationBucket: scriptBucket,
+      destinationKeyPrefix: 'schema_sample/',
     });
 
     // Create a role for the instance to allow SSM access and S3 access
@@ -106,7 +119,6 @@ export class OracleDbInstance extends Construct {
       assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
-        ManagedPolicy.fromAwsManagedPolicyName('AmazonBedrockFullAccess'),
       ],
     });
 
@@ -124,18 +136,13 @@ export class OracleDbInstance extends Construct {
       ]
     }));
 
-    // Add PostgreSQL connection test permissions
+    // Read the Aurora PostgreSQL credentials (host, port, user, password) to
+    // connect directly from this instance (agent/mcpserver/postgres.py,
+    // pg_connect_test.py). The Aurora security group allows this instance's
+    // security group on the PostgreSQL port.
     instanceRole.addToPolicy(new PolicyStatement({
-      actions: [
-        'secretsmanager:GetSecretValue',
-        'rds-data:ExecuteStatement',
-        'sts:GetCallerIdentity'
-      ],
-      resources: [
-        'arn:aws:secretsmanager:*:*:secret:aurora-pg-credentials*',
-        'arn:aws:rds:*:*:cluster:*',
-        '*'
-      ]
+      actions: ['secretsmanager:GetSecretValue'],
+      resources: ['arn:aws:secretsmanager:*:*:secret:aurora-pg-credentials*'],
     }));
 
     // Oracle XE installation user data script - simplified to download and run the script from S3
@@ -150,15 +157,6 @@ export class OracleDbInstance extends Construct {
       'chmod +x /opt/oracle-install/install-oracle-xe.sh',
       // user data 内でインストールスクリプトを流すとなぜか再起動が発生して途中で止まるので別途 run command で実行
       // '/opt/oracle-install/install-oracle-xe.sh'
-      
-      // RDP環境のセットアップ
-      'echo "RDP環境のセットアップ開始"',
-      'dnf config-manager --enable crb || true',
-      'dnf install -y xorg-x11-server-Xorg xorg-x11-xauth xorg-x11-apps',
-      'dnf install -y @xfce-desktop-environment',
-      'dnf install -y firefox xfce4-terminal xrdp',
-      'systemctl enable xrdp',
-      'echo "RDP環境のセットアップ完了"'
     );
 
     // Create the EC2 instance with Oracle XE
@@ -195,6 +193,7 @@ export class OracleDbInstance extends Construct {
       ],
     });
     oracleInstance.node.addDependency(scriptDeployment);
+    oracleInstance.node.addDependency(schemaSampleDeployment);
 
     oracleInstance.addSecurityGroup(props.sgIceInsntaces);
 
