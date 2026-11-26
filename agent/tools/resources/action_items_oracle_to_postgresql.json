@@ -1,0 +1,3020 @@
+{
+  "action_items": [
+    {
+      "action_item": "5024",
+      "description": "PostgreSQL doesn't support INSERT statements that have a partition name or partition key value",
+      "recommended_action": "Convert your source code manually to insert data into a partitioned table. PostgreSQL routes and inserts each row to the appropriate partition.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-insert.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5025",
+      "description": "DMS SC can't convert this syntax element",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5026",
+      "description": "PostgreSQL doesn't support this type of context",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5027",
+      "description": "The package body doesn't include source code",
+      "recommended_action": "Make sure that the package body includes source code, and try again. Or convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5028",
+      "description": "DMS SC can't convert object definitions with the unsupported %s data type",
+      "recommended_action": "DMS SC created a method stub. To replace it, convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5029",
+      "description": "DMS SC can't convert the usage of objects with the unsupported %s data type",
+      "recommended_action": "DMS SC created a method stub. To replace it, convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5030",
+      "description": "DMS SC can't convert the usage of objects with the unsupported %s data type",
+      "recommended_action": "DMS SC created a method stub. To replace it, convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 80.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5031",
+      "description": "DMS SC can't convert CURSOR expressions",
+      "recommended_action": "Create a function that returns the refcursor data type for the subquery under the expression.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/plpgsql-cursors.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5032",
+      "description": "PostgreSQL doesn't support data types that are based on data types that have incomplete definitions",
+      "recommended_action": "Complete the data type definition on your source database and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/sql-createtype.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5033",
+      "description": "Your source routine has too many INOUT parameters",
+      "recommended_action": "PostgreSQL routines support up to 100 INOUT parameters. Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5034",
+      "description": "PostgreSQL doesn't support transaction control that is implemented in your source database",
+      "recommended_action": "PostgreSQL supports transaction control from the top level or nested call invocations without any other intervening command. Revise your transaction control settings and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/plpgsql-transactions.html",
+      "learning_curve_efforts": 0.1,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5035",
+      "description": "Your code ends a transaction inside a block with exception handlers",
+      "recommended_action": "Revise your code to move transaction control to the application side and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/plpgsql-transactions.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5036",
+      "description": "Your call stack includes transaction logic",
+      "recommended_action": "Revise your code to make sure that you perform transaction control inside a direct or nested call.",
+      "documentation_references": "https://www.postgresql.org/docs/current/plpgsql-transactions.html",
+      "learning_curve_efforts": 0.1,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5037",
+      "description": "Converted code might produce different results compared to the source code",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/sql-createfunction.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5038",
+      "description": "A cursor with the %s name already exists",
+      "recommended_action": "Use a cursor with a different name and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/plpgsql-declarations.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5039",
+      "description": "In PostgreSQL, you can access cursor attributes locally",
+      "recommended_action": "If your source code includes references to cursor attributes from global routines, convert your code manually. .",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.01
+    },
+    {
+      "action_item": "5040",
+      "description": "PostgreSQL doesn't support the %s SHARING clause",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5041",
+      "description": "PostgreSQL doesn't support the %s view with the SHARING clause",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5042",
+      "description": "PostgreSQL doesn't support cursors of a specified type",
+      "recommended_action": "Convert your source code manually to meet the PostgreSQL limitations.",
+      "documentation_references": "https://www.postgresql.org/docs/current/plpgsql-cursors.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5043",
+      "description": "DMS SC can't convert hierarchical queries with an asterisk in the SELECT clause",
+      "recommended_action": "Replace the asterisk with column names and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/13/queries-with.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5044",
+      "description": "PostgreSQL can't create the primary key because an index with the %s name already exists",
+      "recommended_action": "Use a different name for your constraint and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/sql-altertable.html",
+      "learning_curve_efforts": 0.1,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5045",
+      "description": "DMS SC can't convert the RAISE_APPLICATION_ERROR call with the third parameter",
+      "recommended_action": "See the errors stack at runtime. To avoid unexpected results at runtime, review the converted code and use GET STACKED DIAGNOSTICS/pg_exception_context in the exception handler.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5062",
+      "description": "DMS SC converted the %s type constructor to a direct assignment",
+      "recommended_action": "Make sure that DMS SC assigned all field values correctly in the converted code.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5063",
+      "description": "DMS SC used the package variable as a default value",
+      "recommended_action": "Make sure that you run the appropriate package initialization procedure before the assignment.",
+      "documentation_references": "",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5064",
+      "description": "PostgreSQL doesn't support UPDATE statements with the ERROR LOG option",
+      "recommended_action": "Revise your code to insert error records in the exception block. Iterate through the errors in the exception block, add them to the log, use the EXIT command when finished, and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-update.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5065",
+      "description": "PostgreSQL doesn't support the UPDATE statement for subqueries",
+      "recommended_action": "Revise your code to run the UPDATE statement and subqueries on the underlying tables separately.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-update.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5067",
+      "description": "PostgreSQL doesn't support DELETE statements with the ERROR LOG option",
+      "recommended_action": "Revise your code to insert error records in the exception block. Iterate through the errors in the exception block, add them to the log, use the EXIT command when finished, and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-delete.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5068",
+      "description": "PostgreSQL doesn't support the DELETE statement for subqueries",
+      "recommended_action": "Revise your code to run the DELETE statement and subqueries on the underlying tables separately.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-delete.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5069",
+      "description": "DMS SC can't convert a text literal delimiter inside the source text literal",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/13/sql-syntax-lexical.html",
+      "learning_curve_efforts": 0.1,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5070",
+      "description": "PostgreSQL doesn't support INSERT statements with the ERROR LOG option",
+      "recommended_action": "Revise your code to insert error records in the exception block. Iterate through the errors in the exception block, add them to the log, use the EXIT command when finished, and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-insert.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5071",
+      "description": "PostgreSQL doesn't support the INSERT statement for subqueries",
+      "recommended_action": "Revise your code to run the INSERT statement and subqueries on the underlying tables separately.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-insert.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5072",
+      "description": "DMS SC can't convert the usage of the %TYPE attribute",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/plpgsql-declarations.html#PLPGSQL-DECLARATION-TYPE",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5073",
+      "description": "PostgreSQL doesn't support hierarchical queries with pseudocolumns",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/13/queries-with.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5075",
+      "description": "PostgreSQL doesn't support the WITH READ ONLY clause for views",
+      "recommended_action": "Revise your code to use views without the subquery restriction clause.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createview.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5077",
+      "description": "PostgreSQL doesn't support the PIVOT clause for SELECT statements",
+      "recommended_action": "Revise your code to use a procedure to prepare data and then return data as a view.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createview.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5078",
+      "description": "Your source code includes dynamic SQL statements that depend on the %s table and the %s field",
+      "recommended_action": "Review the converted code to make sure that dynamic SQL statements use the right dependencies.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.0
+    },
+    {
+      "action_item": "5079",
+      "description": "Your source code includes dynamic SQL statements that depend on the %s file",
+      "recommended_action": "Review the converted code to make sure that dynamic SQL statements use the right dependencies.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.0
+    },
+    {
+      "action_item": "5080",
+      "description": "Your source code includes dynamic SQL statements that depend on the %s routine",
+      "recommended_action": "Review the converted code to make sure that dynamic SQL statements use the right dependencies.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.0
+    },
+    {
+      "action_item": "5081",
+      "description": "Your source code includes dynamic SQL statements that depend on the %s parameter",
+      "recommended_action": "Review the converted code to make sure that dynamic SQL statements use the right dependencies.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.0
+    },
+    {
+      "action_item": "5082",
+      "description": "Your source code includes dynamic SQL statements that depend on the %s global variable",
+      "recommended_action": "Review the converted code to make sure that dynamic SQL statements use the right dependencies.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.0
+    },
+    {
+      "action_item": "5087",
+      "description": "PostgreSQL doesn't support RETURNING BULK COLLECT INTO clauses",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/message-id/OF97D396FE.EF89C3AC-ON65257E52.001FBC5C-65257E52.00204260@tcs.com",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 6.0
+    },
+    {
+      "action_item": "5088",
+      "description": "PostgreSQL doesn't support EXECUTE IMMEDIATE statements with the BULK COLLECT clause",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-statements.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 3.0
+    },
+    {
+      "action_item": "5090",
+      "description": "PostgreSQL doesn't support INSERT statements for a SUBPARTITION",
+      "recommended_action": "Insert data into the overlying partition or use the INSERT statement to convert your code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-insert.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5091",
+      "description": "PostgreSQL ignores optional parameters when you call the %s method",
+      "recommended_action": "Convert your source code manually to make sure that you call the converted method using the mandatory parameters.",
+      "documentation_references": "https://www.postgresql.org/docs/current/functions-xml.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5092",
+      "description": "Calling the %s method doesn't influence the GETXML call",
+      "recommended_action": "Convert your source code manually to make sure that your target routine supports context modification of an XML object.",
+      "documentation_references": "https://www.postgresql.org/docs/current/functions-xml.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5093",
+      "description": "DMS SC can't convert the query of the materialized view",
+      "recommended_action": "Change the definition of the source materialized view or convert your code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5094",
+      "description": "DMS SC can't convert the materialized view",
+      "recommended_action": "Choose another option to migrate materialized views or create tables during the data migration phase.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createview.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5095",
+      "description": "PostgreSQL doesn't support DML statements on materialized views",
+      "recommended_action": "Revise your code to use the REFRESH MATERIALIZED VIEW statement.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createview.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5096",
+      "description": "The call of the converted method might produce different results compared to the source method",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/functions-xml.html",
+      "learning_curve_efforts": 0.1,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5097",
+      "description": "The GETXML call fails if the cursor isn't open",
+      "recommended_action": "Convert your source code manually to make sure that you open the cursor before you call GETXML.",
+      "documentation_references": "https://www.postgresql.org/docs/current/functions-xml.html",
+      "learning_curve_efforts": 0.1,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5098",
+      "description": "PostgreSQL doesn't support DELETE statements for a PARTITION",
+      "recommended_action": "Insert data into the overlying partition or use the DELETE statement to convert your code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-delete.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5099",
+      "description": "DMS SC can't convert the object because the %s parent object wasn't created",
+      "recommended_action": "Review the converted code to make sure that you create parent objects before you convert dependent objects.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5100",
+      "description": "The GETXML call might fail",
+      "recommended_action": "Convert your source code manually to make sure that your variable contains a relevant query for the target database before you call GETXML.",
+      "documentation_references": "https://www.postgresql.org/docs/current/functions-xml.html",
+      "learning_curve_efforts": 0.1,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5102",
+      "description": "PostgreSQL doesn't support MERGE statements",
+      "recommended_action": "Revise your code to use INSERT, DELETE, and UPDATE statements.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/geqo.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5103",
+      "description": "PostgreSQL doesn't support the %s hint",
+      "recommended_action": "Use PostgreSQL methods for performance tuning.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/geqo.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5117",
+      "description": "PostgreSQL doesn't support the %s attribute",
+      "recommended_action": "Convert the references to the cursor attributes manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/plpgsql-statements.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5118",
+      "description": "DMS SC can't convert the %s data type declaration",
+      "recommended_action": "Use array or hstore data types or use temporary tables.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/arrays.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5120",
+      "description": "PostgreSQL doesn't support constructors of the collection data type",
+      "recommended_action": "Revise your code to use the array data type.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/arrays.html",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5121",
+      "description": "PostgreSQL doesn't support FORALL statements",
+      "recommended_action": "Revise your code to use the FOR LOOP statement.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-control-structures.html",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5126",
+      "description": "PostgreSQL doesn't support MODEL statements",
+      "recommended_action": "Revise your code to use user-defined procedures and temporary tables.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-select.html",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5127",
+      "description": "Using CROSS JOIN in PostgreSQL might lead to slow performance",
+      "recommended_action": "Review and modify the converted code to improve performance.",
+      "documentation_references": "https://www.postgresql.org/docs/current/queries-table-expressions.html",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5138",
+      "description": "You can use the XMLSequence function only in a TABLE clause",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/functions-xml.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5139",
+      "description": "PostgreSQL doesn't support FOR UPDATE SKIP LOCKED",
+      "recommended_action": "Revise your code to use FOR UPDATE without SKIP LOCKED.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-select.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5140",
+      "description": "PostgreSQL doesn't support BULK COLLECT INTO",
+      "recommended_action": "Revise your code to include all fields of your table in an INTO clause.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-selectinto.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5141",
+      "description": "DMS SC can't convert the %s method",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/functions-xml.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5142",
+      "description": "DMS SC can't convert nested calls of the same method",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/datatype-xml.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5143",
+      "description": "Converted code might not work correctly",
+      "recommended_action": "Make sure that the converted code returns well-formed XML documents or convert your code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/datatype-xml.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5144",
+      "description": "PostgreSQL doesn't support FOR UPDATE WAIT",
+      "recommended_action": "Revise your code to use FOR UPDATE without WAIT.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-select.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5145",
+      "description": "PostgreSQL doesn't validate input values of the XML data type",
+      "recommended_action": "Convert your source code manually to implement values validation.",
+      "documentation_references": "https://www.postgresql.org/docs/current/datatype-xml.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5146",
+      "description": "PostgreSQL doesn't support character set identifiers",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/multibyte.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5147",
+      "description": "PostgreSQL doesn't support XML schemas",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/datatype-xml.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5196",
+      "description": "PostgreSQL doesn't support OBJECT TABLE",
+      "recommended_action": "Revise your code to avoid the use of OBJECT TABLE.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5198",
+      "description": "PostgreSQL doesn't support GLOBAL TEMPORARY TABLE",
+      "recommended_action": "Revise your code to use a local temporary table.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5199",
+      "description": "PostgreSQL doesn't support CLUSTERED TABLE",
+      "recommended_action": "Revise your code to use a table with triggers.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5200",
+      "description": "PostgreSQL doesn't support EXTERNAL TABLES",
+      "recommended_action": "Revise your code to use tables.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 20.0
+    },
+    {
+      "action_item": "5201",
+      "description": "PostgreSQL doesn't support this partition type",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5202",
+      "description": "In PostgreSQL, the size of text variables is limited by 1 GB",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/datatype-character.html",
+      "learning_curve_efforts": 0.2,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5203",
+      "description": "In PostgreSQL, the CLOB variable is defined but prohibited to use",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/datatype-character.html",
+      "learning_curve_efforts": 0.2,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5206",
+      "description": "PostgreSQL doesn't support bitmap indexes",
+      "recommended_action": "Revise your code to use simple indexes.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5208",
+      "description": "PostgreSQL doesn't support domain indexes",
+      "recommended_action": "Revise your code to use simple indexes.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5212",
+      "description": "PostgreSQL doesn't support the BFILE data type",
+      "recommended_action": "Revise your code to use a routine to get a file from the file system or store a BLOB in your database.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/datatype.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5213",
+      "description": "PostgreSQL ensures support of microseconds for time, datetime, and timestamp data types",
+      "recommended_action": "Review the converted code to avoid loss of resolution.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/datatype.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5225",
+      "description": "PostgreSQL doesn't support TYPE ... IS REF CURSOR declarations",
+      "recommended_action": "Revise your code to use the REFCURSOR data type.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/datatype.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5226",
+      "description": "PostgreSQL doesn't support the TYPE ... IS REF CURSOR usage",
+      "recommended_action": "Revise your code to use the REFCURSOR data type.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/datatype.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5238",
+      "description": "PostgreSQL doesn't support REFERENCING clauses",
+      "recommended_action": "Revise your code to use OLD and NEW instead of references to pseudo rows.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtrigger.html",
+      "learning_curve_efforts": 0.2,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5240",
+      "description": "PostgreSQL doesn't support triggers on nested table columns in views",
+      "recommended_action": "Revise your code to avoid using nested table columns in views.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtrigger.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5241",
+      "description": "PostgreSQL doesn't support FOLLOWS and PRECEDES clauses",
+      "recommended_action": "Revise your code to use the FOR EACH ROW trigger.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtrigger.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5242",
+      "description": "PostgreSQL doesn't support COMPOUND TRIGGER",
+      "recommended_action": "Revise your code to use a single trigger for each part of the compound trigger.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtrigger.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5243",
+      "description": "PostgreSQL always creates a trigger under the table's schema",
+      "recommended_action": "Review the converted code to make sure that your trigger and its function are created under the table's schema.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtrigger.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5245",
+      "description": "PostgreSQL doesn't support views with nested table columns",
+      "recommended_action": "Revise your code to avoid using nested table columns in views.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createview.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5271",
+      "description": "The GREATEST function in converted code might produce different results compared to the source code",
+      "recommended_action": "Review the converted code and change the argument's type where necessary.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/functions-conditional.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5272",
+      "description": "The LEAST function in converted code might produce different results compared to the source code",
+      "recommended_action": "Review the converted code and change the argument's type where necessary.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/functions-conditional.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5298",
+      "description": "PostgreSQL doesn't support DROP STORAGE clauses in the TRUNCATE statement",
+      "recommended_action": "Revise your code to use TRUNCATE without the DROP STORAGE clause.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-truncate.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5299",
+      "description": "PostgreSQL doesn't support REUSE STORAGE clauses in the TRUNCATE statement",
+      "recommended_action": "Revise your code to use TRUNCATE without the REUSE STORAGE clause.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-truncate.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5300",
+      "description": "PostgreSQL doesn't support PRESERVE clauses in the TRUNCATE statement",
+      "recommended_action": "Revise your code to use TRUNCATE without the PRESERVE clause.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-truncate.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5301",
+      "description": "PostgreSQL doesn't support PURGE clauses in the TRUNCATE statement",
+      "recommended_action": "Revise your code to use TRUNCATE without the PURGE clause.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-truncate.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5306",
+      "description": "DMS SC can't convert the trigger that isn't valid",
+      "recommended_action": "Revise your source code to make sure that the trigger doesn't have errors and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtrigger.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5311",
+      "description": "PostgreSQL doesn't support system triggers",
+      "recommended_action": "Revise your code to avoid using system triggers and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtrigger.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5313",
+      "description": "PostgreSQL doesn't support action-type clauses in triggers",
+      "recommended_action": "Revise your code to avoid using action-type clauses in triggers and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtrigger.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5317",
+      "description": "PostgreSQL doesn't support PARENT referencing clauses",
+      "recommended_action": "Revise your code to avoid using the PARENT referencing clause and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtrigger.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5320",
+      "description": "PostgreSQL doesn't support views with the INVALID status",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createview.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5321",
+      "description": "PostgreSQL doesn't support object views",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createview.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5322",
+      "description": "PostgreSQL doesn't support typed views",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createview.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5326",
+      "description": "PostgreSQL doesn't support status definitions in CREATE statements for triggers and constraints",
+      "recommended_action": "Revise your code to turn off the trigger or drop the constraint manually and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5330",
+      "description": "PostgreSQL doesn't support global cursors",
+      "recommended_action": "Revise your code to avoid using global cursors and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/functions-admin.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5332",
+      "description": "DMS SC can't convert the object that references an object in the %s schema, which isn't converted",
+      "recommended_action": "Convert the referenced object and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5333",
+      "description": "DMS SC can't convert the object that uses a private synonym",
+      "recommended_action": "Review your converted code to make sure that the synonym exists.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.01
+    },
+    {
+      "action_item": "5334",
+      "description": "DMS SC can't convert statements with dynamic SQL",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-statements.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5335",
+      "description": "PostgreSQL doesn't support GOTO operators",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5339",
+      "description": "DMS SC can't convert the %s object because it isn't valid",
+      "recommended_action": "Make sure that your object is valid and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5340",
+      "description": "PostgreSQL doesn't support the %s function",
+      "recommended_action": "Revise your code to use another function or create a user-defined function.",
+      "documentation_references": "",
+      "learning_curve_efforts": 80.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 16.0
+    },
+    {
+      "action_item": "5341",
+      "description": "PostgreSQL doesn't support LISTAGG functions with the ON OVERFLOW clause.",
+      "recommended_action": "Revise your code to use another function or create a user-defined function.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5348",
+      "description": "PostgreSQL doesn't support nested tables",
+      "recommended_action": "Revise your code to avoid using nested tables and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5350",
+      "description": "DMS SC can't convert statements that explicitly apply or cancel a transaction",
+      "recommended_action": "Revise your code to move transaction control to the application side and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/plpgsql-transactions.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5351",
+      "description": "DMS SC can't convert the %s object",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5352",
+      "description": "PostgreSQL doesn't support synonyms",
+      "recommended_action": "Revise your code to avoid using synonyms and try again. You can create a view that contains data from another database to replace your synonym.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/geqo.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.01
+    },
+    {
+      "action_item": "5353",
+      "description": "PostgreSQL doesn't support the usage of synonyms",
+      "recommended_action": "Revise your code to avoid using synonyms and try again. You can create a view that contains data from another database to replace your synonym.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/geqo.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5415",
+      "description": "PostgreSQL doesn't support system triggers",
+      "recommended_action": "Revise your code to avoid using system triggers and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtrigger.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5416",
+      "description": "Your IS OF statement contains unsupported clause or more than one type",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/sql-merge.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5417",
+      "description": "PostgreSQL doesn't support the object type functionality",
+      "recommended_action": "To avoid unexpected results at runtime, review the converted code and change it where necessary.",
+      "documentation_references": "https://www.postgresql.org/docs/current/functions-info.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.0
+    },
+    {
+      "action_item": "5444",
+      "description": "This conversion uses machine learning models that generate predictions based on patterns in data",
+      "recommended_action": "Machine learning output is probabilistic and should be reviewed for accuracy, including human evaluation, as needed for your use case.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.0
+    },
+    {
+      "action_item": "5500",
+      "description": "PostgreSQL doesn't support functionality similar to the %s module",
+      "recommended_action": "Revise your converted code to use Amazon Simple Notification Service (SNS).",
+      "documentation_references": "https://aws.amazon.com/documentation/sns/",
+      "learning_curve_efforts": 80.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5501",
+      "description": "PostgreSQL doesn't support functionality similar to the %s module",
+      "recommended_action": "Revise your converted code to use AWS Lambda with scheduled events.",
+      "documentation_references": "",
+      "learning_curve_efforts": 80.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5502",
+      "description": "PostgreSQL doesn't support functionality similar to the %s module",
+      "recommended_action": "You can use AWS Snowball to accelerate moving offline data or remote storage to the cloud.",
+      "documentation_references": "https://aws.amazon.com/documentation/importexport/",
+      "learning_curve_efforts": 160.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5503",
+      "description": "PostgreSQL doesn't support functionality similar to the %s module",
+      "recommended_action": "Revise your converted code to use the Amazon Simple Workflow Service.",
+      "documentation_references": "https://aws.amazon.com/documentation/swf/",
+      "learning_curve_efforts": 160.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5550",
+      "description": "PostgreSQL doesn't support the ROWID data type",
+      "recommended_action": "Review the converted code and change it where necessary.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/datatype.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5551",
+      "description": "PostgreSQL doesn't support the UROWID data type",
+      "recommended_action": "Review the converted code and change it where necessary.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/datatype.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5552",
+      "description": "PostgreSQL ensures support of microseconds for the time, datetime, and timestamp data types",
+      "recommended_action": "Review the converted code to avoid loss of resolution.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/datatype.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5553",
+      "description": "PostgreSQL ensures support of microseconds for the time, datetime, and timestamp data types",
+      "recommended_action": "Review the converted code to avoid loss of resolution.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/datatype.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5554",
+      "description": "PostgreSQL doesn't support virtual columns",
+      "recommended_action": "Revise your code to use triggers to emulate virtual columns and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5555",
+      "description": "PostgreSQL doesn't support functional indexes that aren't single-column",
+      "recommended_action": "Revise your code to use simple indexes and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5556",
+      "description": "PostgreSQL doesn't support conditional predicates",
+      "recommended_action": "Revise your code to use simple indexes and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtrigger.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5557",
+      "description": "PostgreSQL doesn't support the GROUPING SETS, CUBE, and ROLLUP functions",
+      "recommended_action": "Revise your code to use CTE expressions and try again. You can use GROUPING SETS, CUBE, and ROLLUP in PostgreSQL version 9.5 and higher.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5558",
+      "description": "PostgreSQL doesn't support UPDATE statements for partitions",
+      "recommended_action": "Insert data into the overlying partition or use the UPDATE statement to convert your code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-update.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5559",
+      "description": "PostgreSQL doesn't support RETURN TYPE for cursors",
+      "recommended_action": "Declare your cursor without this statement and make sure that you update variables that depend on this cursor %rowtype.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-cursors.html",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5560",
+      "description": "PostgreSQL doesn't support PROGRAM_ERROR exceptions",
+      "recommended_action": "Revise your code to use another type of exception and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-errors-and-messages.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5561",
+      "description": "PostgreSQL doesn't support the %s exception",
+      "recommended_action": "Revise your code to use another type of exception and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-errors-and-messages.html",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5562",
+      "description": "DMS SC can't convert the CURSOR_ALREADY_OPEN exception with the current local cursor conversion logic",
+      "recommended_action": "Revise your code to use another type of exception and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-errors-and-messages.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5569",
+      "description": "PostgreSQL supports only standard SQL date and time types for session variables",
+      "recommended_action": "Revise your code to use a custom solution for the user type and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/functions-admin.html",
+      "learning_curve_efforts": 80.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5571",
+      "description": "DMS SC can't convert the %s pragma complier directive",
+      "recommended_action": "Review the converted code to avoid performance issues and change it where necessary.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/sql-createfunction.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5572",
+      "description": "PostgreSQL doesn't support object type methods",
+      "recommended_action": "Revise your code to use a custom solution for the user type and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtype.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5574",
+      "description": "PostgreSQL doesn't support sequence statuses",
+      "recommended_action": "Revise your code to make sure that your sequence doesn't have errors and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5575",
+      "description": "PostgreSQL doesn't support the assignment of default values when creating the %s user-defined type",
+      "recommended_action": "Revise your code to assign the default value after you declare a variable of the user-defined type and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtype.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5576",
+      "description": "DMS SC can't parse the source SQL code",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5577",
+      "description": "PostgreSQL doesn't support member functions in user-defined types",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/rowtypes.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5578",
+      "description": "DMS SC can't convert the SELECT statement",
+      "recommended_action": "Revise your SELECT statement and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5579",
+      "description": "Make sure that the second parameter of the %s function is processed correctly",
+      "recommended_action": "Review the converted code and convert your source code manually where necessary.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5580",
+      "description": "The exception block in the converted code is empty",
+      "recommended_action": "Review the converted code and convert your source code manually where necessary.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5581",
+      "description": "PostgreSQL doesn't support index-organized tables",
+      "recommended_action": "Revise your code to use a custom solution for the table type and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5582",
+      "description": "PostgreSQL doesn't support encrypted objects in the CREATE statement",
+      "recommended_action": "Revise your code to decrypt objects before conversion and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5583",
+      "description": "PostgreSQL doesn't support constraints for views",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createview.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5584",
+      "description": "The %s function depends on the time zone settings",
+      "recommended_action": "Review the converted code and set the time zone manually where necessary.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/functions-datetime.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5585",
+      "description": "DMS SC can't convert outer joins into correlated subqueries",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5586",
+      "description": "DMS SC can't convert queries with the NOCYCLE clause",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/queries-with.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5587",
+      "description": "PostgreSQL doesn't support EXTEND methods with parameters",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/arrays.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5590",
+      "description": "DMS SC converted the function as procedure",
+      "recommended_action": "Revise the converted code to make sure that the procedure returns the parameter.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5591",
+      "description": "DMS SC can't convert the %s system object",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.01
+    },
+    {
+      "action_item": "5592",
+      "description": "DMS SC converted the %s public synonym to a wrapping object with the same name",
+      "recommended_action": "Review the converted code to make sure that the referenced object is converted.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.25
+    },
+    {
+      "action_item": "5593",
+      "description": "DMS SC replaced the %s public synonym with the fully qualified name of the underlying object",
+      "recommended_action": "Review the converted code to make sure that the underlying object is converted.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.25
+    },
+    {
+      "action_item": "5594",
+      "description": "PostgreSQL doesn't support the %s date time expression",
+      "recommended_action": "Revise your code to make sure that your data doesn't violate the restrictions and try again, or convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/datatype-datetime.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5595",
+      "description": "This object uses the ROWID column from the %s table",
+      "recommended_action": "Review the converted code to make sure that the referenced table is converted.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.01
+    },
+    {
+      "action_item": "5597",
+      "description": "This object uses the ROWID column from the %s table",
+      "recommended_action": "Revise your code to check the number of columns in the table and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.01
+    },
+    {
+      "action_item": "5598",
+      "description": "PostgreSQL doesn't support ROWID",
+      "recommended_action": "Turn on the Create ROWID option and make sure that all related objects are converted.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5599",
+      "description": "PostgreSQL doesn't support references to SQLERRM outside of an exception handler",
+      "recommended_action": "Review the converted code and replace the empty string with the required string literal.",
+      "documentation_references": "",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5600",
+      "description": "PostgreSQL doesn't support references to SQLERRM with any specified parameter value",
+      "recommended_action": "Review the converted code and replace the empty string with the required string literal.",
+      "documentation_references": "",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5601",
+      "description": "PostgreSQL doesn't support references to SQLCODE outside of an exception handler",
+      "recommended_action": "Review the converted code and replace the empty string with the required string literal.",
+      "documentation_references": "",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5602",
+      "description": "PostgreSQL error code type isn't compatible with the number type variables",
+      "recommended_action": "Convert the assignment of SQLCODE manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5603",
+      "description": "PostgreSQL doesn't support conditional compilation",
+      "recommended_action": "Review the converted code and change it where necessary.",
+      "documentation_references": "",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5604",
+      "description": "PostgreSQL doesn't support global cursors",
+      "recommended_action": "DMS SC converts global cursors to local cursors. Revise your code to make sure that you declare and open your cursor before fetching and try again. If this violates the application logic, convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/plpgsql-cursors.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5605",
+      "description": "PostgreSQL doesn't support the usage of database links",
+      "recommended_action": "Revise your code to avoid using database links and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5606",
+      "description": "DMS SC can't convert the usage of the %s data type because it uses multilevel nested tables",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5607",
+      "description": "DMS SC can't convert Java stored routine",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/external-pl.html",
+      "learning_curve_efforts": 20.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 20.0
+    },
+    {
+      "action_item": "5608",
+      "description": "DMS SC can't convert UPDATE statements that have a subquery that returns multiple columns in the SET clause",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/sql-update.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5609",
+      "description": "PostgreSQL doesn't support the %s data type",
+      "recommended_action": "DMS SC created a method stub. To replace it, convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/datatype.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5610",
+      "description": "DMS SC replaced the %s synonym with the %s underlying object",
+      "recommended_action": "Review the converted code to make sure that the referenced object is converted.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.25
+    },
+    {
+      "action_item": "5611",
+      "description": "PostgreSQL doesn't support SAVEPOINT and ROLLBACK TO SAVEPOINT inside routines",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/interactive/plpgsql-structure.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5612",
+      "description": "DMS SC can't convert the FETCH command for a global parameterized cursor before the cursor variable is opened",
+      "recommended_action": "Revise your code to add the OPEN statement before FETCH and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/interactive/plpgsql-structure.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5613",
+      "description": "DMS SC can't convert multi-dimensional arrays",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/arrays.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5614",
+      "description": "PostgreSQL doesn't support DML operations with non-updatable views",
+      "recommended_action": "Update the converted code by creating rules or adding the INSTEAD OF triggers.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5615",
+      "description": "DMS SC can't convert multi-level records with more than the second nesting level",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5616",
+      "description": "DMS SC can't convert TABLE functions",
+      "recommended_action": "Convert your source code manually to use the UNNEST function.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5617",
+      "description": "PostgreSQL doesn't fully support m and x as match parameters or as subexpression parameters for regular expressions",
+      "recommended_action": "Check the results produced by your converted code and update regular expressions where necessary.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/functions-matching.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5618",
+      "description": "PostgreSQL doesn't support MERGE statements with the ERROR LOG clause",
+      "recommended_action": "Revise your code to insert error records into the log in the exception block. Iterate through the errors in the exception block, add them to the log, and use the EXIT command when finished.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-update.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5619",
+      "description": "DMS SC can't convert the %s system object",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5620",
+      "description": "The DMS SC extension pack doesn't support the DELETE ROWS option for the ON COMMIT clause for global temporary tables",
+      "recommended_action": "DMS SC uses the PRESERVE ROWS option in the converted code.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/sql-createtable.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5621",
+      "description": "Make sure that the unique constraint for the %s field exists",
+      "recommended_action": "Review the converted code and create the unique constraint where necessary.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5622",
+      "description": "DMS SC converts the dbms_transaction.local_transaction_id function with the parameter set to true",
+      "recommended_action": "Review the converted code and change it where necessary.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/functions-info.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5623",
+      "description": "DMS SC doesn't support uuencoding",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5624",
+      "description": "Converted code might not work correctly because of the bind variable names",
+      "recommended_action": "Review the list of bind variables they meet the PostgreSQL requirements and try again.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-statements.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5625",
+      "description": "PostgreSQL doesn't support parameters in an anonymous block",
+      "recommended_action": "Review the list of bind variables they meet the PostgreSQL requirements. Then, make sure that the converted code produces the same results as the source code.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-statements.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5626",
+      "description": "DMS SC can't convert the %s function",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5627",
+      "description": "Converted code might not work correctly because of the user-defined functions",
+      "recommended_action": "Review the converted code to make sure that dynamic SQL statements produce the same results as in the source code.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-statements.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.2
+    },
+    {
+      "action_item": "5628",
+      "description": "Converted code might not work correctly because of the dynamic SQL statements",
+      "recommended_action": "Review the converted code to make sure that it produces the same results as the source code. Rewrite dynamic statements in your source code, then try to convert again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 6.0
+    },
+    {
+      "action_item": "5629",
+      "description": "PostgreSQL doesn't support all features of the DBMS_SQL package.",
+      "recommended_action": "Review the converted code to make sure that the run results are the same as for the source code. Convert your source code manually where necessary.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/ecpg-dynamic.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 5.0
+    },
+    {
+      "action_item": "5630",
+      "description": "DMS SC can't convert the DBMS_SQL package functions",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/ecpg-dynamic.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 5.0
+    },
+    {
+      "action_item": "5631",
+      "description": "PostgreSQL doesn't support all features of Oracle Spatial Studio.",
+      "recommended_action": "Review the converted code to make sure that the run results are the same as for the source code. Convert your source code manually where necessary.",
+      "documentation_references": "https://docs.oracle.com/cd/B28359_01/appdev.111/b28400/sdo_objrelschema.htm#SPATL020",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5632",
+      "description": "DMS SC can't convert %s Spatial object such as the type, function, method, or operator",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://docs.oracle.com/cd/B28359_01/appdev.111/b28400/sdo_objrelschema.htm#SPATL020",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5634",
+      "description": "DMS SC can't convert the use of user-defined functions with OUT and INOUT parameters",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-statements.html",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 40.0
+    },
+    {
+      "action_item": "5635",
+      "description": "DMS SC can't convert functions that have specific Oracle formatting settings",
+      "recommended_action": "Change conversion settings and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5636",
+      "description": "DMS SC can't convert VARRAY of VARRAY",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5637",
+      "description": "PostgreSQL doesn't support bulk collect into VARRAY of VARRAY",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 16.0
+    },
+    {
+      "action_item": "5638",
+      "description": "DMS SC doesn't support global variables of nested table as an argument for functions or procedures",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5639",
+      "description": "Make sure that you installed the postgres_fdw extension",
+      "recommended_action": "Review your connection options, install the postgres_fdw extension, and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5640",
+      "description": "DMS SC can't convert the database link because the remote table isn't defined. DMS SC created the structure of this table based on referenes",
+      "recommended_action": "Review the converted code and change it where necessary. Or convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5641",
+      "description": "PostgreSQL foreign data wrapper doesn't support the usage of user-defined functions",
+      "recommended_action": "Revise your code to use database links.",
+      "documentation_references": "",
+      "learning_curve_efforts": 24.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5642",
+      "description": "PostgreSQL doesn't support BULK COLLECT INTO clauses for multilevel collection types.",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.0
+    },
+    {
+      "action_item": "5643",
+      "description": "PostgreSQL doesn't support BULK COLLECT INTO clauses for multilevel collection types in SELECT statements.",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 24.0
+    },
+    {
+      "action_item": "5644",
+      "description": "DMS SC can't convert the assign operation of an array or a nested table because it includes a nested record",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 40.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5645",
+      "description": "PostgreSQL doesn't support BULK COLLECT INTO clauses for several object table targets.",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 24.0
+    },
+    {
+      "action_item": "5646",
+      "description": "DMS SC discarded the NOT NULL constraint in the converted code",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/sql-createtype.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5647",
+      "description": "PostgreSQL doesn't support FETCH BULK COLLECT INTO clauses",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 10.0
+    },
+    {
+      "action_item": "5648",
+      "description": "DMS SC can't convert heterogeneous collections",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5649",
+      "description": "PostgreSQL doesn't support multiset operators for multilevel collection types.",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 48.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 48.0
+    },
+    {
+      "action_item": "5650",
+      "description": "Converted code might produce different results compared to the source code because of the order of elements in the converted collection",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 24.0
+    },
+    {
+      "action_item": "5651",
+      "description": "DMS SC can't convert pipelined table functions",
+      "recommended_action": "Change conversion settings and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5652",
+      "description": "PostgreSQL doesn't have a mechanism that handles null values for partition keys",
+      "recommended_action": "The converted code stores the null values in the DEFAULT partition. Review the converted code to make sure that it produces the same results as the source code.",
+      "documentation_references": "",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 16.0
+    },
+    {
+      "action_item": "5653",
+      "description": "PostgreSQL doesn't support foreign keys that reference partitioned tables",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 24.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 24.0
+    },
+    {
+      "action_item": "5654",
+      "description": "PostgreSQL doesn't support foreign keys in partitioned tables that reference other tables",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 24.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 24.0
+    },
+    {
+      "action_item": "5655",
+      "description": "DMS SC can't convert update operations of partitioned tables, partitions, or subpartitions",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 12.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 12.0
+    },
+    {
+      "action_item": "5656",
+      "description": "The timestamp data type in converted code might produce different results compared to the source code",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 12.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 12.0
+    },
+    {
+      "action_item": "5657",
+      "description": "PostgreSQL can't create views that are based on undefined foreign tables",
+      "recommended_action": "Review your converted code to make sure that you define foreign tables, and the create views manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/ddl.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5658",
+      "description": "You can use DEFAULT partitions in PostgreSQL version 11 and higher",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 12.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 12.0
+    },
+    {
+      "action_item": "5659",
+      "description": "DMS SC can't convert tables that include columns of the %s data type",
+      "recommended_action": "Make sure that you create a primary key on the table. The lack of a primary key might lead to slow performance of DMS SC.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5660",
+      "description": "Converted code might produce a different result set compared to the source code",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5661",
+      "description": "The INTERVAL clause in converted code might lead to different data distribution compared to the source code",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 12.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 12.0
+    },
+    {
+      "action_item": "5662",
+      "description": "Converted code might produce different results compared to the source code because the error code type isn't a number in PostgreSQL",
+      "recommended_action": "Review your converted code to make sure that you assigned the value of the error code correctly.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.2,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "5663",
+      "description": "PostgreSQL doesn't explicitly support autonomous transactions.",
+      "recommended_action": "Review the converted code to avoid performance issues and change it where necessary.",
+      "documentation_references": "https://www.postgresql.org/docs/current/dblink.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5664",
+      "description": "PostgreSQL doesn't support cursor variables defined with PRAGMA AUTONOMOUS_TRANSACTION as routine parameters",
+      "recommended_action": "Review the converted code and change it where necessary.",
+      "documentation_references": "https://www.postgresql.org/docs/current/dblink.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5665",
+      "description": "PostgreSQL doesn't support the %s data type defined with PRAGMA AUTONOMOUS_TRANSACTION",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/dblink.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5666",
+      "description": "PostgreSQL supports only global application contexts in routines with PRAGMA AUTONOMOUS_TRANSACTION",
+      "recommended_action": "Revise your code to use global application contexts and try again. Or convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/dblink.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5667",
+      "description": "Make sure that the state of cursors inside and outside of routines defined with PRAGMA AUTONOMOUS_TRANSACTION is synchronized, and try again",
+      "recommended_action": "Revise your code to use local cursors and try again. Or convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/dblink.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 160.0
+    },
+    {
+      "action_item": "5668",
+      "description": "DMS SC can't resolve a remote object to convert",
+      "recommended_action": "Revise your code to make sure that you added the remote server to the project and associated the database link with it, and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5792",
+      "description": "PostgreSQL sets the queue mode to ENABLE by default",
+      "recommended_action": "Convert your source code manually to emulate the ENABLE and DISABLE queue state.",
+      "documentation_references": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5793",
+      "description": "DMS SC creates the queue with the GRANT ALL option",
+      "recommended_action": "Make sure that you configure security settings in Amazon Simple Queue Service. .",
+      "documentation_references": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-security.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5794",
+      "description": "PostgreSQL sets the queue mode to ENABLE by default",
+      "recommended_action": "Convert your source code manually to emulate the ENABLE and DISABLE queue state.",
+      "documentation_references": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5795",
+      "description": "Amazon Simple Queue Service doesn't support queues in the DISABLE mode",
+      "recommended_action": "Convert your source code manually to emulate the ENABLE and DISABLE queue state.",
+      "documentation_references": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5796",
+      "description": "PostgreSQL doesn't support the third parameter of the TO_TIMESTAMP function",
+      "recommended_action": "If the first argument includes a national character string, DMS SC replaces it with a date time keyword that is supported by PostgreSQL.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5797",
+      "description": "DMS SC can't convert several objects with the same signature or name",
+      "recommended_action": "Review the converted code and change it where necessary.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.0
+    },
+    {
+      "action_item": "5798",
+      "description": "DBMS_LOB package methods might work incorrectly with a temporary LOB",
+      "recommended_action": "DMS SC creates or uses a LOB with non-empty zero-length value of the TEXT or BYTEA data type. This LOB isn't temporary. Check the converted code behavior and correct the logic if necessary.",
+      "documentation_references": "",
+      "learning_curve_efforts": 3.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5850",
+      "description": "DMS SC can't convert SET ROLE statements",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/sql-set-role.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5950",
+      "description": "PostgreSQL doesn't support the %s command",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/app-psql.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5951",
+      "description": "PostgreSQL doesn't have an analogue for the %s variable",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/app-psql.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5952",
+      "description": "PostgreSQL doesn't have an analogue for the %s variable",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/app-psql.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5953",
+      "description": "PostgreSQL doesn't have an analogue for the %s setting",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/app-psql.html",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 16.0
+    },
+    {
+      "action_item": "5954",
+      "description": "PostgreSQL doesn't support the %s formatting",
+      "recommended_action": "If your source code depends on the output format, convert your code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/app-psql.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5955",
+      "description": "PostgreSQL doesn't support the %s SPOOL option",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/app-psql.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5956",
+      "description": "PostgreSQL doesn't support the %s command or this command has different meaning",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/app-psql.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5957",
+      "description": "DMS SC can't evaluate substitution variable values to parse the %s command or statement",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/app-psql.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5958",
+      "description": "PostgreSQL doesn't have an analogue for the %s command",
+      "recommended_action": "Convert your source code for tablespaces manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/sql-createtablespace.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5959",
+      "description": "PostgreSQL doesn't have an analogue for the %s command",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/sql-alteruser.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5960",
+      "description": "PostgreSQL doesn't have an analogue for the %s command",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/sql-grant.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "5961",
+      "description": "The role or user might be missing",
+      "recommended_action": "Make sure that roles and users exist in the target database.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/sql-grant.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5962",
+      "description": "PostgreSQL doesn't have an analogue for the %s command",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/sql-altertable.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "5963",
+      "description": "DMS SC can't convert CONNECT commands with passwords",
+      "recommended_action": "Make sure that you don't specify passwords inside your scripts, and try again. Or convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/app-psql.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5965",
+      "description": "DMS SC can't convert the %s option of the DDL statement",
+      "recommended_action": "Revise your code to avoid using this option and try again. Or convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/ddl.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5966",
+      "description": "DMS SC can't convert the %s DDL statement",
+      "recommended_action": "Revise your code to avoid using this statement and try again. Or convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/ddl.html",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 16.0
+    },
+    {
+      "action_item": "5967",
+      "description": "DMS SC can't create synonyms for unresolved objects",
+      "recommended_action": "Review the converted code to make sure that the referenced object is converted, and try again. Or convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/ddl.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "5968",
+      "description": "DMS SC can't convert CONNECT commands with an unknown TNS alias",
+      "recommended_action": "Review the converted code to make sure that you specify connection settings for the alias in SQL scripts settings, and try again. Or convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/app-psql.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5969",
+      "description": "PostgreSQL doesn't support the NLSSORT function and the %s linguistic sort sequence",
+      "recommended_action": "Revise your code to use the COLLATE option with the appropriate locale that corresponds to the linguistic sort sequence in the ORDER BY clause of query, and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/collation.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5970",
+      "description": "DMS SC can't migrate the features of orafce package",
+      "recommended_action": "See Notes on Using orafce, and convert your source code manually.",
+      "documentation_references": "https://github.com/orafce/orafce/blob/master/doc/sql_migration/sql_migration06.md",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5971",
+      "description": "PostgreSQL doesn't support setting the linguistic sort sequence at a session level",
+      "recommended_action": "Revise your code to set the appropriate collation explicitly in the ORDER BY... COLLATE clause, and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/collation.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5972",
+      "description": "PostgreSQL doesn't support references to script parameters as %s substitution variables",
+      "recommended_action": "Make sure that you set _arg_% variables before you reference them in the script or in the -v construct of the SQL*Plus call.",
+      "documentation_references": "https://blogs.oracle.com/opal/sqlplus-101-substitution-variables",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.01
+    },
+    {
+      "action_item": "5976",
+      "description": "You source code uses the crypto() function from the pgcrypto extension",
+      "recommended_action": "Make sure that you install the pgcrypto extension, and then convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/pgcrypto.html",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.01
+    },
+    {
+      "action_item": "5977",
+      "description": "PostgreSQL doesn't support SQL%BULK_EXCEPTIONS() array",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://docs.oracle.com/cd/B12037_01/appdev.101/b10807/13_elems048.htm",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5978",
+      "description": "PostgreSQL can't verify the records for null, equal, or not equal values",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://docs.oracle.com/en/database/oracle/oracle-database/20/lnpls/plsql-collections-and-records.html#GUID-DFDE40BD-4B61-4C8A-B9CE-3FE01E21F658",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5979",
+      "description": "PostgreSQL doesn't support moving a row to another partition as part of the BEFORE FOR EACH ROW trigger",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 12.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 12.0
+    },
+    {
+      "action_item": "5980",
+      "description": "PostgreSQL doesn't support references to stored routines in database links",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 24.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "5981",
+      "description": "Converted code might produce different results compared to the source code",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/functions-string.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5982",
+      "description": "PostgreSQL doesn't support the NOT VALID option for the %s constraint",
+      "recommended_action": "Revise your code to avoid using NOT VALID and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/14/sql-altertable.html",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 3.0
+    },
+    {
+      "action_item": "5983",
+      "description": "PostgreSQL doesn't support the PERCENT option when you limit the number of rows returned by a query",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5984",
+      "description": "DMS SC uses the NUMERIC data type to convert the column because you haven't specified the precision and scale values in your source code. Your converted code can work faster if you use the optimized data type mapping",
+      "recommended_action": "To improve the conversion and use the optimized data type mapping, specify the precision and scale values for the column in your source code. Then, convert the table again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "5985",
+      "description": "DMS SC replaced the %s unsupported built-in with a stub routine",
+      "recommended_action": "Reconsider the model for using the mentioned built-in and fill the corresponding stub routine with program code that recreates the similar functionality.",
+      "documentation_references": "",
+      "learning_curve_efforts": 24.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 4.0
+    },
+    {
+      "action_item": "30001",
+      "description": "DMS SC can't convert unsupported CONNECT parameters",
+      "recommended_action": "Convert your database connection manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-sql-connect.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30002",
+      "description": "PostgreSQL doesn't support INTO clauses in CALL statements",
+      "recommended_action": "Revise your code to use SELECT statements and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/sql-call.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30004",
+      "description": "PostgreSQL doesn't support the EXEC ORACLE (%s) statement that enables entering options inline",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30005",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support pointers to VARCHAR as the host variable declaration",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30006",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support pointers to VARCHAR as the host variable usage",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30007",
+      "description": "The SQLSTATE or SQLCODE status variables exist as sqlca.sqlstate and sqlca.sqlcode",
+      "recommended_action": "Make sure that you don't declare SQLSTATE or SQLCODE status variables in the converted code.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-errors.html#ECPG-SQLSTATE-SQLCODE",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30008",
+      "description": "DMS SC converted the CONNECT string using placeholder values",
+      "recommended_action": "Make sure that you enter connection parameters such as host, port, database, user name, and password.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30009",
+      "description": "PostgreSQL doesn't support COMMIT and ROLLBACK statements inside anonymous PL/SQL blocks",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30010",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support type equivalencing",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30011",
+      "description": "You can run this command only with the -c option in the embedded SQL preprocessor for C programs in PostgreSQL",
+      "recommended_action": "Revise your project settings and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-sql-type.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30012",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support CACHE FREE ALL",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30013",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support REGISTER CONNECT",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30014",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support CONTEXT ALLOCATE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30015",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support CONTEXT FREE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30016",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support CONTEXT USE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30017",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB APPEND",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30018",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB ASSIGN",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30019",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB CLOSE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30020",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB COPY",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30021",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB CREATE TEMPORARY",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30022",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB DESCRIBE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30023",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB DISABLE BUFFERING",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30024",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB ENABLE BUFFERING",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30025",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB ERASE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30026",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB FILE CLOSE ALL",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30027",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB FILE SET",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30028",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB FLUSH BUFFER",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30029",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB FREE TEMPORARY",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30030",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB LOAD",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30031",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB OPEN",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30032",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB READ",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30033",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB TRIM",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30034",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support LOB WRITE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30035",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support OBJECT CREATE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30036",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support OBJECT DELETE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30037",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support OBJECT DEREF",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30038",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support OBJECT FLUSH",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30039",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support OBJECT GET",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30040",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support OBJECT RELEASE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30041",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support OBJECT SET",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30042",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support OBJECT UPDATE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30043",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support COLLECTION APPEND",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30044",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support COLLECTION DESCRIBE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30045",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support COLLECTION GET",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30046",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support COLLECTION RESET",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30047",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support COLLECTION SET",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30048",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support COLLECTION TRIM",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30049",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support CONTEXT OBJECT OPTION GET",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30050",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support CONTEXT OBJECT OPTION SET",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30051",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support DECLARE TABLE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30052",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support DECLARE TYPE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30053",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support DESCRIBE DESCRIPTOR",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30054",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support ENABLE THREADS",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30055",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support EXECUTE DESCRIPTOR",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30056",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support FETCH DESCRIPTOR",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30057",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support FREE",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30058",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support OPEN DESCRIPTOR",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30059",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support the declaration of Oracle Call Interface elements",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30060",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support the usage of Oracle Call Interface elements",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30061",
+      "description": "PostgreSQL doesn't support some of the sqlca.sqlwarn elements",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-errors.html#ECPG-SQLCA",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30062",
+      "description": "PostgreSQL doesn't support the source sqlca type structure",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-errors.html#ECPG-SQLCA",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30063",
+      "description": "PostgreSQL doesn't support some of the sqlca.sqlerrd elements",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-errors.html#ECPG-SQLCA",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30064",
+      "description": "PostgreSQL doesn't support sqlca.sqlext variables",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-errors.html#ECPG-SQLCA",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30065",
+      "description": "PostgreSQL doesn't support the sqlglm() function",
+      "recommended_action": "Review the converted code to make sure that the DMS SC extension pack function provides the same results as the source code.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-errors.html#ECPG-SQLCA",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30066",
+      "description": "PostgreSQL doesn't support LOCAL DESCRIPTORS",
+      "recommended_action": "DMS SC added a prefix to the descriptor name. Review the converted code to make sure that the descriptor name is unique.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-descriptors.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30067",
+      "description": "PostgreSQL doesn't support LOCAL DESCRIPTORS",
+      "recommended_action": "The descriptor is stored in a host variable. Review the converted code to make sure that the descriptor name is unique.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-descriptors.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30068",
+      "description": "PostgreSQL doesn't support FOR or WITH MAX clauses in ALLOCATE DESCRIPTOR directives",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-descriptors.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30069",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support the SQL_CONTEXT type",
+      "recommended_action": "DMS SC converts SQL_CONTEXT to char *. Review the converted code and change it where necessary.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-descriptors.html",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "30070",
+      "description": "DMS SC can't convert an unparsed embedded C object",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.5,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "30071",
+      "description": "DMS SC can't convert unparsed C code",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30072",
+      "description": "PostgreSQL doesn't support RETURN TYPE for cursors",
+      "recommended_action": "Revise your code to declare cursor without this statement and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30073",
+      "description": "PostgreSQL doesn't support descriptor items",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-descriptors.html#ECPG-NAMED-DESCRIPTORS",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30074",
+      "description": "PostgreSQL doesn't support FOR clauses in GET, SET, and FETCH DESCRIPTOR directives",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-descriptors.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30075",
+      "description": "PostgreSQL doesn't support REF keywords in SET DESCRIPTOR directives",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-sql-set-descriptor.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30076",
+      "description": "You can compare to NULL only with the -r option in the embedded SQL preprocessor for C programs in PostgreSQL",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-sql-set-descriptor.html",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30077",
+      "description": "DMS SC can't convert anonymous PL/SQL blocks to standalone embedded SQL calls or stored functions",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30078",
+      "description": "DMS SC can't convert the %s unresolved host variable",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30079",
+      "description": "DMS SC can't convert embedded SQL statements",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30080",
+      "description": "DMS SC doesn't support passing of host array variables to PL/SQL blocks",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30081",
+      "description": "The embedded SQL preprocessor for C programs in PostgreSQL doesn't support characters inside C string literals",
+      "recommended_action": "Revise your code to use octal representation instead of double quotation marks and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30082",
+      "description": "The converted code doesn't include Unicode support constructions",
+      "recommended_action": "Convert your source code manually to make sure that you include Unicode support constructions.",
+      "documentation_references": "",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30201",
+      "description": "DMS SC can't convert your database connection",
+      "recommended_action": "Convert your database connection manually.",
+      "documentation_references": "https://www.postgresql.org/docs/current/ecpg-sql-connect.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.6
+    },
+    {
+      "action_item": "30202",
+      "description": "DMS SC can't convert your Java path",
+      "recommended_action": "Convert your Java path manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.6
+    },
+    {
+      "action_item": "30203",
+      "description": "Java Database Connectivity doesn't implement the %s method",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30204",
+      "description": "DMS SC can't convert Boolean type to numeric",
+      "recommended_action": "Revise your code to use the numeric type and try again.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.1,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30205",
+      "description": "PostgreSQL doesn't support returning autogenerated keys by column index",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 5.0
+    },
+    {
+      "action_item": "30206",
+      "description": "DMS SC can't convert query methods that take a query string on a prepared statement",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.1,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.1
+    },
+    {
+      "action_item": "30207",
+      "description": "DMS SC can't convert the getObject method because this method has a limited support for data types",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 0.1,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30208",
+      "description": "This statement doesn't declare an OUT parameter",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30210",
+      "description": "Converted code that uses the %n method might produce different results compared to the source code",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.6
+    },
+    {
+      "action_item": "30211",
+      "description": "Converted code doesn't cover native DML SQL statements because of the dbms_sql$last_sql_function_code method limitations",
+      "recommended_action": ".",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/ecpg-dynamic.html",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "30212",
+      "description": "Converted code doesn't cover native DML SQL statements because of the dbms_sql$last_row_count method limitations",
+      "recommended_action": "Revise your code to use the GET DIAGNOSTICS variable = ROW_COUNT command, and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/ecpg-dynamic.html",
+      "learning_curve_efforts": 2.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.5
+    },
+    {
+      "action_item": "30213",
+      "description": "DMS SC can't convert dbms_sql$to_cursor_number method. Make sure that each REFCURSOR column has a unique alias.",
+      "recommended_action": "Revise your code to assign unique aliases to all columns within the REFCURSOR, and try again.",
+      "documentation_references": "https://www.postgresql.org/docs/current/static/ecpg-dynamic.html",
+      "learning_curve_efforts": 3.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 3.0
+    },
+    {
+      "action_item": "30214",
+      "description": "PostgreSQL closes all open cursors on exception. DMS SC can't convert the {streplacemacros} operation because the cursor is closed",
+      "recommended_action": "Revise your code to use cursors outside of the exception block.",
+      "documentation_references": "http://www.postgresql.org/docs/current/static/plpgsql-errors-and-messages.html",
+      "learning_curve_efforts": 16.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 8.0
+    },
+    {
+      "action_item": "30401",
+      "description": "DMS SC can't collect the SQL statement from the MyBatis mapper file",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30402",
+      "description": "DMS SC can't parse the dynamic SQL statement from the MyBatis mapper file",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30404",
+      "description": "DMS SC can't convert the dynamic SQL statement from the MyBatis mapper file",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30406",
+      "description": "DMS SC converted a variation of the MyBatis dynamic SQL statement",
+      "recommended_action": "Review the converted code to make sure that it produces the same results as the source code.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30409",
+      "description": "DMS SC uses this clause as an entry part for the variation of your MyBatis dynamic SQL statement",
+      "recommended_action": "Review the converted code to make sure that it produces the same results as the source code.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30410",
+      "description": "DMS SC can't find the MyBatis configuration file path. DMS SC automatically discovered the MyBatis mapper file in your application folder",
+      "recommended_action": "Set the configuration file path in the DMS SC project, and try again. Or convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 1.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30411",
+      "description": "DMS SC can't convert unsupported SQL syntax. For application conversion projects, DMS SC supports only Oracle PL/SQL syntax in embedded SQL statements",
+      "recommended_action": "Convert your source code manually.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 2.0
+    },
+    {
+      "action_item": "30412",
+      "description": "PostgreSQL supports only tables as a target in the MERGE statement.",
+      "recommended_action": "Review the converted code and change it where necessary.",
+      "documentation_references": "https://www.postgresql.org/docs/current/sql-merge.html",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30413",
+      "description": "DMS SC supports only tables, views or sub-queries as a source in the USING clause of the MERGE statement",
+      "recommended_action": "Review the converted code and change it where necessary.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30414",
+      "description": "DMS SC doesn’t support MERGE statements which contain the LOG ERRORS clause",
+      "recommended_action": "Review the converted code and change it where necessary.",
+      "documentation_references": "",
+      "learning_curve_efforts": 8.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 1.0
+    },
+    {
+      "action_item": "30415",
+      "description": "Your MERGE statement contains a filtering condition in the WHERE clause that is based on a value in a target table column",
+      "recommended_action": "To avoid unexpected results at runtime, review the converted code and change it where necessary.",
+      "documentation_references": "https://www.postgresql.org/docs/current/sql-merge.html",
+      "learning_curve_efforts": 4.0,
+      "efforts_to_convert_an_occurrence_of_the_action_item": 0.0
+    }
+  ]
+}

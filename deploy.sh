@@ -205,65 +205,72 @@ fi
 echo "Oracle XEのインストールが完了しました"
 fi
 
-# GUI環境のセットアップ
-echo "GUI環境のセットアップを開始します..."
+# ツールセットアップ（Kiro CLI, uv, AWS CLIリージョン設定）
+echo "ツール（Kiro CLI, uv, git）のセットアップを開始します..."
 
-# GUI環境がインストール済みかチェック
-echo "GUI環境のインストール状態を確認しています..."
-export CHECK_GUI_COMMAND_ID=$(aws ssm send-command \
+# ツールセットアップ済みかチェック（Kiro CLIの存在で判定）
+echo "ツール（Kiro CLI, uv, git）のインストール状態を確認しています..."
+export CHECK_TOOLS_COMMAND_ID=$(aws ssm send-command \
   --instance-ids $ORACLE_INSTANCE_ID \
   --document-name "AWS-RunShellScript" \
-  --parameters 'commands=["if systemctl is-active vncserver@:1 >/dev/null 2>&1; then echo GUI_INSTALLED; else echo GUI_NOT_INSTALLED; fi"]' \
+  --parameters 'commands=["if sudo -u ec2-user command -v kiro-cli >/dev/null 2>&1; then echo TOOLS_INSTALLED; else echo TOOLS_NOT_INSTALLED; fi"]' \
   --output text \
   --query "Command.CommandId")
 
 # チェック結果を待機
 sleep 10
-export GUI_CHECK_RESULT=$(aws ssm get-command-invocation \
-  --command-id "$CHECK_GUI_COMMAND_ID" \
+export TOOLS_CHECK_RESULT=$(aws ssm get-command-invocation \
+  --command-id "$CHECK_TOOLS_COMMAND_ID" \
   --instance-id "$ORACLE_INSTANCE_ID" \
   --query "StandardOutputContent" \
   --output text | tr -d '\n')
 
-if [[ "$GUI_CHECK_RESULT" == "GUI_INSTALLED" ]]; then
-    echo "GUI環境は既にインストール済みです。セットアップをスキップします。"
-    GUI_INSTALL_SKIPPED=true
+if [[ "$TOOLS_CHECK_RESULT" == "TOOLS_INSTALLED" ]]; then
+    echo "ツール（Kiro CLI, uv, git）は既にインストール済みです。セットアップをスキップします。"
+    TOOLS_INSTALL_SKIPPED=true
 else
-    echo "GUI環境がインストールされていません。セットアップを開始します..."
-    GUI_INSTALL_SKIPPED=false
+    echo "ツール（Kiro CLI, uv, git）がインストールされていません。セットアップを開始します..."
+    TOOLS_INSTALL_SKIPPED=false
 
-export GUI_COMMAND_ID=$(aws ssm send-command \
+# 変換サーバーにも、このリポジトリと同じブランチを clone する（GitHub にないブランチなら main）
+REPO_BRANCH=$(git -C .. rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+if [[ "$REPO_BRANCH" == "HEAD" || ! "$REPO_BRANCH" =~ ^[A-Za-z0-9._/-]+$ ]]; then
+    REPO_BRANCH=""
+fi
+echo "変換サーバーに clone するブランチ: ${REPO_BRANCH:-既定のブランチ}"
+
+export TOOLS_COMMAND_ID=$(aws ssm send-command \
   --instance-ids $ORACLE_INSTANCE_ID \
   --document-name "AWS-RunShellScript" \
-  --parameters 'commands=["aws s3 cp s3://'$SCRIPT_BUCKET_NAME'/scripts/setup-gui.sh /tmp/setup-gui.sh && chmod +x /tmp/setup-gui.sh && /tmp/setup-gui.sh > /opt/oracle-install/gui-setup.log 2>&1"]' \
+  --parameters 'commands=["aws s3 cp s3://'$SCRIPT_BUCKET_NAME'/scripts/setup-tools.sh /tmp/setup-tools.sh && chmod +x /tmp/setup-tools.sh && /tmp/setup-tools.sh '$REPO_BRANCH' > /opt/oracle-install/tools-setup.log 2>&1"]' \
   --output text \
   --query "Command.CommandId")
 
-if [ -z "$GUI_COMMAND_ID" ]; then
-  echo "エラー: GUI セットアップコマンドの実行に失敗しました"
+if [ -z "$TOOLS_COMMAND_ID" ]; then
+  echo "エラー: ツールセットアップコマンドの実行に失敗しました"
   exit 1
 fi
 
-echo "GUI セットアップコマンド ID: $GUI_COMMAND_ID が発行されました"
-echo "GUI セットアップの実行状態を監視します..."
+echo "ツール（Kiro CLI, uv, git）セットアップのコマンド ID: $TOOLS_COMMAND_ID が発行されました"
+echo "ツール（Kiro CLI, uv, git）セットアップの実行状態を監視します..."
 
 while true; do
-  export GUI_STATUS=$(aws ssm list-commands \
-    --command-id "$GUI_COMMAND_ID" \
+  export TOOLS_STATUS=$(aws ssm list-commands \
+    --command-id "$TOOLS_COMMAND_ID" \
     --query "Commands[0].Status" \
     --output text)
   
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - GUI セットアップ状態: $GUI_STATUS"
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - ツール（Kiro CLI, uv, git）セットアップ状態: $TOOLS_STATUS"
   
-  if [[ "$GUI_STATUS" = "Success" ]]; then
-    echo "GUI セットアップが正常に完了しました！"
+  if [[ "$TOOLS_STATUS" = "Success" ]]; then
+    echo "ツール（Kiro CLI, uv, git）のセットアップが正常に完了しました！"
     break
-  elif [[ "$GUI_STATUS" = "Failed" || "$GUI_STATUS" = "Cancelled" || "$GUI_STATUS" = "TimedOut" ]]; then
-    echo "GUI セットアップが失敗しました。ステータス: $GUI_STATUS"
+  elif [[ "$TOOLS_STATUS" = "Failed" || "$TOOLS_STATUS" = "Cancelled" || "$TOOLS_STATUS" = "TimedOut" ]]; then
+    echo "ツール（Kiro CLI, uv, git）のセットアップが失敗しました。ステータス: $TOOLS_STATUS"
     
     echo "エラーの詳細を取得しています..."
     aws ssm get-command-invocation \
-      --command-id "$GUI_COMMAND_ID" \
+      --command-id "$TOOLS_COMMAND_ID" \
       --instance-id "$ORACLE_INSTANCE_ID" \
       --query "StandardErrorContent" \
       --output text
@@ -273,26 +280,72 @@ while true; do
   sleep 30
 done
 
-# GUI セットアップ成功時の出力を表示
-echo "GUI セットアップ出力:"
+# ツールセットアップ成功時の出力を表示
+echo "ツール（Kiro CLI, uv, git）セットアップの出力:"
 aws ssm get-command-invocation \
-  --command-id "$GUI_COMMAND_ID" \
+  --command-id "$TOOLS_COMMAND_ID" \
   --instance-id "$ORACLE_INSTANCE_ID" \
   --query "StandardOutputContent" \
   --output text
 fi
 
+# AWS SCT 拡張パック（aws_oracle_ext）を Aurora PostgreSQL に適用
+# SCT / DMS Schema Conversion の変換結果は aws_oracle_ext.* の関数を使うため、
+# 変換後のコードを Aurora で実行して確かめるには拡張パックが必要です。
+# Aurora が作り直された場合にも確実に入るよう、デプロイのたびに適用します（数分かかります）。
+echo "拡張パック（aws_oracle_ext）を Aurora PostgreSQL に適用します（数分かかります）..."
+export MIGRATION_PROJECT_ARN=$(jq -r --arg stack_name "${stack_name}" \
+  '.[$stack_name] | to_entries[] | select(.key | startswith("DmsSchemaConversionMigrationProjectArn")) | .value' \
+  ../output.json)
+
+if [ -z "$MIGRATION_PROJECT_ARN" ]; then
+  echo "エラー: output.json から DMS の移行プロジェクトの ARN を取得できませんでした"
+  exit 1
+fi
+
+export EXT_PACK_REQUEST_ID=$(aws dms start-extension-pack-association \
+  --migration-project-identifier "$MIGRATION_PROJECT_ARN" \
+  --query "RequestIdentifier" \
+  --output text)
+
+if [ -z "$EXT_PACK_REQUEST_ID" ]; then
+  echo "エラー: 拡張パックの適用を開始できませんでした"
+  exit 1
+fi
+
+for i in $(seq 1 60); do
+  export EXT_PACK_STATUS=$(aws dms describe-extension-pack-associations \
+    --migration-project-identifier "$MIGRATION_PROJECT_ARN" \
+    --query "Requests[?RequestIdentifier=='$EXT_PACK_REQUEST_ID'].Status | [0]" \
+    --output text)
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - 拡張パックの適用状態: $EXT_PACK_STATUS"
+
+  if [[ "$EXT_PACK_STATUS" == "SUCCESS" ]]; then
+    echo "拡張パックの適用が完了しました。"
+    break
+  elif [[ "$EXT_PACK_STATUS" == "FAILED" ]]; then
+    echo "エラー: 拡張パックの適用に失敗しました"
+    aws dms describe-extension-pack-associations \
+      --migration-project-identifier "$MIGRATION_PROJECT_ARN" \
+      --query "Requests[?RequestIdentifier=='$EXT_PACK_REQUEST_ID'].Error | [0]" \
+      --output json
+    exit 1
+  fi
+  sleep 30
+done
+
+if [[ "$EXT_PACK_STATUS" != "SUCCESS" ]]; then
+  echo "エラー: 拡張パックの適用が30分以内に完了しませんでした（状態: $EXT_PACK_STATUS）"
+  exit 1
+fi
+
 # インスタンスを再起動（新規インストール時のみ）
-if [[ "$ORACLE_INSTALL_SKIPPED" == "false" || "$GUI_INSTALL_SKIPPED" == "false" ]]; then
+if [[ "$ORACLE_INSTALL_SKIPPED" == "false" || "$TOOLS_INSTALL_SKIPPED" == "false" ]]; then
     echo "新規インストールが実行されたため、インスタンスを再起動します..."
     aws ec2 reboot-instances --instance-ids $ORACLE_INSTANCE_ID
     echo "インスタンスの再起動を開始しました。"
 else
     echo "既存のインストールが検出されたため、再起動をスキップします。"
 fi
-echo "再起動完了後、以下の手順でVNCにアクセスできます:"
-echo "1. SSH トンネリング: ssh -F ssh-config -L 5901:localhost:5901 oracle"
-echo "2. VNC クライアントで localhost:5901 に接続"
-echo "3. パスワード: rdppassword123"
 echo ""
 echo "デプロイが完了しました！"

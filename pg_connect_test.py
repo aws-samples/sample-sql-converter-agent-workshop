@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 PostgreSQL 接続テストスクリプト
-AWS Secrets Manager から認証情報を取得し、Aurora PostgreSQL に接続します
+AWS Secrets Manager から接続情報を取得し、Aurora PostgreSQL に直接接続します
 """
 
 import json
@@ -9,15 +9,11 @@ import sys
 from datetime import datetime
 
 import boto3
+import psycopg
 from colorama import Fore, Style, init
 
 # カラー出力の初期化
 init(autoreset=True)
-
-# AWS アカウント情報
-sts = boto3.client("sts")
-account_id = sts.get_caller_identity()["Account"]
-region = sts.meta.region_name
 
 
 def print_header(title):
@@ -44,7 +40,7 @@ def print_info(label, value):
 
 
 def get_db_credentials():
-    """データベース認証情報を取得する関数"""
+    """データベース接続情報を取得する関数"""
     try:
         print_info("認証情報", "AWS Secrets Manager から取得中...")
         secrets_client = boto3.client("secretsmanager")
@@ -53,15 +49,14 @@ def get_db_credentials():
         )
 
         secret = json.loads(secret_response["SecretString"])
-        cluster_arn = (
-            f"arn:aws:rds:{region}:{account_id}:cluster:{secret['dbClusterIdentifier']}"
-        )
 
         print_success("認証情報の取得に成功しました")
         return {
-            "cluster_arn": cluster_arn,
-            "secret_arn": secret_response["ARN"],
-            "database": "postgres",
+            "host": secret["host"],
+            "port": int(secret.get("port", 5432)),
+            "user": secret["username"],
+            "password": secret["password"],
+            "dbname": "postgres",
         }
     except Exception as e:
         print_error("認証情報の取得に失敗しました")
@@ -71,20 +66,12 @@ def get_db_credentials():
 def execute_query(credentials):
     """SQLクエリを実行する関数"""
     try:
-        print_info("データベース", "PostgreSQL に接続中...")
-        rds_data = boto3.client("rds-data")
-
-        # 現在時刻を取得するクエリ
-        response = rds_data.execute_statement(
-            resourceArn=credentials["cluster_arn"],
-            secretArn=credentials["secret_arn"],
-            database=credentials["database"],
-            sql="SELECT NOW(), version();",
-        )
-
-        # 結果を取得
-        timestamp = response["records"][0][0]["stringValue"]
-        version = response["records"][0][1]["stringValue"]
+        print_info("データベース", f"PostgreSQL（{credentials['host']}）に接続中...")
+        with psycopg.connect(
+            **credentials, sslmode="require", connect_timeout=10
+        ) as conn:
+            # 現在時刻とバージョンを取得するクエリ
+            timestamp, version = conn.execute("SELECT NOW(), version();").fetchone()
 
         print_success("PostgreSQL への接続に成功しました")
         print_info("データベース時刻", timestamp)
